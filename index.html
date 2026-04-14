@@ -16,7 +16,8 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
 .header-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;position:relative;z-index:1;}
 .app-logo{display:flex;align-items:center;gap:8px;}
 .logo-icon{width:34px;height:34px;background:rgba(255,255,255,0.25);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
-.app-name{font-size:18px;font-weight:800;color:white;}
+.app-name{font-size:18px;font-weight:800;color:white;cursor:pointer;}
+.app-name:hover{opacity:0.9;}
 .header-actions{display:flex;align-items:center;gap:6px;position:relative;z-index:1;}
 .hd-btn{width:32px;height:32px;background:rgba(255,255,255,0.25);border:none;border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;}
 .couple-row{display:flex;}
@@ -173,7 +174,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
   <div class="header-top">
     <div class="app-logo">
       <div class="logo-icon">💕</div>
-      <span class="app-name">甜蜜帳本</span>
+      <span class="app-name" id="app-name-display" onclick="openAppNameModal()">甜蜜帳本</span>
     </div>
     <div class="header-actions">
       <button class="hd-btn" onclick="openTheme()">🎨</button>
@@ -330,6 +331,19 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
   <button class="nav-item" onclick="showPage('fixed',this)"><span class="nav-icon">📌</span>固定</button>
 </nav>
 
+<!-- 應用名稱 Modal -->
+<div class="modal-overlay" id="appname-modal" onclick="bgClose('appname-modal',event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">📝 自定義應用名稱</div>
+    <label class="modal-label">應用名稱</label>
+    <input class="modal-input" type="text" id="appname-input" placeholder="例如：甜蜜帳本">
+    <p style="font-size:11px;color:var(--text-sub);margin-bottom:12px;">💡 點擊頂部應用名稱快速編輯</p>
+    <button class="submit-btn" onclick="saveAppName()">儲存應用名稱</button>
+    <button class="modal-close-btn" onclick="closeM('appname-modal')">取消</button>
+  </div>
+</div>
+
 <!-- 設定名稱 Modal -->
 <div class="modal-overlay" id="settings-modal" onclick="bgClose('settings-modal',event)">
   <div class="modal">
@@ -442,12 +456,13 @@ let curType='exp', editType='exp', curTheme=0, curFixedType='exp', curPeriod='we
 let selCatMain={exp:'餐飲',inc:'薪資'}, selCatEdit={exp:'餐飲',inc:'薪資'};
 let nid=1000;
 let person1='小美', person2='小明';
+let appName='甜蜜帳本';
 
 let records=[];
 let fixedItems=[];
 
 function save(){
-  try{localStorage.setItem(SK,JSON.stringify({records,fixedItems,curTheme,nid,person1,person2}));}catch(e){}
+  try{localStorage.setItem(SK,JSON.stringify({records,fixedItems,curTheme,nid,person1,person2,appName}));}catch(e){}
   setSyncLabel(true,'本地已儲存 · '+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'}));
 }
 function load(){
@@ -460,12 +475,28 @@ function load(){
     if(d.nid)nid=d.nid;
     if(d.person1)person1=d.person1;
     if(d.person2)person2=d.person2;
+    if(d.appName)appName=d.appName;
   }catch(e){}
 }
 function syncNow(){save();showToast('☁️ 資料已儲存！');}
 function setSyncLabel(ok,txt){
   document.getElementById('sync-dot').className='sync-dot'+(ok?'':' offline');
   document.getElementById('sync-label').textContent=txt;
+}
+
+function openAppNameModal(){
+  document.getElementById('appname-input').value=appName;
+  openM('appname-modal');
+}
+function saveAppName(){
+  const newName=document.getElementById('appname-input').value.trim();
+  if(!newName){showToast('請輸入應用名稱');return;}
+  appName=newName;
+  document.getElementById('app-name-display').textContent=appName;
+  document.title=appName;
+  closeM('appname-modal');
+  save();
+  showToast('應用名稱已更新 📝');
 }
 
 function openSettings(){
@@ -773,6 +804,8 @@ function showToast(msg){
 
 function init(){
   load();applyTheme(curTheme);
+  document.getElementById('app-name-display').textContent=appName;
+  document.title=appName;
   updateAllNames();
   renderPayerChips();
   renderCatsGrid('cats-grid',curType,selCatMain);
@@ -780,100 +813,6 @@ function init(){
   initLiff();
 }
 init();
-</script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>甜蜜帳本</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-<style>
-/* 保留原有所有 CSS */
-:root{--primary:#FF6B9D;--primary-light:#FFB3CA;--primary-pale:#FFF0F5;--primary-dark:#E0457A;--accent:#FF8FB1;--income-color:#4CAF7D;--bg:#FFF9FB;--card:#FFFFFF;--text:#2D2D2D;--text-sub:#888;--border:#FFE0EC;--shadow:rgba(255,107,157,0.12);--radius:16px;}
-/* ... 保留所有原有 CSS ... */
-</style>
-</head>
-<body>
-<!-- HTML 內容保留原來的，只修改應用名稱部分 -->
-<div class="app-header">
-  <div class="header-top">
-    <div class="app-logo">
-      <div class="logo-icon">💕</div>
-      <span class="app-name" id="app-name-display" onclick="openAppNameModal()" style="cursor:pointer;">甜蜜帳本</span>
-    </div>
-    <!-- 其他內容保留 -->
-  </div>
-</div>
-
-<!-- 應用名稱 Modal -->
-<div class="modal-overlay" id="appname-modal" onclick="bgClose('appname-modal',event)">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title">📝 自定義應用名稱</div>
-    <label class="modal-label">應用名稱</label>
-    <input class="modal-input" type="text" id="appname-input" placeholder="例如：甜蜜帳本">
-    <button class="submit-btn" onclick="saveAppName()">儲存應用名稱</button>
-    <button class="modal-close-btn" onclick="closeM('appname-modal')">取消</button>
-  </div>
-</div>
-
-<script>
-// 在最上面添加
-let appName='甜蜜帳本';
-
-// 新增函數（在 init 函數前添加）
-function openAppNameModal(){
-  document.getElementById('appname-input').value=appName;
-  openM('appname-modal');
-}
-
-function saveAppName(){
-  const newName=document.getElementById('appname-input').value.trim();
-  if(!newName){showToast('請輸入應用名稱');return;}
-  appName=newName;
-  document.getElementById('app-name-display').textContent=appName;
-  document.title=appName;
-  closeM('appname-modal');
-  save();
-  showToast('應用名稱已更新 📝');
-}
-
-// 修改 save() 函數
-function save(){
-  try{localStorage.setItem(SK,JSON.stringify({records,fixedItems,curTheme,nid,person1,person2,appName}));}catch(e){}
-  setSyncLabel(true,'本地已儲存 · '+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'}));
-}
-
-// 修改 load() 函數
-function load(){
-  try{
-    const d=JSON.parse(localStorage.getItem(SK));
-    if(!d)return;
-    if(d.records)records=d.records;
-    if(d.fixedItems)fixedItems=d.fixedItems;
-    if(typeof d.curTheme==='number')curTheme=d.curTheme;
-    if(d.nid)nid=d.nid;
-    if(d.person1)person1=d.person1;
-    if(d.person2)person2=d.person2;
-    if(d.appName)appName=d.appName;
-  }catch(e){}
-}
-
-// 修改 init() 函數的最後添加
-function init(){
-  load();applyTheme(curTheme);
-  document.getElementById('app-name-display').textContent=appName;
-  document.title=appName;
-  updateAllNames();
-  renderPayerChips();
-  renderCatsGrid('cats-grid',curType,selCatMain);
-  renderRecent();renderFixed();updateHeader();renderStats('week');
-  initLiff();
-}
 </script>
 </body>
 </html>
