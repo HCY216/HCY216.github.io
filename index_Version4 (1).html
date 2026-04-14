@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>甜蜜帳本</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<style>
+:root{--primary:#FF6B9D;--primary-light:#FFB3CA;--primary-pale:#FFF0F5;--primary-dark:#E0457A;--accent:#FF8FB1;--income-color:#4CAF7D;--bg:#FFF9FB;--card:#FFFFFF;--text:#2D2D2D;--text-sub:#888;--border:#FFE0EC;--shadow:rgba(255,107,157,0.12);--radius:16px;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-width:430px;margin:0 auto;min-height:100vh;overflow-x:hidden;}
+.app-header{background:linear-gradient(135deg,var(--primary) 0%,var(--accent) 100%);padding:16px 20px 22px;position:relative;overflow:hidden;}
+.app-header::before{content:'';position:absolute;right:-30px;top:-40px;width:160px;height:160px;background:rgba(255,255,255,0.08);border-radius:50%;}
+.app-header::after{content:'';position:absolute;right:30px;top:20px;width:80px;height:80px;background:rgba(255,255,255,0.06);border-radius:50%;}
+.header-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;position:relative;z-index:1;}
+.app-logo{display:flex;align-items:center;gap:8px;}
+.logo-icon{width:34px;height:34px;background:rgba(255,255,255,0.25);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.app-name{font-size:18px;font-weight:800;color:white;}
+.header-actions{display:flex;align-items:center;gap:6px;position:relative;z-index:1;}
+.hd-btn{width:32px;height:32px;background:rgba(255,255,255,0.25);border:none;border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;}
+.couple-row{display:flex;}
+.avatar{width:30px;height:30px;border-radius:50%;border:2px solid white;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;}
+.av1{background:rgba(255,255,255,0.35);}
+.av2{background:rgba(255,255,255,0.25);margin-left:-8px;}
+.header-balance{position:relative;z-index:1;}
+.balance-month{font-size:12px;color:rgba(255,255,255,0.8);margin-bottom:4px;}
+.balance-big{font-size:34px;font-weight:800;color:white;margin-bottom:12px;line-height:1;}
+.balance-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.bal-card{background:rgba(255,255,255,0.18);border-radius:12px;padding:8px 10px;}
+.bal-card-label{font-size:10px;color:rgba(255,255,255,0.75);margin-bottom:2px;}
+.bal-card-val{font-size:13px;font-weight:700;color:white;}
+.sync-status{display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,0.75);margin-top:10px;}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:#7FE09F;flex-shrink:0;}
+.sync-dot.offline{background:#FFB3B3;}
+.liff-bar{background:rgba(255,255,255,0.15);border-radius:10px;padding:6px 10px;margin-top:8px;display:flex;align-items:center;gap:6px;font-size:10px;color:rgba(255,255,255,0.85);}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:white;border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom);}
+.nav-item{flex:1;padding:10px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;font-size:10px;color:#BBB;transition:color 0.2s;border:none;background:none;font-family:'Nunito',sans-serif;}
+.nav-item.active{color:var(--primary);}
+.nav-icon{font-size:20px;}
+.pages{padding-bottom:80px;}
+.page{display:none;animation:fadeIn 0.2s ease;}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+.section{padding:16px 16px 0;}
+.section-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.section-title{font-size:13px;font-weight:700;color:var(--primary);display:flex;align-items:center;gap:4px;}
+.section-more{font-size:11px;color:var(--text-sub);cursor:pointer;}
+.card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:14px;margin-bottom:10px;}
+.type-switch{display:flex;background:var(--primary-pale);border-radius:12px;padding:3px;margin-bottom:12px;}
+.type-btn{flex:1;padding:7px;text-align:center;font-size:12px;font-weight:600;border-radius:10px;border:none;background:transparent;color:var(--text-sub);cursor:pointer;transition:all 0.2s;font-family:'Nunito',sans-serif;}
+.type-btn.active-exp{background:var(--primary);color:white;}
+.type-btn.active-inc{background:var(--income-color);color:white;}
+.cats-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:12px;}
+.cat-btn{background:var(--primary-pale);border-radius:10px;padding:7px 3px;text-align:center;font-size:9px;color:var(--primary);cursor:pointer;border:1.5px solid transparent;transition:all 0.15s;}
+.cat-btn .ce{font-size:17px;display:block;margin-bottom:2px;}
+.cat-btn.sel{background:var(--primary);color:white;border-color:var(--primary-dark);}
+.cat-btn.income-cat{background:#E8F5EE;color:var(--income-color);}
+.cat-btn.income-cat.sel{background:var(--income-color);color:white;}
+.form-label{font-size:11px;color:var(--text-sub);margin-bottom:5px;font-weight:600;display:block;}
+.chip-row{display:flex;gap:5px;flex-wrap:wrap;}
+.chip{padding:5px 11px;border-radius:20px;font-size:11px;background:var(--primary-pale);color:var(--primary);border:1px solid var(--border);cursor:pointer;transition:all 0.15s;white-space:nowrap;font-family:'Nunito',sans-serif;}
+.chip.sel{background:var(--primary);color:white;border-color:var(--primary-dark);}
+.chip.income-chip{background:#E8F5EE;color:var(--income-color);border-color:#C8E6D8;}
+.chip.income-chip.sel{background:var(--income-color);color:white;}
+.field-block{margin-top:10px;margin-bottom:10px;}
+.amount-wrap{position:relative;width:100%;}
+.currency-prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:700;color:var(--text-sub);pointer-events:none;z-index:2;}
+.amount-inp{width:100%;background:var(--primary-pale);border:1.5px solid var(--border);border-radius:12px;padding:12px 14px 12px 34px;font-size:18px;font-weight:700;color:var(--text);outline:none;font-family:'Nunito',sans-serif;transition:border-color 0.2s;}
+.amount-inp:focus{border-color:var(--primary);}
+.note-inp{width:100%;background:var(--primary-pale);border:1.5px solid var(--border);border-radius:12px;padding:10px 14px;font-size:13px;color:var(--text);outline:none;font-family:'Nunito',sans-serif;transition:border-color 0.2s;display:block;}
+.note-inp:focus{border-color:var(--primary);}
+.submit-btn{width:100%;background:var(--primary);color:white;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:transform 0.15s;margin-top:6px;display:block;}
+.submit-btn:active{transform:scale(0.98);}
+.submit-btn.income-btn{background:var(--income-color);}
+.record-item{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:11px 14px;display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.rec-emoji{width:38px;height:38px;background:var(--primary-pale);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+.rec-emoji.income{background:#E8F5EE;}
+.rec-info{flex:1;min-width:0;}
+.rec-name{font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.rec-meta{font-size:10px;color:var(--text-sub);margin-top:2px;}
+.fixed-tag{display:inline-block;font-size:9px;background:#FFF3CD;color:#856404;border-radius:4px;padding:1px 5px;margin-left:3px;}
+.rec-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;}
+.rec-amount{font-size:14px;font-weight:700;color:#FF4081;}
+.rec-amount.inc{color:var(--income-color);}
+.rec-actions{display:flex;gap:4px;}
+.action-btn{border:none;border-radius:6px;padding:3px 7px;font-size:10px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:600;}
+.edit-btn{background:#EEF5FF;color:#4A90E2;}
+.del-btn{background:#FFEEF0;color:#FF4081;}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.stat-card{background:var(--card);border-radius:14px;border:1px solid var(--border);padding:12px;text-align:center;}
+.stat-val{font-size:18px;font-weight:800;color:var(--primary);}
+.stat-val.inc{color:var(--income-color);}
+.stat-lbl{font-size:10px;color:var(--text-sub);margin-top:2px;}
+.period-row{display:flex;gap:6px;margin-bottom:12px;}
+.period-btn{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;background:var(--card);color:var(--text-sub);border:1.5px solid var(--border);cursor:pointer;transition:all 0.15s;font-family:'Nunito',sans-serif;}
+.period-btn.sel{background:var(--primary);color:white;border-color:var(--primary-dark);}
+.compare-card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:14px;margin-bottom:10px;}
+.compare-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.cmp-label{font-size:11px;width:36px;}
+.bar-track{flex:1;height:11px;background:var(--primary-pale);border-radius:6px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:6px;transition:width 0.6s ease;}
+.bar-this{background:var(--primary);}
+.bar-last{background:var(--primary-light);}
+.cmp-val{font-size:11px;font-weight:600;width:62px;text-align:right;color:var(--text);}
+.diff-row{display:flex;justify-content:flex-end;font-size:11px;font-weight:600;margin-top:4px;}
+.diff-up{color:#FF4081;}
+.diff-dn{color:var(--income-color);}
+.cat-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.settle-hero{background:linear-gradient(135deg,var(--primary) 0%,var(--accent) 100%);border-radius:var(--radius);padding:20px;text-align:center;margin-bottom:10px;position:relative;overflow:hidden;}
+.settle-hero::before{content:'';position:absolute;right:-20px;top:-20px;width:100px;height:100px;background:rgba(255,255,255,0.08);border-radius:50%;}
+.settle-persons{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0;}
+.settle-person{text-align:center;}
+.settle-av{width:48px;height:48px;border-radius:50%;border:2.5px solid rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;margin:0 auto 4px;}
+.settle-av.a1{background:rgba(255,255,255,0.3);}
+.settle-av.a2{background:rgba(255,255,255,0.2);}
+.settle-pname{font-size:11px;color:rgba(255,255,255,0.8);}
+.settle-paid{font-size:16px;font-weight:800;color:white;}
+.arrow-mid{text-align:center;}
+.arrow-amt{font-size:15px;font-weight:800;color:white;}
+.arrow-ic{font-size:22px;color:rgba(255,255,255,0.9);}
+.settle-desc{font-size:12px;color:rgba(255,255,255,0.85);}
+.pay-method-item{background:var(--card);border-radius:14px;border:1px solid var(--border);padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all 0.15s;margin-bottom:8px;}
+.pay-method-item:hover{border-color:var(--primary);}
+.pay-ic{font-size:22px;}
+.pay-info{flex:1;}
+.pay-name{font-size:13px;font-weight:600;}
+.pay-desc{font-size:10px;color:var(--text-sub);margin-top:1px;}
+.pay-badge{font-size:10px;font-weight:600;color:var(--primary);}
+.history-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px;}
+.history-item:last-child{border-bottom:none;}
+.done-badge{color:var(--income-color);font-weight:600;}
+.fixed-summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.fixed-sum-card{border-radius:14px;padding:12px;text-align:center;}
+.fixed-sum-card.exp{background:#FFE8F0;}
+.fixed-sum-card.inc{background:#E8F5EE;}
+.fixed-sum-lbl{font-size:10px;margin-bottom:3px;}
+.fixed-sum-card.exp .fixed-sum-lbl{color:var(--primary);}
+.fixed-sum-card.inc .fixed-sum-lbl{color:var(--income-color);}
+.fixed-sum-val{font-size:20px;font-weight:800;}
+.fixed-sum-card.exp .fixed-sum-val{color:#FF4081;}
+.fixed-sum-card.inc .fixed-sum-val{color:var(--income-color);}
+.add-fixed-btn{width:100%;background:var(--primary-pale);color:var(--primary);border:1.5px dashed var(--primary-light);border-radius:12px;padding:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s;margin-top:8px;display:block;}
+.add-fixed-btn:hover{background:var(--primary);color:white;}
+.add-fixed-btn.inc-btn{border-color:#A8D5B8;color:var(--income-color);background:#E8F5EE;}
+.add-fixed-btn.inc-btn:hover{background:var(--income-color);color:white;}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:200;display:none;align-items:flex-end;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:white;border-radius:24px 24px 0 0;padding:20px 20px 36px;width:100%;max-width:430px;animation:slideUp 0.25s ease;max-height:88vh;overflow-y:auto;}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.modal-handle{width:40px;height:4px;background:#DDD;border-radius:2px;margin:0 auto 16px;}
+.modal-title{font-size:16px;font-weight:800;margin-bottom:16px;text-align:center;}
+.modal-label{font-size:11px;color:var(--text-sub);margin-bottom:5px;font-weight:600;display:block;}
+.modal-input{width:100%;background:var(--primary-pale);border:1.5px solid var(--border);border-radius:12px;padding:10px 14px;font-size:13px;color:var(--text);outline:none;font-family:'Nunito',sans-serif;margin-bottom:10px;display:block;}
+.modal-input:focus{border-color:var(--primary);}
+.modal-amount-wrap{position:relative;margin-bottom:10px;}
+.modal-currency{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:700;color:var(--text-sub);pointer-events:none;}
+.modal-amount-inp{width:100%;background:var(--primary-pale);border:1.5px solid var(--border);border-radius:12px;padding:11px 14px 11px 34px;font-size:17px;font-weight:700;color:var(--text);outline:none;font-family:'Nunito',sans-serif;}
+.modal-amount-inp:focus{border-color:var(--primary);}
+.modal-close-btn{width:100%;background:var(--primary-pale);color:var(--primary);border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:6px;display:block;}
+.theme-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;}
+.theme-item{text-align:center;cursor:pointer;}
+.theme-circle{width:44px;height:44px;border-radius:50%;margin:0 auto 4px;border:3px solid transparent;transition:all 0.15s;}
+.theme-item.sel .theme-circle{border-color:#333;transform:scale(1.1);}
+.theme-name{font-size:10px;color:var(--text-sub);}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(40,40,40,0.92);color:white;border-radius:20px;padding:9px 20px;font-size:12px;font-weight:600;z-index:300;opacity:0;transition:all 0.3s;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div class="header-top">
+    <div class="app-logo">
+      <div class="logo-icon">💕</div>
+      <span class="app-name">甜蜜帳本</span>
+    </div>
+    <div class="header-actions">
+      <button class="hd-btn" onclick="openTheme()">🎨</button>
+      <button class="hd-btn" onclick="openSettings()">⚙️</button>
+      <button class="hd-btn" onclick="syncNow()">☁️</button>
+      <div class="couple-row">
+        <div class="avatar av1" id="av1-name">小美</div>
+        <div class="avatar av2" id="av2-name">小明</div>
+      </div>
+    </div>
+  </div>
+  <div class="header-balance">
+    <div class="balance-month" id="hd-month"></div>
+    <div class="balance-big" id="hd-net">NT$+0</div>
+    <div class="balance-cards">
+      <div class="bal-card"><div class="bal-card-label">總支出</div><div class="bal-card-val" id="hd-exp">NT$0</div></div>
+      <div class="bal-card"><div class="bal-card-label">總收入</div><div class="bal-card-val" id="hd-inc">NT$0</div></div>
+      <div class="bal-card"><div class="bal-card-label">筆數</div><div class="bal-card-val" id="hd-count">0筆</div></div>
+    </div>
+    <div class="sync-status"><div class="sync-dot" id="sync-dot"></div><span id="sync-label">本地模式</span></div>
+    <div class="liff-bar" id="liff-bar" style="display:none;"><span>👤</span><span id="liff-user-info"></span></div>
+  </div>
+</div>
+
+<div class="pages">
+  <div class="page active" id="page-record">
+    <div class="section">
+      <div class="section-title" style="margin-bottom:10px;">✨ 快速記帳</div>
+      <div class="card">
+        <div class="type-switch">
+          <button class="type-btn active-exp" id="btn-exp" onclick="switchType('exp')">💸 支出</button>
+          <button class="type-btn" id="btn-inc" onclick="switchType('inc')">💰 收入</button>
+        </div>
+        <label class="form-label">分類</label>
+        <div class="cats-grid" id="cats-grid"></div>
+        <label class="form-label">誰的</label>
+        <div class="chip-row" id="payer-row" style="margin-bottom:10px;"></div>
+        <div id="pay-section">
+          <label class="form-label">支付方式</label>
+          <div class="chip-row" id="pay-row" style="margin-bottom:0;">
+            <div class="chip sel" onclick="selChip(this)">💳 信用卡</div>
+            <div class="chip" onclick="selChip(this)">LINE Pay</div>
+            <div class="chip" onclick="selChip(this)">Apple Pay</div>
+            <div class="chip" onclick="selChip(this)">街口</div>
+            <div class="chip" onclick="selChip(this)">現金</div>
+          </div>
+        </div>
+        <div class="field-block">
+          <label class="form-label">金額</label>
+          <div class="amount-wrap">
+            <span class="currency-prefix">NT$</span>
+            <input class="amount-inp" type="number" id="amount-inp" placeholder="0" inputmode="decimal">
+          </div>
+        </div>
+        <label class="form-label">備註</label>
+        <input class="note-inp" type="text" id="note-inp" placeholder="備註（選填）">
+        <button class="submit-btn" id="submit-btn" onclick="addRecord()">+ 新增支出</button>
+      </div>
+      <div class="section-hd">
+        <div class="section-title">📋 最近記錄</div>
+        <span class="section-more" onclick="showAllRecords()">查看全部 →</span>
+      </div>
+      <div id="recent-list"></div>
+    </div>
+  </div>
+
+  <div class="page" id="page-stats">
+    <div class="section">
+      <div class="period-row">
+        <button class="period-btn sel" onclick="selPeriod(this,'week')">本週</button>
+        <button class="period-btn" onclick="selPeriod(this,'month')">本月</button>
+        <button class="period-btn" onclick="selPeriod(this,'year')">本年</button>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-val" id="s-exp">NT$0</div><div class="stat-lbl">總支出</div></div>
+        <div class="stat-card"><div class="stat-val inc" id="s-inc">NT$0</div><div class="stat-lbl">總收入</div></div>
+        <div class="stat-card"><div class="stat-val" id="s-net">NT$0</div><div class="stat-lbl">收支差額</div></div>
+        <div class="stat-card"><div class="stat-val" id="s-avg">NT$0</div><div class="stat-lbl">平均每筆</div></div>
+      </div>
+      <div class="section-title" style="margin-bottom:8px;">📈 與上月支出比較</div>
+      <div class="compare-card">
+        <div class="compare-row">
+          <div class="cmp-label" style="color:var(--primary);font-weight:700;">本月</div>
+          <div class="bar-track"><div class="bar-fill bar-this" id="bar-this" style="width:0%"></div></div>
+          <div class="cmp-val" id="cmp-this">0</div>
+        </div>
+        <div class="compare-row">
+          <div class="cmp-label" style="color:var(--primary-light);font-weight:700;">上月</div>
+          <div class="bar-track"><div class="bar-fill bar-last" id="bar-last" style="width:0%"></div></div>
+          <div class="cmp-val" id="cmp-last">0</div>
+        </div>
+        <div class="diff-row" id="cmp-diff"><span style="color:var(--text-sub)">尚無比較資料</span></div>
+      </div>
+      <div class="section-title" style="margin-bottom:8px;">🍰 支出分類占比</div>
+      <div class="card" id="cat-chart"></div>
+      <div class="section-title" style="margin-bottom:8px;margin-top:6px;">💰 收入分類占比</div>
+      <div class="card" id="inc-chart"></div>
+    </div>
+  </div>
+
+  <div class="page" id="page-settle">
+    <div class="section">
+      <div class="settle-hero">
+        <div style="font-size:12px;color:rgba(255,255,255,0.75);margin-bottom:6px;">本月結算</div>
+        <div class="settle-persons">
+          <div class="settle-person">
+            <div class="settle-av a1" id="settle-av1">小美</div>
+            <div class="settle-pname" id="settle-pname1">小美付出</div>
+            <div class="settle-paid" id="settle-av1-amt">NT$0</div>
+          </div>
+          <div class="arrow-mid">
+            <div class="arrow-amt" id="settle-arrow-amt">NT$0</div>
+            <div class="arrow-ic">→</div>
+          </div>
+          <div class="settle-person">
+            <div class="settle-av a2" id="settle-av2">小明</div>
+            <div class="settle-pname" id="settle-pname2">小明付出</div>
+            <div class="settle-paid" id="settle-av2-amt">NT$0</div>
+          </div>
+        </div>
+        <div class="settle-desc" id="settle-desc">計算中...</div>
+      </div>
+      <div class="section-title" style="margin-bottom:8px;">💸 還款方式</div>
+      <div class="pay-method-item" onclick="markSettled('LINE Pay')"><div class="pay-ic">💚</div><div class="pay-info"><div class="pay-name">LINE Pay</div><div class="pay-desc">傳送 LINE Pay 請款連結</div></div></div>
+      <div class="pay-method-item" onclick="markSettled('Apple Pay')"><div class="pay-ic">🍎</div><div class="pay-info"><div class="pay-name">Apple Pay</div><div class="pay-desc">透過 iMessage 傳送請款</div></div></div>
+      <div class="pay-method-item" onclick="markSettled('街口支付')"><div class="pay-ic">🧧</div><div class="pay-info"><div class="pay-name">街口支付</div><div class="pay-desc">掃碼或傳送請款</div></div></div>
+      <div class="pay-method-item" onclick="markSettled('銀行轉帳')"><div class="pay-ic">🏦</div><div class="pay-info"><div class="pay-name">銀行轉帳</div><div class="pay-desc">記錄轉帳已完成</div></div></div>
+      <div class="pay-method-item" onclick="markSettled('現金')"><div class="pay-ic">💵</div><div class="pay-info"><div class="pay-name">現金</div><div class="pay-desc">標記現金已給付</div></div></div>
+      <div class="section-title" style="margin-bottom:8px;">📜 結算記錄</div>
+      <div class="card" id="settle-history"></div>
+    </div>
+  </div>
+
+  <div class="page" id="page-fixed">
+    <div class="section">
+      <div class="fixed-summary">
+        <div class="fixed-sum-card exp"><div class="fixed-sum-lbl">每月固定支出</div><div class="fixed-sum-val" id="fixed-exp-total">NT$0</div></div>
+        <div class="fixed-sum-card inc"><div class="fixed-sum-lbl">每月固定收入</div><div class="fixed-sum-val" id="fixed-inc-total">NT$0</div></div>
+      </div>
+      <div class="section-title" style="margin-bottom:8px;">📌 固定支出</div>
+      <div id="fixed-exp-list"></div>
+      <div class="section-title" style="margin-bottom:8px;margin-top:6px;">💰 固定收入</div>
+      <div id="fixed-inc-list"></div>
+      <button class="add-fixed-btn" onclick="openAddFixed('exp')">+ 新增固定支出</button>
+      <button class="add-fixed-btn inc-btn" onclick="openAddFixed('inc')">+ 新增固定收入</button>
+    </div>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <button class="nav-item active" onclick="showPage('record',this)"><span class="nav-icon">✏️</span>記帳</button>
+  <button class="nav-item" onclick="showPage('stats',this)"><span class="nav-icon">📊</span>統計</button>
+  <button class="nav-item" onclick="showPage('settle',this)"><span class="nav-icon">⚖️</span>結算</button>
+  <button class="nav-item" onclick="showPage('fixed',this)"><span class="nav-icon">📌</span>固定</button>
+</nav>
+
+<!-- 設定名稱 Modal -->
+<div class="modal-overlay" id="settings-modal" onclick="bgClose('settings-modal',event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">⚙️ 自定義名稱</div>
+    <label class="modal-label">第一位的名稱</label>
+    <input class="modal-input" type="text" id="name1-input" placeholder="例如：小美">
+    <label class="modal-label">第二位的名稱</label>
+    <input class="modal-input" type="text" id="name2-input" placeholder="例如：小明">
+    <button class="submit-btn" onclick="saveCustomNames()">儲存名稱</button>
+    <button class="modal-close-btn" onclick="closeM('settings-modal')">取消</button>
+  </div>
+</div>
+
+<!-- 主題 Modal -->
+<div class="modal-overlay" id="theme-modal" onclick="bgClose('theme-modal',event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🎨 選擇主題色</div>
+    <div class="theme-grid" id="theme-grid"></div>
+    <button class="modal-close-btn" onclick="closeM('theme-modal')">完成</button>
+  </div>
+</div>
+
+<!-- 編輯記錄 Modal -->
+<div class="modal-overlay" id="record-modal" onclick="bgClose('record-modal',event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">✏️ 編輯記錄</div>
+    <input type="hidden" id="edit-id">
+    <div class="type-switch" style="margin-bottom:12px;">
+      <button class="type-btn active-exp" id="edit-btn-exp" onclick="editSwitchType('exp')">💸 支出</button>
+      <button class="type-btn" id="edit-btn-inc" onclick="editSwitchType('inc')">💰 收入</button>
+    </div>
+    <label class="modal-label">分類</label>
+    <div class="cats-grid" id="edit-cats-grid" style="margin-bottom:12px;"></div>
+    <label class="modal-label">誰的</label>
+    <div class="chip-row" id="edit-payer-row" style="margin-bottom:10px;"></div>
+    <div id="edit-pay-section">
+      <label class="modal-label">支付方式</label>
+      <div class="chip-row" id="edit-pay-row" style="margin-bottom:10px;">
+        <div class="chip sel" onclick="selChip(this)">💳 信用卡</div>
+        <div class="chip" onclick="selChip(this)">LINE Pay</div>
+        <div class="chip" onclick="selChip(this)">Apple Pay</div>
+        <div class="chip" onclick="selChip(this)">街口</div>
+        <div class="chip" onclick="selChip(this)">現金</div>
+      </div>
+    </div>
+    <label class="modal-label">金額</label>
+    <div class="modal-amount-wrap">
+      <span class="modal-currency">NT$</span>
+      <input class="modal-amount-inp" type="number" id="edit-amount" placeholder="0" inputmode="decimal">
+    </div>
+    <label class="modal-label">備註</label>
+    <input class="modal-input" type="text" id="edit-note" placeholder="備註（選填）">
+    <button class="submit-btn" id="edit-submit-btn" onclick="saveEdit()" style="margin-top:4px;">儲存修改</button>
+    <button class="modal-close-btn" onclick="closeM('record-modal')">取消</button>
+  </div>
+</div>
+
+<!-- 新增固定 Modal -->
+<div class="modal-overlay" id="fixed-modal" onclick="bgClose('fixed-modal',event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="fixed-modal-title">新增固定支出</div>
+    <label class="modal-label">名稱</label>
+    <input class="modal-input" id="fixed-name" placeholder="如：房租、Netflix…">
+    <label class="modal-label">金額</label>
+    <div class="modal-amount-wrap">
+      <span class="modal-currency">NT$</span>
+      <input class="modal-amount-inp" type="number" id="fixed-amount" placeholder="0" inputmode="decimal" style="margin-bottom:10px;">
+    </div>
+    <label class="modal-label">每月幾號扣款</label>
+    <input class="modal-input" type="number" id="fixed-day" placeholder="1 ~ 31" min="1" max="31">
+    <label class="modal-label">負責人</label>
+    <div class="chip-row" id="fixed-payer-row" style="margin-bottom:14px;"></div>
+    <button class="submit-btn" id="fixed-submit-btn" onclick="saveFixed()">儲存</button>
+    <button class="modal-close-btn" onclick="closeM('fixed-modal')">取消</button>
+  </div>
+</div>
+
+<!-- 所有記錄 Modal -->
+<div class="modal-overlay" id="all-modal" onclick="bgClose('all-modal',event)">
+  <div class="modal" style="max-height:85vh;">
+    <div class="modal-handle"></div>
+    <div class="modal-title">所有記錄</div>
+    <div id="all-list"></div>
+    <button class="modal-close-btn" onclick="closeM('all-modal')" style="margin-top:8px;">關閉</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const EXP_CATS=[{e:'🍜',n:'餐飲'},{e:'🛒',n:'購物'},{e:'🚇',n:'交通'},{e:'🎬',n:'娛樂'},{e:'🏠',n:'居家'},{e:'💊',n:'醫療'},{e:'🛡️',n:'保險'},{e:'✈️',n:'旅遊'},{e:'📚',n:'教育'},{e:'➕',n:'其他'}];
+const INC_CATS=[{e:'💼',n:'薪資'},{e:'🎁',n:'獎金'},{e:'📈',n:'股息'},{e:'💹',n:'投資'},{e:'🏠',n:'租金'},{e:'🎨',n:'副業'},{e:'🎰',n:'中獎'},{e:'➕',n:'其他'}];
+const THEMES=[
+  {name:'玫瑰粉',p:'#FF6B9D',a:'#FF8FB1',pl:'#FFB3CA',pp:'#FFF0F5',pd:'#E0457A',b:'#FFE0EC'},
+  {name:'珊瑚紅',p:'#FF5B5B',a:'#FF7E7E',pl:'#FFB3B3',pp:'#FFF0F0',pd:'#E03C3C',b:'#FFE0E0'},
+  {name:'紫羅蘭',p:'#9B59B6',a:'#B07FCC',pl:'#CDA9E0',pp:'#F5EEFF',pd:'#7D3F99',b:'#E8D5F5'},
+  {name:'藍莓藍',p:'#4A90E2',a:'#6BAEE8',pl:'#A8CEFA',pp:'#EEF5FF',pd:'#2B70C4',b:'#D4E8FF'},
+  {name:'薄荷綠',p:'#2ECC8E',a:'#55D9A8',pl:'#95E8CC',pp:'#EAFAF4',pd:'#1FAD74',b:'#C5EFE0'},
+  {name:'橙橘橙',p:'#FF8C42',a:'#FFB06B',pl:'#FFCFA0',pp:'#FFF5EC',pd:'#E06A20',b:'#FFE5CC'},
+  {name:'藏青藍',p:'#34495E',a:'#556B80',pl:'#8FA5B3',pp:'#EEF2F5',pd:'#1E2F3C',b:'#D0DBE2'},
+  {name:'草莓紅',p:'#E91E63',a:'#F06292',pl:'#F8BBD9',pp:'#FDE8F1',pd:'#C2185B',b:'#FBCFE8'},
+];
+const SK='sweetbudget_v3';
+
+let curType='exp', editType='exp', curTheme=0, curFixedType='exp', curPeriod='week';
+let selCatMain={exp:'餐飲',inc:'薪資'}, selCatEdit={exp:'餐飲',inc:'薪資'};
+let nid=1000;
+let person1='小美', person2='小明';
+
+let records=[];
+let fixedItems=[];
+
+function save(){
+  try{localStorage.setItem(SK,JSON.stringify({records,fixedItems,curTheme,nid,person1,person2}));}catch(e){}
+  setSyncLabel(true,'本地已儲存 · '+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'}));
+}
+function load(){
+  try{
+    const d=JSON.parse(localStorage.getItem(SK));
+    if(!d)return;
+    if(d.records)records=d.records;
+    if(d.fixedItems)fixedItems=d.fixedItems;
+    if(typeof d.curTheme==='number')curTheme=d.curTheme;
+    if(d.nid)nid=d.nid;
+    if(d.person1)person1=d.person1;
+    if(d.person2)person2=d.person2;
+  }catch(e){}
+}
+function syncNow(){save();showToast('☁️ 資料已儲存！');}
+function setSyncLabel(ok,txt){
+  document.getElementById('sync-dot').className='sync-dot'+(ok?'':' offline');
+  document.getElementById('sync-label').textContent=txt;
+}
+
+function openSettings(){
+  document.getElementById('name1-input').value=person1;
+  document.getElementById('name2-input').value=person2;
+  openM('settings-modal');
+}
+function saveCustomNames(){
+  const n1=document.getElementById('name1-input').value.trim();
+  const n2=document.getElementById('name2-input').value.trim();
+  if(!n1||!n2){showToast('請輸入兩個名稱');return;}
+  person1=n1;
+  person2=n2;
+  updateAllNames();
+  closeM('settings-modal');
+  save();
+  showToast('名稱已更新 ✏️');
+}
+function updateAllNames(){
+  document.getElementById('av1-name').textContent=person1;
+  document.getElementById('av2-name').textContent=person2;
+  document.getElementById('settle-av1').textContent=person1;
+  document.getElementById('settle-av2').textContent=person2;
+  document.getElementById('settle-pname1').textContent=person1+'付出';
+  document.getElementById('settle-pname2').textContent=person2+'付出';
+  renderPayerChips();
+}
+function renderPayerChips(){
+  document.getElementById('payer-row').innerHTML=`<div class="chip sel" onclick="selChip(this)">${person1}</div><div class="chip" onclick="selChip(this)">${person2}</div><div class="chip" onclick="selChip(this)">共同</div>`;
+  document.getElementById('edit-payer-row').innerHTML=`<div class="chip sel" onclick="selChip(this)">${person1}</div><div class="chip" onclick="selChip(this)">${person2}</div><div class="chip" onclick="selChip(this)">共同</div>`;
+  document.getElementById('fixed-payer-row').innerHTML=`<div class="chip sel" onclick="selChip(this)">${person1}</div><div class="chip" onclick="selChip(this)">${person2}</div><div class="chip" onclick="selChip(this)">共同</div>`;
+}
+
+async function initLiff(){
+  const LIFF_ID='2009789604-iVjFy6wo';
+  if(LIFF_ID==='2009789604-iVjFy6wo'){setSyncLabel(true,'本地模式（未設定 LIFF ID）');return;}
+  try{
+    await liff.init({liffId:LIFF_ID});
+    if(!liff.isLoggedIn()){liff.login();return;}
+    const p=await liff.getProfile();
+    document.getElementById('liff-bar').style.display='flex';
+    document.getElementById('liff-user-info').textContent=p.displayName+' 已登入';
+    setSyncLabel(true,'LINE 已登入 · 雲端同步');
+  }catch(e){setSyncLabel(false,'離線模式');}
+}
+
+function applyTheme(i){
+  curTheme=i;
+  const t=THEMES[i],r=document.documentElement.style;
+  r.setProperty('--primary',t.p);r.setProperty('--accent',t.a);
+  r.setProperty('--primary-light',t.pl);r.setProperty('--primary-pale',t.pp);
+  r.setProperty('--primary-dark',t.pd);r.setProperty('--border',t.b);
+}
+function openTheme(){
+  document.getElementById('theme-grid').innerHTML=THEMES.map((t,i)=>`<div class="theme-item ${i===curTheme?'sel':''}" onclick="pickTheme(${i})"><div class="theme-circle" style="background:linear-gradient(135deg,${t.p},${t.a})"></div><div class="theme-name">${t.name}</div></div>`).join('');
+  openM('theme-modal');
+}
+function pickTheme(i){
+  applyTheme(i);
+  document.querySelectorAll('#theme-grid .theme-item').forEach((e,j)=>e.classList.toggle('sel',j===i));
+  save();
+}
+
+function renderCatsGrid(gridId,type,catSel){
+  const cats=type==='exp'?EXP_CATS:INC_CATS;
+  document.getElementById(gridId).innerHTML=cats.map(c=>`<div class="cat-btn ${type==='inc'?'income-cat':''} ${c.n===catSel[type]?'sel':''}" onclick="${gridId==='edit-cats-grid'?'editPickCat':'mainPickCat'}('${c.n}')"><span class="ce">${c.e}</span>${c.n}</div>`).join('');
+}
+function mainPickCat(n){selCatMain[curType]=n;renderCatsGrid('cats-grid',curType,selCatMain);}
+function editPickCat(n){selCatEdit[editType]=n;renderCatsGrid('edit-cats-grid',editType,selCatEdit);}
+
+function switchType(t){
+  curType=t;
+  document.getElementById('btn-exp').className='type-btn'+(t==='exp'?' active-exp':'');
+  document.getElementById('btn-inc').className='type-btn'+(t==='inc'?' active-inc':'');
+  document.getElementById('pay-section').style.display=t==='exp'?'':'none';
+  document.getElementById('submit-btn').className='submit-btn'+(t==='inc'?' income-btn':'');
+  document.getElementById('submit-btn').textContent=t==='exp'?'+ 新增支出':'+ 新增收入';
+  const pr=document.getElementById('payer-row');
+  pr.querySelectorAll('.chip').forEach(c=>{c.className='chip'+(t==='inc'?' income-chip':'');});
+  pr.querySelector('.chip').classList.add('sel');
+  renderCatsGrid('cats-grid',t,selCatMain);
+}
+function editSwitchType(t){
+  editType=t;
+  document.getElementById('edit-btn-exp').className='type-btn'+(t==='exp'?' active-exp':'');
+  document.getElementById('edit-btn-inc').className='type-btn'+(t==='inc'?' active-inc':'');
+  document.getElementById('edit-pay-section').style.display=t==='exp'?'':'none';
+  document.getElementById('edit-submit-btn').className='submit-btn'+(t==='inc'?' income-btn':'');
+  renderCatsGrid('edit-cats-grid',t,selCatEdit);
+}
+
+function selChip(el){
+  el.closest('.chip-row').querySelectorAll('.chip').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+}
+function getChip(rowId){
+  const s=document.querySelector('#'+rowId+' .chip.sel');
+  return s?s.textContent.trim():'';
+}
+
+function addRecord(){
+  const amt=parseFloat(document.getElementById('amount-inp').value);
+  if(!amt||amt<=0){showToast('請輸入有效金額 💰');return;}
+  const note=document.getElementById('note-inp').value.trim()||selCatMain[curType];
+  const payer=getChip('payer-row');
+  const pay=curType==='exp'?getChip('pay-row'):'';
+  const cat=selCatMain[curType];
+  const cats=curType==='exp'?EXP_CATS:INC_CATS;
+  const emo=(cats.find(c=>c.n===cat)||cats[0]).e;
+  records.unshift({id:nid++,type:curType,cat,emoji:emo,note,amount:amt,payer,pay,date:new Date().toISOString().split('T')[0]});
+  document.getElementById('amount-inp').value='';
+  document.getElementById('note-inp').value='';
+  renderRecent();updateHeader();save();
+  showToast(curType==='exp'?'支出已記錄 ✅':'收入已記錄 🎉');
+}
+
+function openEdit(id){
+  const r=records.find(x=>x.id===id);if(!r)return;
+  editType=r.type;
+  selCatEdit={exp:r.type==='exp'?r.cat:'餐飲',inc:r.type==='inc'?r.cat:'薪資'};
+  document.getElementById('edit-id').value=id;
+  document.getElementById('edit-amount').value=r.amount;
+  document.getElementById('edit-note').value=r.note;
+  editSwitchType(r.type);
+  document.querySelectorAll('#edit-payer-row .chip').forEach(c=>{c.classList.remove('sel');if(c.textContent.trim()===r.payer)c.classList.add('sel');});
+  document.querySelectorAll('#edit-pay-row .chip').forEach(c=>{c.classList.remove('sel');if(c.textContent.trim()===r.pay||c.textContent.includes(r.pay.replace('💳 ','')))c.classList.add('sel');});
+  renderCatsGrid('edit-cats-grid',r.type,selCatEdit);
+  openM('record-modal');
+}
+function saveEdit(){
+  const id=parseInt(document.getElementById('edit-id').value);
+  const amt=parseFloat(document.getElementById('edit-amount').value);
+  if(!amt||amt<=0){showToast('請輸入有效金額');return;}
+  const note=document.getElementById('edit-note').value.trim()||selCatEdit[editType];
+  const payer=getChip('edit-payer-row');
+  const pay=editType==='exp'?getChip('edit-pay-row'):'';
+  const cat=selCatEdit[editType];
+  const cats=editType==='exp'?EXP_CATS:INC_CATS;
+  const emo=(cats.find(c=>c.n===cat)||cats[0]).e;
+  const i=records.findIndex(r=>r.id===id);
+  if(i>=0)records[i]={...records[i],type:editType,cat,emoji:emo,note,amount:amt,payer,pay};
+  closeM('record-modal');renderRecent();updateHeader();save();
+  showToast('記錄已更新 ✏️');
+}
+
+function delRecord(id){
+  if(!confirm('確定要刪除這筆記錄嗎？'))return;
+  records=records.filter(r=>r.id!==id);
+  renderRecent();updateHeader();save();
+  if(document.getElementById('all-modal').classList.contains('open'))renderAll();
+  showToast('記錄已刪除 🗑️');
+}
+
+function recHTML(r){
+  return`<div class="record-item"><div class="rec-emoji ${r.type==='inc'?'income':''}">${r.emoji}</div><div class="rec-info"><div class="rec-name">${r.note}</div><div class="rec-meta">${r.payer}${r.pay?' · '+r.pay:''} · ${r.date.slice(5).replace('-','/')}</div></div><div class="rec-right"><div class="rec-amount ${r.type==='inc'?'inc':''}">${r.type==='inc'?'+':'-'}NT$${r.amount.toLocaleString()}</div><div class="rec-actions"><button class="action-btn edit-btn" onclick="openEdit(${r.id})">編輯</button><button class="action-btn del-btn" onclick="delRecord(${r.id})">刪除</button></div></div></div>`;
+}
+function renderRecent(){
+  const l=document.getElementById('recent-list');
+  const r=records.slice(0,8);
+  l.innerHTML=r.length?r.map(recHTML).join(''):'<div style="text-align:center;color:var(--text-sub);padding:20px;font-size:13px;">還沒有記錄，快來新增第一筆！</div>';
+}
+function showAllRecords(){renderAll();openM('all-modal');}
+function renderAll(){
+  document.getElementById('all-list').innerHTML=records.length?records.map(recHTML).join(''):'<div style="text-align:center;color:var(--text-sub);padding:20px;font-size:13px;">尚無記錄</div>';
+}
+
+function updateHeader(){
+  const now=new Date(),y=now.getFullYear(),m=now.getMonth()+1;
+  document.getElementById('hd-month').textContent=`${y}年${m}月`;
+  const ms=`${y}-${String(m).padStart(2,'0')}`;
+  const mr=records.filter(r=>r.date.startsWith(ms));
+  const te=mr.filter(r=>r.type==='exp').reduce((s,r)=>s+r.amount,0);
+  const ti=mr.filter(r=>r.type==='inc').reduce((s,r)=>s+r.amount,0);
+  const net=ti-te;
+  document.getElementById('hd-exp').textContent='NT$'+te.toLocaleString();
+  document.getElementById('hd-inc').textContent='NT$'+ti.toLocaleString();
+  document.getElementById('hd-count').textContent=mr.length+'筆';
+  document.getElementById('hd-net').textContent='NT$'+(net>=0?'+':'')+net.toLocaleString();
+  const er=mr.filter(r=>r.type==='exp');
+  const a1=er.filter(r=>r.payer===person1).reduce((s,r)=>s+r.amount,0)+er.filter(r=>r.payer==='共同').reduce((s,r)=>s+r.amount/2,0);
+  const a2=er.filter(r=>r.payer===person2).reduce((s,r)=>s+r.amount,0)+er.filter(r=>r.payer==='共同').reduce((s,r)=>s+r.amount/2,0);
+  document.getElementById('settle-av1-amt').textContent='NT$'+Math.round(a1).toLocaleString();
+  document.getElementById('settle-av2-amt').textContent='NT$'+Math.round(a2).toLocaleString();
+  const diff=Math.abs(Math.round(a1-a2));
+  document.getElementById('settle-arrow-amt').textContent='NT$'+diff.toLocaleString();
+  document.getElementById('settle-desc').textContent=a1>a2?`${person2}需還給${person1} NT$${diff.toLocaleString()}`:a2>a1?`${person1}需還給${person2} NT$${diff.toLocaleString()}`:'兩人費用已平衡 🎉';
+}
+
+function selPeriod(el,p){
+  curPeriod=p;
+  document.querySelectorAll('.period-btn').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');renderStats(p);
+}
+function renderStats(period){
+  const now=new Date();
+  let f;
+  if(period==='week'){const d=new Date(now);d.setDate(d.getDate()-7);f=records.filter(r=>new Date(r.date)>=d);}
+  else if(period==='month'){const ms=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;f=records.filter(r=>r.date.startsWith(ms));}
+  else{f=records.filter(r=>r.date.startsWith(String(now.getFullYear())));}
+  const exp=f.filter(r=>r.type==='exp').reduce((s,r)=>s+r.amount,0);
+  const inc=f.filter(r=>r.type==='inc').reduce((s,r)=>s+r.amount,0);
+  const net=inc-exp;
+  const ec=f.filter(r=>r.type==='exp').length;
+  document.getElementById('s-exp').textContent='NT$'+exp.toLocaleString();
+  document.getElementById('s-inc').textContent='NT$'+inc.toLocaleString();
+  document.getElementById('s-net').textContent='NT$'+(net>=0?'+':'')+net.toLocaleString();
+  document.getElementById('s-net').className='stat-val'+(net>=0?' inc':'');
+  document.getElementById('s-avg').textContent='NT$'+(ec>0?Math.round(exp/ec).toLocaleString():0);
+  const ty=now.getFullYear(),tm=now.getMonth()+1;
+  const ly=tm===1?ty-1:ty,lm=tm===1?12:tm-1;
+  const tms=`${ty}-${String(tm).padStart(2,'0')}`;
+  const lms=`${ly}-${String(lm).padStart(2,'0')}`;
+  const te=records.filter(r=>r.type==='exp'&&r.date.startsWith(tms)).reduce((s,r)=>s+r.amount,0);
+  const le=records.filter(r=>r.type==='exp'&&r.date.startsWith(lms)).reduce((s,r)=>s+r.amount,0);
+  const mx=Math.max(te,le,1);
+  document.getElementById('bar-this').style.width=(te/mx*100)+'%';
+  document.getElementById('bar-last').style.width=(le/mx*100)+'%';
+  document.getElementById('cmp-this').textContent=te.toLocaleString();
+  document.getElementById('cmp-last').textContent=le.toLocaleString();
+  const dv=te-le,dp=le>0?((dv/le)*100).toFixed(1):0;
+  const de=document.getElementById('cmp-diff');
+  if(dv>0)de.innerHTML=`<span class="diff-up">▲ 比上月多 NT$${Math.abs(dv).toLocaleString()}（+${dp}%）</span>`;
+  else if(dv<0)de.innerHTML=`<span class="diff-dn">▼ 比上月少 NT$${Math.abs(dv).toLocaleString()}（${dp}%）</span>`;
+  else de.innerHTML=`<span style="color:var(--text-sub)">與上月持平</span>`;
+  renderCatChart();renderIncChart();
+}
+function renderCatChart(){
+  const el=document.getElementById('cat-chart');
+  const t={};records.filter(r=>r.type==='exp').forEach(r=>{t[r.cat]=(t[r.cat]||0)+r.amount;});
+  const tot=Object.values(t).reduce((s,v)=>s+v,0)||1;
+  const sorted=Object.entries(t).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  const c=['#FF6B9D','#FF8FB1','#4A90E2','#9B59B6','#2ECC8E','#FF8C42'];
+  el.innerHTML=sorted.map(([n,a],i)=>{const p=Math.round(a/tot*100);const ce=(EXP_CATS.find(x=>x.n===n)||{e:'📦'}).e;return`<div class="cat-bar-row"><span style="font-size:14px;width:20px;">${ce}</span><div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${c[i%c.length]};"></div></div><span style="font-size:11px;color:var(--text-sub);width:72px;text-align:right;">${n} ${p}%</span></div>`;}).join('')||'<div style="text-align:center;color:var(--text-sub);padding:10px;font-size:12px;">尚無支出記錄</div>';
+}
+function renderIncChart(){
+  const el=document.getElementById('inc-chart');
+  const t={};records.filter(r=>r.type==='inc').forEach(r=>{t[r.cat]=(t[r.cat]||0)+r.amount;});
+  const tot=Object.values(t).reduce((s,v)=>s+v,0)||1;
+  const sorted=Object.entries(t).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const c=['#2ECC8E','#55D9A8','#4A90E2','#9B59B6','#FF8C42'];
+  el.innerHTML=sorted.map(([n,a],i)=>{const p=Math.round(a/tot*100);const ce=(INC_CATS.find(x=>x.n===n)||{e:'💰'}).e;return`<div class="cat-bar-row"><span style="font-size:14px;width:20px;">${ce}</span><div class="bar-track" style="background:#E8F5EE;"><div class="bar-fill" style="width:${p}%;background:${c[i%c.length]};"></div></div><span style="font-size:11px;color:var(--text-sub);width:72px;text-align:right;">${n} ${p}%</span></div>`;}).join('')||'<div style="text-align:center;color:var(--text-sub);padding:10px;font-size:12px;">尚無收入記錄</div>';
+}
+
+function renderFixed(){
+  const mk=f=>`<div class="record-item"><div class="rec-emoji ${f.type==='inc'?'income':''}">${f.emoji}</div><div class="rec-info"><div class="rec-name">${f.name} <span class="fixed-tag">固定</span></div><div class="rec-meta">每月${f.day}日 · ${f.payer}</div></div><div class="rec-right"><div class="rec-amount ${f.type==='inc'?'inc':''}">${f.type==='inc'?'+':'-'}NT$${f.amount.toLocaleString()}</div><div class="rec-actions"><button class="action-btn del-btn" onclick="delFixed('${f.id}')">刪除</button></div></div></div>`;
+  const ei=fixedItems.filter(f=>f.type==='exp');
+  const ii=fixedItems.filter(f=>f.type==='inc');
+  document.getElementById('fixed-exp-list').innerHTML=ei.length?ei.map(mk).join(''):'<div style="text-align:center;color:var(--text-sub);padding:10px;font-size:12px;">尚無固定支出</div>';
+  document.getElementById('fixed-inc-list').innerHTML=ii.length?ii.map(mk).join(''):'<div style="text-align:center;color:var(--text-sub);padding:10px;font-size:12px;">尚無固定收入</div>';
+  document.getElementById('fixed-exp-total').textContent='NT$'+ei.reduce((s,f)=>s+f.amount,0).toLocaleString();
+  document.getElementById('fixed-inc-total').textContent='NT$'+ii.reduce((s,f)=>s+f.amount,0).toLocaleString();
+}
+function delFixed(id){
+  if(!confirm('確定刪除此固定項目？'))return;
+  fixedItems=fixedItems.filter(f=>f.id!==id);
+  renderFixed();save();showToast('已刪除 🗑️');
+}
+function openAddFixed(type){
+  curFixedType=type;
+  document.getElementById('fixed-modal-title').textContent=type==='exp'?'新增固定支出':'新增固定收入';
+  document.getElementById('fixed-submit-btn').className='submit-btn'+(type==='inc'?' income-btn':'');
+  ['fixed-name','fixed-amount','fixed-day'].forEach(id=>document.getElementById(id).value='');
+  document.querySelectorAll('#fixed-payer-row .chip').forEach((c,i)=>{c.className='chip'+(type==='inc'?' income-chip':'')+(i===0?' sel':'');});
+  openM('fixed-modal');
+}
+function saveFixed(){
+  const name=document.getElementById('fixed-name').value.trim();
+  const amt=parseFloat(document.getElementById('fixed-amount').value);
+  const day=parseInt(document.getElementById('fixed-day').value)||1;
+  if(!name){showToast('請輸入名稱');return;}
+  if(!amt||amt<=0){showToast('請輸入有效金額');return;}
+  const payer=getChip('fixed-payer-row');
+  const cats=curFixedType==='exp'?EXP_CATS:INC_CATS;
+  fixedItems.push({id:'f'+Date.now(),type:curFixedType,name,emoji:cats[0].e,amount:amt,day,payer});
+  closeM('fixed-modal');renderFixed();save();showToast('固定項目已儲存 📌');
+}
+
+function markSettled(method){
+  const now=new Date();
+  const label=`${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')} 結算`;
+  const diff=document.getElementById('settle-arrow-amt').textContent;
+  const h=document.getElementById('settle-history');
+  const d=document.createElement('div');d.className='history-item';
+  d.innerHTML=`<span>${label}</span><span class="done-badge">✓ ${method} ${diff}</span>`;
+  h.insertBefore(d,h.firstChild);
+  save();showToast(`✅ 已透過 ${method} 完成結算！`);
+}
+
+function showPage(name,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  el.classList.add('active');
+  if(name==='stats')renderStats(curPeriod);
+}
+
+function openM(id){document.getElementById(id).classList.add('open');}
+function closeM(id){document.getElementById(id).classList.remove('open');}
+function bgClose(id,e){if(e.target===e.currentTarget)closeM(id);}
+
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+function init(){
+  load();applyTheme(curTheme);
+  updateAllNames();
+  renderPayerChips();
+  renderCatsGrid('cats-grid',curType,selCatMain);
+  renderRecent();renderFixed();updateHeader();renderStats('week');
+  initLiff();
+}
+init();
+</script>
+</body>
+</html>
