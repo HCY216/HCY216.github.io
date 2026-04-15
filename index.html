@@ -456,9 +456,10 @@ let fixedItems=[];
 
 // ════ Firebase 設定 ════
 // ⚠️ 請將下方設定換成你自己的 Firebase 專案資訊
-const firebaseConfig = {
+const FB_CONFIG = {
   apiKey: "AIzaSyBAgrrDRQRIOflz2_xLmUKB50bwEuS99hc",
   authDomain: "cy216-b53cf.firebaseapp.com",
+  databaseURL: "https://cy216-b53cf-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "cy216-b53cf",
   storageBucket: "cy216-b53cf.firebasestorage.app",
   messagingSenderId: "852592530451",
@@ -472,7 +473,7 @@ let fbApp = null, fbDb = null, fbReady = false, fbListener = null;
 
 function initFirebase(){
   try{
-    if(!FB_CONFIG.apiKey||FB_CONFIG.apiKey==='YOUR_API_KEY'){
+    if(!FB_CONFIG.apiKey||!FB_CONFIG.databaseURL||FB_CONFIG.databaseURL.includes('YOUR_PROJECT')){
       setSyncLabel(false,'請設定 Firebase（點 ⚙️）');
       return;
     }
