@@ -6,6 +6,8 @@
 <title>甜蜜帳本</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <style>
 :root{--primary:#FF6B9D;--primary-light:#FFB3CA;--primary-pale:#FFF0F5;--primary-dark:#E0457A;--accent:#FF8FB1;--income-color:#4CAF7D;--bg:#FFF9FB;--card:#FFFFFF;--text:#2D2D2D;--text-sub:#888;--border:#FFE0EC;--shadow:rgba(255,107,157,0.12);--radius:16px;}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
@@ -16,8 +18,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
 .header-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;position:relative;z-index:1;}
 .app-logo{display:flex;align-items:center;gap:8px;}
 .logo-icon{width:34px;height:34px;background:rgba(255,255,255,0.25);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
-.app-name{font-size:18px;font-weight:800;color:white;cursor:pointer;}
-.app-name:hover{opacity:0.9;}
+.app-name{font-size:18px;font-weight:800;color:white;}
 .header-actions{display:flex;align-items:center;gap:6px;position:relative;z-index:1;}
 .hd-btn{width:32px;height:32px;background:rgba(255,255,255,0.25);border:none;border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;}
 .couple-row{display:flex;}
@@ -174,7 +175,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
   <div class="header-top">
     <div class="app-logo">
       <div class="logo-icon">💕</div>
-      <span class="app-name" id="app-name-display" onclick="openAppNameModal()">甜蜜帳本</span>
+      <span class="app-name" id="app-name-display">甜蜜帳本</span>
     </div>
     <div class="header-actions">
       <button class="hd-btn" onclick="openTheme()">🎨</button>
@@ -194,7 +195,8 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
       <div class="bal-card"><div class="bal-card-label">總收入</div><div class="bal-card-val" id="hd-inc">NT$0</div></div>
       <div class="bal-card"><div class="bal-card-label">筆數</div><div class="bal-card-val" id="hd-count">0筆</div></div>
     </div>
-    <div class="sync-status"><div class="sync-dot" id="sync-dot"></div><span id="sync-label">本地模式</span></div>
+    <div class="sync-status"><div class="sync-dot" id="sync-dot"></div><span id="sync-label">連接中...</span></div>
+    <div class="sync-status" style="margin-top:3px;"><span style="opacity:0.6;">🏠 房間：</span><span id="room-display" style="opacity:0.85;">-</span></div>
     <div class="liff-bar" id="liff-bar" style="display:none;"><span>👤</span><span id="liff-user-info"></span></div>
   </div>
 </div>
@@ -331,29 +333,21 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
   <button class="nav-item" onclick="showPage('fixed',this)"><span class="nav-icon">📌</span>固定</button>
 </nav>
 
-<!-- 應用名稱 Modal -->
-<div class="modal-overlay" id="appname-modal" onclick="bgClose('appname-modal',event)">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title">📝 自定義應用名稱</div>
-    <label class="modal-label">應用名稱</label>
-    <input class="modal-input" type="text" id="appname-input" placeholder="例如：甜蜜帳本">
-    <p style="font-size:11px;color:var(--text-sub);margin-bottom:12px;">💡 點擊頂部應用名稱快速編輯</p>
-    <button class="submit-btn" onclick="saveAppName()">儲存應用名稱</button>
-    <button class="modal-close-btn" onclick="closeM('appname-modal')">取消</button>
-  </div>
-</div>
-
 <!-- 設定名稱 Modal -->
 <div class="modal-overlay" id="settings-modal" onclick="bgClose('settings-modal',event)">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title">⚙️ 自定義名稱</div>
-    <label class="modal-label">第一位的名稱</label>
+    <div class="modal-title">⚙️ 個人化設定</div>
+    <label class="modal-label">💕 App 名稱</label>
+    <input class="modal-input" type="text" id="appname-input" placeholder="例如：甜蜜帳本、愛的存錢筒…" maxlength="12">
+    <label class="modal-label">👤 第一位的名稱</label>
     <input class="modal-input" type="text" id="name1-input" placeholder="例如：小美">
-    <label class="modal-label">第二位的名稱</label>
+    <label class="modal-label">👤 第二位的名稱</label>
     <input class="modal-input" type="text" id="name2-input" placeholder="例如：小明">
-    <button class="submit-btn" onclick="saveCustomNames()">儲存名稱</button>
+    <label class="modal-label">☁️ 共享房間 ID（兩人填一樣才能同步）</label>
+    <input class="modal-input" type="text" id="room-input" placeholder="例如：peter-and-mary-2025" style="font-size:12px;">
+    <div style="font-size:10px;color:var(--text-sub);margin-top:-6px;margin-bottom:10px;">⚠️ 這是你們共用的識別碼，兩人填相同內容才會同步。請勿與他人分享。</div>
+    <button class="submit-btn" onclick="saveCustomNames()">儲存設定</button>
     <button class="modal-close-btn" onclick="closeM('settings-modal')">取消</button>
   </div>
 </div>
@@ -438,7 +432,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
 <div class="toast" id="toast"></div>
 
 <script>
-const EXP_CATS=[{e:'🍜',n:'餐飲'},{e:'🛒',n:'購物'},{e:'🚇',n:'交通'},{e:'🎬',n:'娛樂'},{e:'🏠',n:'居家'},{e:'💊',n:'醫療'},{e:'🛡️',n:'保險'},{e:'✈️',n:'旅遊'},{e:'📚',n:'教育'},{e:'➕',n:'其他'}];
+const EXP_CATS=[{e:'🍜',n:'餐飲'},{e:'🛒',n:'購物'},{e:'🚇',n:'交通'},{e:'🎬',n:'娛樂'},{e:'🏠',n:'居家'},{e:'💊',n:'醫療'},{e:'🛡️',n:'保險'},{e:'💄',n:'美妝'},{e:'🧴',n:'保養'},{e:'✈️',n:'旅遊'},{e:'📚',n:'教育'},{e:'➕',n:'其他'}];
 const INC_CATS=[{e:'💼',n:'薪資'},{e:'🎁',n:'獎金'},{e:'📈',n:'股息'},{e:'💹',n:'投資'},{e:'🏠',n:'租金'},{e:'🎨',n:'副業'},{e:'🎰',n:'中獎'},{e:'➕',n:'其他'}];
 const THEMES=[
   {name:'玫瑰粉',p:'#FF6B9D',a:'#FF8FB1',pl:'#FFB3CA',pp:'#FFF0F5',pd:'#E0457A',b:'#FFE0EC'},
@@ -455,16 +449,115 @@ const SK='sweetbudget_v3';
 let curType='exp', editType='exp', curTheme=0, curFixedType='exp', curPeriod='week';
 let selCatMain={exp:'餐飲',inc:'薪資'}, selCatEdit={exp:'餐飲',inc:'薪資'};
 let nid=1000;
-let person1='小美', person2='小明';
-let appName='甜蜜帳本';
+let person1='小美', person2='小明', appName='甜蜜帳本';
 
 let records=[];
 let fixedItems=[];
 
-function save(){
-  try{localStorage.setItem(SK,JSON.stringify({records,fixedItems,curTheme,nid,person1,person2,appName}));}catch(e){}
-  setSyncLabel(true,'本地已儲存 · '+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'}));
+// ════ Firebase 設定 ════
+// ⚠️ 請將下方設定換成你自己的 Firebase 專案資訊
+const FB_CONFIG = {
+  apiKey: "AIzaSyBAgrrDRQRIOflz2_xLmUKB50bwEuS99hc",
+  authDomain: "cy216-b53cf.firebaseapp.com",
+  projectId: "cy216-b53cf",
+  storageBucket: "cy216-b53cf.firebasestorage.app",
+  messagingSenderId: "852592530451",
+  appId: "1:852592530451:web:01ec5448e245922be25be6",
+  measurementId: "G-LL6SXEWGVE"
+};
+// 情侶共用的房間 ID（兩人使用同一個 ID 才能共享資料）
+// 可在 ⚙️ 設定裡修改
+let ROOM_ID = 'my-couple-room';
+let fbApp = null, fbDb = null, fbReady = false, fbListener = null;
+
+function initFirebase(){
+  try{
+    if(!FB_CONFIG.apiKey||FB_CONFIG.apiKey==='YOUR_API_KEY'){
+      setSyncLabel(false,'請設定 Firebase（點 ⚙️）');
+      return;
+    }
+    if(!firebase.apps.length) fbApp = firebase.initializeApp(FB_CONFIG);
+    else fbApp = firebase.apps[0];
+    fbDb = firebase.database(fbApp);
+    fbReady = true;
+    startRealtimeSync();
+  }catch(e){
+    console.warn('Firebase init error:',e);
+    setSyncLabel(false,'離線模式');
+  }
 }
+
+function startRealtimeSync(){
+  if(!fbReady||!fbDb)return;
+  if(fbListener) fbListener();
+  const ref = fbDb.ref('rooms/'+ROOM_ID+'/data');
+  fbListener = ref.on('value', snap=>{
+    const d = snap.val();
+    if(!d)return;
+    // 只在雲端資料比本地新時才更新（用 timestamp 比較）
+    const localTs = parseInt(localStorage.getItem(SK+'_ts')||'0');
+    if(d.ts && d.ts <= localTs) return;
+    if(d.records) records = d.records;
+    if(d.fixedItems) fixedItems = d.fixedItems;
+    if(typeof d.curTheme==='number'){curTheme=d.curTheme;applyTheme(curTheme);}
+    if(d.nid && d.nid>nid) nid = d.nid;
+    if(d.person1) person1 = d.person1;
+    if(d.person2) person2 = d.person2;
+    if(d.appName) appName = d.appName;
+    if(d.settleHistory) restoreSettleHistory(d.settleHistory);
+    // 更新本地快取
+    try{localStorage.setItem(SK, JSON.stringify({records,fixedItems,curTheme,nid,person1,person2,appName}));
+        localStorage.setItem(SK+'_ts', d.ts||0);}catch(ex){}
+    updateAllNames();
+    renderCatsGrid('cats-grid',curType,selCatMain);
+    renderRecent();renderFixed();updateHeader();renderStats(curPeriod);
+    setSyncLabel(true,'已同步 · '+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'}));
+  }, err=>{
+    setSyncLabel(false,'同步失敗，離線模式');
+  });
+}
+
+function pushToCloud(){
+  if(!fbReady||!fbDb){
+    // 只存本地
+    saveLocal();
+    return;
+  }
+  const ts = Date.now();
+  const sh = collectSettleHistory();
+  fbDb.ref('rooms/'+ROOM_ID+'/data').set({
+    records, fixedItems, curTheme, nid, person1, person2, appName,
+    settleHistory: sh, ts
+  }).then(()=>{
+    localStorage.setItem(SK+'_ts', ts);
+    setSyncLabel(true,'雲端已同步 · '+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'}));
+  }).catch(()=>{
+    saveLocal();
+    setSyncLabel(false,'同步失敗，已存本地');
+  });
+  saveLocal();
+}
+
+function saveLocal(){
+  try{localStorage.setItem(SK,JSON.stringify({records,fixedItems,curTheme,nid,person1,person2,appName}));}catch(e){}
+}
+
+function collectSettleHistory(){
+  const items=[];
+  document.querySelectorAll('#settle-history .history-item').forEach(el=>{
+    items.push(el.innerHTML);
+  });
+  return items;
+}
+function restoreSettleHistory(arr){
+  if(!arr||!arr.length)return;
+  const h=document.getElementById('settle-history');
+  if(!h)return;
+  h.innerHTML=arr.map(s=>`<div class="history-item">${s}</div>`).join('');
+}
+
+function save(){ pushToCloud(); }
+
 function load(){
   try{
     const d=JSON.parse(localStorage.getItem(SK));
@@ -478,50 +571,54 @@ function load(){
     if(d.appName)appName=d.appName;
   }catch(e){}
 }
-function syncNow(){save();showToast('☁️ 資料已儲存！');}
+function syncNow(){
+  if(fbReady) pushToCloud();
+  else saveLocal();
+  showToast('☁️ 同步中...');
+}
 function setSyncLabel(ok,txt){
   document.getElementById('sync-dot').className='sync-dot'+(ok?'':' offline');
   document.getElementById('sync-label').textContent=txt;
 }
 
-function openAppNameModal(){
-  document.getElementById('appname-input').value=appName;
-  openM('appname-modal');
-}
-function saveAppName(){
-  const newName=document.getElementById('appname-input').value.trim();
-  if(!newName){showToast('請輸入應用名稱');return;}
-  appName=newName;
-  document.getElementById('app-name-display').textContent=appName;
-  document.title=appName;
-  closeM('appname-modal');
-  save();
-  showToast('應用名稱已更新 📝');
-}
-
 function openSettings(){
+  document.getElementById('appname-input').value=appName;
   document.getElementById('name1-input').value=person1;
   document.getElementById('name2-input').value=person2;
+  document.getElementById('room-input').value=ROOM_ID;
   openM('settings-modal');
 }
 function saveCustomNames(){
+  const an=document.getElementById('appname-input').value.trim();
   const n1=document.getElementById('name1-input').value.trim();
   const n2=document.getElementById('name2-input').value.trim();
+  const rm=document.getElementById('room-input').value.trim();
   if(!n1||!n2){showToast('請輸入兩個名稱');return;}
+  if(an)appName=an;
   person1=n1;
   person2=n2;
+  if(rm && rm!==ROOM_ID){
+    ROOM_ID=rm;
+    // 重新連接到新房間
+    if(fbReady){ startRealtimeSync(); }
+  }
+  try{localStorage.setItem('sb_room',ROOM_ID);}catch(e){}
   updateAllNames();
   closeM('settings-modal');
   save();
-  showToast('名稱已更新 ✏️');
+  showToast('設定已更新 ✏️');
 }
 function updateAllNames(){
+  document.getElementById('app-name-display').textContent=appName;
+  document.title=appName;
   document.getElementById('av1-name').textContent=person1;
   document.getElementById('av2-name').textContent=person2;
   document.getElementById('settle-av1').textContent=person1;
   document.getElementById('settle-av2').textContent=person2;
   document.getElementById('settle-pname1').textContent=person1+'付出';
   document.getElementById('settle-pname2').textContent=person2+'付出';
+  const rd=document.getElementById('room-display');
+  if(rd)rd.textContent=ROOM_ID;
   renderPayerChips();
   updateHeader();
 }
@@ -535,12 +632,19 @@ async function initLiff(){
   const LIFF_ID='2009789604-iVjFy6wo';
   try{
     await liff.init({liffId:LIFF_ID});
-    if(!liff.isLoggedIn()){liff.login();return;}
-    const p=await liff.getProfile();
-    document.getElementById('liff-bar').style.display='flex';
-    document.getElementById('liff-user-info').textContent=p.displayName+' 已登入';
-    setSyncLabel(true,'LINE 已登入 · 雲端同步');
-  }catch(e){setSyncLabel(false,'本地模式');}
+    // 在 LINE 外部瀏覽器開啟時不強制跳轉，讓 Firebase 同步正常運作
+    if(liff.isInClient()||liff.isLoggedIn()){
+      if(!liff.isLoggedIn()){ liff.login(); return; }
+      const p=await liff.getProfile();
+      document.getElementById('liff-bar').style.display='flex';
+      document.getElementById('liff-user-info').textContent=p.displayName+' 已登入';
+      setSyncLabel(true,'LINE 已登入');
+    }
+  }catch(e){
+    console.warn('LIFF init:',e);
+  }
+  // 不管 LIFF 是否成功，都初始化 Firebase 同步
+  initFirebase();
 }
 
 function applyTheme(i){
@@ -803,9 +907,9 @@ function showToast(msg){
 }
 
 function init(){
+  // 讀取儲存的 room ID
+  try{const r=localStorage.getItem('sb_room');if(r)ROOM_ID=r;}catch(e){}
   load();applyTheme(curTheme);
-  document.getElementById('app-name-display').textContent=appName;
-  document.title=appName;
   updateAllNames();
   renderPayerChips();
   renderCatsGrid('cats-grid',curType,selCatMain);
