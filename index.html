@@ -167,6 +167,11 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
 .theme-name{font-size:10px;color:var(--text-sub);}
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(40,40,40,0.92);color:white;border-radius:20px;padding:9px 20px;font-size:12px;font-weight:600;z-index:300;opacity:0;transition:all 0.3s;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+/* 日期選擇器 */
+.date-inp{width:100%;background:var(--primary-pale);border:1.5px solid var(--border);border-radius:12px;padding:10px 14px;font-size:13px;font-weight:600;color:var(--text);outline:none;font-family:'Nunito',sans-serif;transition:border-color 0.2s;-webkit-appearance:none;appearance:none;}
+.date-inp:focus{border-color:var(--primary);}
+.modal-date-inp{width:100%;background:var(--primary-pale);border:1.5px solid var(--border);border-radius:12px;padding:10px 14px;font-size:13px;font-weight:600;color:var(--text);outline:none;font-family:'Nunito',sans-serif;margin-bottom:10px;display:block;-webkit-appearance:none;appearance:none;}
+.modal-date-inp:focus{border-color:var(--primary);}
 </style>
 </head>
 <body>
@@ -232,7 +237,9 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
           </div>
         </div>
         <label class="form-label">備註</label>
-        <input class="note-inp" type="text" id="note-inp" placeholder="備註（選填）">
+        <input class="note-inp" type="text" id="note-inp" placeholder="備註（選填）" style="margin-bottom:10px;">
+        <label class="form-label">📅 日期</label>
+        <input class="date-inp" type="date" id="date-inp" style="margin-bottom:6px;">
         <button class="submit-btn" id="submit-btn" onclick="addRecord()">+ 新增支出</button>
       </div>
       <div class="section-hd">
@@ -393,6 +400,8 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
     </div>
     <label class="modal-label">備註</label>
     <input class="modal-input" type="text" id="edit-note" placeholder="備註（選填）">
+    <label class="modal-label">📅 日期</label>
+    <input class="modal-date-inp" type="date" id="edit-date">
     <button class="submit-btn" id="edit-submit-btn" onclick="saveEdit()" style="margin-top:4px;">儲存修改</button>
     <button class="modal-close-btn" onclick="closeM('record-modal')">取消</button>
   </div>
@@ -490,14 +499,18 @@ function initFirebase(){
 
 function startRealtimeSync(){
   if(!fbReady||!fbDb)return;
-  if(fbListener) fbListener();
+  // 取消舊監聽
+  if(fbListener){
+    try{ fbDb.ref('rooms/'+ROOM_ID+'/data').off('value', fbListener); }catch(e){}
+    fbListener = null;
+  }
   const ref = fbDb.ref('rooms/'+ROOM_ID+'/data');
-  fbListener = ref.on('value', snap=>{
+  // 用具名函式以便日後取消
+  fbListener = function(snap){
     const d = snap.val();
-    if(!d)return;
-    // 只在雲端資料比本地新時才更新（用 timestamp 比較）
-    const localTs = parseInt(localStorage.getItem(SK+'_ts')||'0');
-    if(d.ts && d.ts <= localTs) return;
+    if(!d){ setSyncLabel(true,'已連線（空資料）');return; }
+    // ✅ 直接採用雲端資料，不做 timestamp 比較
+    // 雲端永遠是最新的，本地寫入後立刻 push，所以不會衝突
     if(d.records) records = d.records;
     if(d.fixedItems) fixedItems = d.fixedItems;
     if(typeof d.curTheme==='number'){curTheme=d.curTheme;applyTheme(curTheme);}
@@ -507,36 +520,36 @@ function startRealtimeSync(){
     if(d.appName) appName = d.appName;
     if(d.settleHistory) restoreSettleHistory(d.settleHistory);
     // 更新本地快取
-    try{localStorage.setItem(SK, JSON.stringify({records,fixedItems,curTheme,nid,person1,person2,appName}));
-        localStorage.setItem(SK+'_ts', d.ts||0);}catch(ex){}
+    saveLocal();
+    // 更新畫面
     updateAllNames();
     renderCatsGrid('cats-grid',curType,selCatMain);
     renderRecent();renderFixed();updateHeader();renderStats(curPeriod);
+    if(document.getElementById('all-modal').classList.contains('open')) renderAll();
     setSyncLabel(true,'已同步 · '+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'}));
-  }, err=>{
-    setSyncLabel(false,'同步失敗，離線模式');
+  };
+  ref.on('value', fbListener, err=>{
+    console.error('Firebase sync error:', err);
+    setSyncLabel(false,'同步失敗，請檢查 Firebase 規則');
   });
 }
 
 function pushToCloud(){
-  if(!fbReady||!fbDb){
-    // 只存本地
-    saveLocal();
-    return;
-  }
-  const ts = Date.now();
+  saveLocal();
+  if(!fbReady||!fbDb) return;
   const sh = collectSettleHistory();
+  // ✅ 使用 update 而非 set，避免覆蓋對方剛寫入的資料
+  // 改用 set 確保整份資料一致
   fbDb.ref('rooms/'+ROOM_ID+'/data').set({
     records, fixedItems, curTheme, nid, person1, person2, appName,
-    settleHistory: sh, ts
+    settleHistory: sh,
+    ts: firebase.database.ServerValue.TIMESTAMP
   }).then(()=>{
-    localStorage.setItem(SK+'_ts', ts);
     setSyncLabel(true,'雲端已同步 · '+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'}));
-  }).catch(()=>{
-    saveLocal();
-    setSyncLabel(false,'同步失敗，已存本地');
+  }).catch(err=>{
+    console.error('pushToCloud error:', err);
+    setSyncLabel(false,'同步失敗：'+err.code);
   });
-  saveLocal();
 }
 
 function saveLocal(){
@@ -603,7 +616,11 @@ function saveCustomNames(){
     // 重新連接到新房間
     if(fbReady){ startRealtimeSync(); }
   }
-  try{localStorage.setItem('sb_room',ROOM_ID);}catch(e){}
+  try{
+    localStorage.setItem('sb_room',ROOM_ID);
+    // 切換房間後清除本地 timestamp，確保能從雲端正確讀取
+    localStorage.removeItem(SK+'_ts');
+  }catch(e){}
   updateAllNames();
   closeM('settings-modal');
   save();
@@ -633,18 +650,23 @@ async function initLiff(){
   const LIFF_ID='2009789604-iVjFy6wo';
   try{
     await liff.init({liffId:LIFF_ID});
-    // 在 LINE 外部瀏覽器開啟時不強制跳轉，讓 Firebase 同步正常運作
-    if(liff.isInClient()||liff.isLoggedIn()){
-      if(!liff.isLoggedIn()){ liff.login(); return; }
-      const p=await liff.getProfile();
+    if(liff.isLoggedIn()){
+      // 已登入：取得個人資料
+      const p = await liff.getProfile();
       document.getElementById('liff-bar').style.display='flex';
       document.getElementById('liff-user-info').textContent=p.displayName+' 已登入';
-      setSyncLabel(true,'LINE 已登入');
+    } else if(liff.isInClient()){
+      // 在 LINE App 內但未登入：導向登入
+      // ✅ 先初始化 Firebase 再登入，避免 return 中斷同步
+      initFirebase();
+      liff.login();
+      return;
     }
+    // 外部瀏覽器或已登入：正常初始化 Firebase
   }catch(e){
-    console.warn('LIFF init:',e);
+    console.warn('LIFF init error:', e.message||e);
   }
-  // 不管 LIFF 是否成功，都初始化 Firebase 同步
+  // ✅ 無論 LIFF 是否成功，一定執行 Firebase 初始化
   initFirebase();
 }
 
@@ -711,9 +733,13 @@ function addRecord(){
   const cat=selCatMain[curType];
   const cats=curType==='exp'?EXP_CATS:INC_CATS;
   const emo=(cats.find(c=>c.n===cat)||cats[0]).e;
-  records.unshift({id:nid++,type:curType,cat,emoji:emo,note,amount:amt,payer,pay,date:new Date().toISOString().split('T')[0]});
+  // 讀取使用者選擇的日期，預設今天
+  const dateVal=document.getElementById('date-inp').value||new Date().toISOString().split('T')[0];
+  records.unshift({id:nid++,type:curType,cat,emoji:emo,note,amount:amt,payer,pay,date:dateVal});
   document.getElementById('amount-inp').value='';
   document.getElementById('note-inp').value='';
+  // 重設日期為今天
+  document.getElementById('date-inp').value=new Date().toISOString().split('T')[0];
   renderRecent();updateHeader();save();
   showToast(curType==='exp'?'支出已記錄 ✅':'收入已記錄 🎉');
 }
@@ -725,6 +751,7 @@ function openEdit(id){
   document.getElementById('edit-id').value=id;
   document.getElementById('edit-amount').value=r.amount;
   document.getElementById('edit-note').value=r.note;
+  document.getElementById('edit-date').value=r.date||new Date().toISOString().split('T')[0];
   editSwitchType(r.type);
   document.querySelectorAll('#edit-payer-row .chip').forEach(c=>{c.classList.remove('sel');if(c.textContent.trim()===r.payer)c.classList.add('sel');});
   document.querySelectorAll('#edit-pay-row .chip').forEach(c=>{c.classList.remove('sel');if(c.textContent.trim()===r.pay||c.textContent.includes(r.pay.replace('💳 ','')))c.classList.add('sel');});
@@ -741,8 +768,9 @@ function saveEdit(){
   const cat=selCatEdit[editType];
   const cats=editType==='exp'?EXP_CATS:INC_CATS;
   const emo=(cats.find(c=>c.n===cat)||cats[0]).e;
+  const dateVal=document.getElementById('edit-date').value||new Date().toISOString().split('T')[0];
   const i=records.findIndex(r=>r.id===id);
-  if(i>=0)records[i]={...records[i],type:editType,cat,emoji:emo,note,amount:amt,payer,pay};
+  if(i>=0)records[i]={...records[i],type:editType,cat,emoji:emo,note,amount:amt,payer,pay,date:dateVal};
   closeM('record-modal');renderRecent();updateHeader();save();
   showToast('記錄已更新 ✏️');
 }
@@ -915,6 +943,9 @@ function init(){
   renderPayerChips();
   renderCatsGrid('cats-grid',curType,selCatMain);
   renderRecent();renderFixed();updateHeader();renderStats('week');
+  // 初始化日期欄位為今天
+  const today=new Date().toISOString().split('T')[0];
+  document.getElementById('date-inp').value=today;
   initLiff();
 }
 init();
