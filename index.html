@@ -167,6 +167,28 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
 .theme-name{font-size:10px;color:var(--text-sub);}
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(40,40,40,0.92);color:white;border-radius:20px;padding:9px 20px;font-size:12px;font-weight:600;z-index:300;opacity:0;transition:all 0.3s;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+/* 查詢篩選 */
+.search-bar{display:flex;gap:6px;margin-bottom:10px;}
+.search-inp{flex:1;background:var(--primary-pale);border:1.5px solid var(--border);border-radius:12px;padding:9px 14px;font-size:13px;color:var(--text);outline:none;font-family:'Nunito',sans-serif;}
+.search-inp:focus{border-color:var(--primary);}
+.search-btn{background:var(--primary);color:white;border:none;border-radius:12px;padding:9px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;}
+.filter-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.filter-chip{padding:5px 12px;border-radius:20px;font-size:11px;background:var(--primary-pale);color:var(--primary);border:1.5px solid var(--border);cursor:pointer;font-family:'Nunito',sans-serif;font-weight:600;transition:all 0.15s;}
+.filter-chip.sel{background:var(--primary);color:white;border-color:var(--primary-dark);}
+.search-result-info{font-size:11px;color:var(--text-sub);margin-bottom:8px;padding:0 2px;}
+.no-result{text-align:center;color:var(--text-sub);padding:30px 20px;font-size:13px;}
+/* 發票掃描 */
+.scan-area{border:2px dashed var(--primary-light);border-radius:16px;padding:20px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--primary-pale);margin-bottom:12px;}
+.scan-area:hover{border-color:var(--primary);background:#FFE8F2;}
+.scan-area .scan-icon{font-size:36px;display:block;margin-bottom:8px;}
+.scan-area .scan-txt{font-size:13px;font-weight:600;color:var(--primary);}
+.scan-area .scan-sub{font-size:11px;color:var(--text-sub);margin-top:4px;}
+.scan-preview{width:100%;border-radius:12px;margin-bottom:10px;display:none;}
+.scan-result-card{background:var(--primary-pale);border-radius:12px;padding:12px;margin-bottom:10px;border:1px solid var(--border);}
+.scan-result-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;}
+.scan-result-label{color:var(--text-sub);}
+.scan-result-val{font-weight:700;color:var(--text);}
+.scan-loading{display:none;text-align:center;padding:16px;font-size:13px;color:var(--primary);}@keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
 /* 日期選擇器 */
 .date-inp{width:100%;background:var(--primary-pale);border:1.5px solid var(--border);border-radius:12px;padding:10px 14px;font-size:13px;font-weight:600;color:var(--text);outline:none;font-family:'Nunito',sans-serif;transition:border-color 0.2s;-webkit-appearance:none;appearance:none;}
 .date-inp:focus{border-color:var(--primary);}
@@ -241,6 +263,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
         <label class="form-label">📅 日期</label>
         <input class="date-inp" type="date" id="date-inp" style="margin-bottom:6px;">
         <button class="submit-btn" id="submit-btn" onclick="addRecord()">+ 新增支出</button>
+        <button class="submit-btn" id="scan-open-btn" onclick="openScanModal()" style="margin-top:8px;background:rgba(255,107,157,0.12);color:var(--primary);border:1.5px solid var(--border);">📷 掃描發票自動填入</button>
       </div>
       <div class="section-hd">
         <div class="section-title">📋 最近記錄</div>
@@ -331,10 +354,42 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
       <button class="add-fixed-btn inc-btn" onclick="openAddFixed('inc')">+ 新增固定收入</button>
     </div>
   </div>
+
+  <!-- 查詢篩選頁 -->
+  <div class="page" id="page-search">
+    <div class="section">
+      <div class="section-title" style="margin-bottom:10px;">🔍 查詢與篩選</div>
+
+      <!-- 關鍵字 + 日期查詢 -->
+      <div class="card" style="margin-bottom:10px;">
+        <label class="form-label">關鍵字搜尋</label>
+        <div class="search-bar">
+          <input class="search-inp" type="text" id="search-kw" placeholder="輸入備註、分類、金額…" oninput="runSearch()">
+          <button class="search-btn" onclick="clearSearch()">清除</button>
+        </div>
+        <label class="form-label">指定日期</label>
+        <input class="date-inp" type="date" id="search-date" onchange="runSearch()" style="margin-bottom:10px;">
+        <label class="form-label">篩選類型</label>
+        <div class="filter-row" id="search-type-row">
+          <div class="filter-chip sel" onclick="setSearchType('all',this)">全部</div>
+          <div class="filter-chip" onclick="setSearchType('exp',this)">支出</div>
+          <div class="filter-chip" onclick="setSearchType('inc',this)">收入</div>
+        </div>
+        <label class="form-label">篩選分類</label>
+        <div class="filter-row" id="search-cat-row"></div>
+        <label class="form-label">篩選付款人</label>
+        <div class="filter-row" id="search-payer-row"></div>
+      </div>
+
+      <div id="search-result-info" class="search-result-info"></div>
+      <div id="search-list"></div>
+    </div>
+  </div>
 </div>
 
 <nav class="bottom-nav">
   <button class="nav-item active" onclick="showPage('record',this)"><span class="nav-icon">✏️</span>記帳</button>
+  <button class="nav-item" onclick="showPage('search',this)"><span class="nav-icon">🔍</span>查詢</button>
   <button class="nav-item" onclick="showPage('stats',this)"><span class="nav-icon">📊</span>統計</button>
   <button class="nav-item" onclick="showPage('settle',this)"><span class="nav-icon">⚖️</span>結算</button>
   <button class="nav-item" onclick="showPage('fixed',this)"><span class="nav-icon">📌</span>固定</button>
@@ -438,13 +493,75 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
   </div>
 </div>
 
+<!-- 發票掃描 Modal -->
+<div class="modal-overlay" id="scan-modal" onclick="bgClose('scan-modal',event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">📷 掃描發票</div>
+
+    <!-- Gemini API Key 設定區（未設定時顯示） -->
+    <div id="gemini-key-section" style="margin-bottom:14px;">
+      <div style="background:var(--primary-pale);border-radius:12px;padding:12px;margin-bottom:10px;">
+        <div style="font-size:12px;font-weight:700;color:var(--primary);margin-bottom:6px;">🔑 設定 Gemini API 金鑰（免費）</div>
+        <div style="font-size:11px;color:var(--text-sub);line-height:1.6;margin-bottom:8px;">
+          1. 前往 <span style="color:var(--primary);font-weight:700;">aistudio.google.com</span><br>
+          2. 點「Get API key」→「Create API key」<br>
+          3. 複製金鑰貼到下方（完全免費，每天1500次）
+        </div>
+        <input class="modal-input" type="password" id="gemini-key-inp"
+          placeholder="貼上 Gemini API Key（AIza...）"
+          style="margin-bottom:8px;font-size:12px;letter-spacing:0.5px;">
+        <button onclick="saveGeminiKey()" style="width:100%;background:var(--primary);color:white;border:none;border-radius:10px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">儲存並開始使用</button>
+      </div>
+    </div>
+
+    <!-- 拍照/上傳區（設定 key 後顯示） -->
+    <div id="scan-main-area" style="display:none;">
+      <!-- 已設定提示列 -->
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <div style="font-size:11px;color:var(--income-color);font-weight:700;">✅ Gemini AI 已就緒</div>
+        <button onclick="clearGeminiKey()" style="font-size:10px;color:var(--text-sub);background:none;border:none;cursor:pointer;text-decoration:underline;">重設 Key</button>
+      </div>
+      <div class="scan-area" id="scan-drop-area" onclick="document.getElementById('scan-file-inp').click()">
+        <span class="scan-icon">📷</span>
+        <div class="scan-txt">點擊拍照或選擇圖片</div>
+        <div class="scan-sub">支援 JPG、PNG，AI 自動辨識金額與日期</div>
+      </div>
+    </div>
+
+    <input type="file" id="scan-file-inp" accept="image/*" capture="environment" style="display:none;" onchange="handleScanFile(event)">
+    <img id="scan-preview" class="scan-preview" alt="發票預覽">
+
+    <!-- 辨識中 -->
+    <div class="scan-loading" id="scan-loading">
+      <div style="font-size:28px;margin-bottom:8px;animation:spin 1.2s linear infinite;display:inline-block;">⏳</div>
+      <div>Gemini AI 辨識中，請稍候…</div>
+    </div>
+
+    <!-- 辨識結果 -->
+    <div id="scan-result-card" class="scan-result-card" style="display:none;">
+      <div style="font-size:12px;font-weight:700;color:var(--primary);margin-bottom:8px;">✅ 辨識結果（可套用後手動修改）</div>
+      <div class="scan-result-row"><span class="scan-result-label">金額</span><span class="scan-result-val" id="sr-amount">-</span></div>
+      <div class="scan-result-row"><span class="scan-result-label">日期</span><span class="scan-result-val" id="sr-date">-</span></div>
+      <div class="scan-result-row"><span class="scan-result-label">商家/備註</span><span class="scan-result-val" id="sr-note">-</span></div>
+      <div class="scan-result-row"><span class="scan-result-label">分類推測</span><span class="scan-result-val" id="sr-cat">-</span></div>
+    </div>
+
+    <!-- 辨識失敗提示 -->
+    <div id="scan-manual-hint" style="display:none;font-size:11px;color:var(--text-sub);text-align:center;padding:8px 0;"></div>
+
+    <button class="submit-btn" id="scan-apply-btn" onclick="applyScanResult()" style="display:none;margin-top:8px;">✅ 套用到記帳表單</button>
+    <button class="modal-close-btn" onclick="closeM('scan-modal');resetScan();" style="margin-top:6px;">關閉</button>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
 // ═══════════════════════════════════════════════
 //  CONSTANTS
 // ═══════════════════════════════════════════════
-const EXP_CATS=[{e:'🍜',n:'餐飲'},{e:'🛒',n:'購物'},{e:'🚇',n:'交通'},{e:'🎬',n:'娛樂'},{e:'🏠',n:'居家'},{e:'💊',n:'醫療'},{e:'🛡️',n:'保險'},{e:'💄',n:'美妝'},{e:'🧴',n:'保養'},{e:'✈️',n:'旅遊'},{e:'📚',n:'教育'},{e:'➕',n:'其他'}];
+const EXP_CATS=[{e:'🍜',n:'餐飲'},{e:'🛒',n:'購物'},{e:'🚇',n:'交通'},{e:'🎬',n:'娛樂'},{e:'🏠',n:'居家'},{e:'💊',n:'醫療'},{e:'🛡️',n:'保險'},{e:'💄',n:'美妝'},{e:'🧴',n:'保養'},{e:'✈️',n:'旅遊'},{e:'📚',n:'教育'},{e:'🚗',n:'汽車'},{e:'🔧',n:'車輛保養'},{e:'🅿️',n:'停車費'},{e:'➕',n:'其他'}];
 const INC_CATS=[{e:'💼',n:'薪資'},{e:'🎁',n:'獎金'},{e:'📈',n:'股息'},{e:'💹',n:'投資'},{e:'🏠',n:'租金'},{e:'🎨',n:'副業'},{e:'🎰',n:'中獎'},{e:'➕',n:'其他'}];
 const THEMES=[
   {name:'玫瑰粉',p:'#FF6B9D',a:'#FF8FB1',pl:'#FFB3CA',pp:'#FFF0F5',pd:'#E0457A',b:'#FFE0EC'},
@@ -624,6 +741,8 @@ function refreshUI(){
   updateHeader();
   renderStats(curPeriod);
   if(document.getElementById('all-modal').classList.contains('open')) renderAll();
+  // 若查詢頁正在顯示，同步更新結果
+  if(document.getElementById('page-search').classList.contains('active')) runSearch();
 }
 
 // ═══════════════════════════════════════════════
@@ -1017,6 +1136,7 @@ function showPage(name,el){
   document.getElementById('page-'+name).classList.add('active');
   el.classList.add('active');
   if(name==='stats') renderStats(curPeriod);
+  if(name==='search') initSearchPage();
 }
 function openM(id){ document.getElementById(id).classList.add('open'); }
 function closeM(id){ document.getElementById(id).classList.remove('open'); }
@@ -1024,6 +1144,317 @@ function bgClose(id,e){ if(e.target===e.currentTarget) closeM(id); }
 function showToast(msg){
   const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// ═══════════════════════════════════════════════
+//  SEARCH & FILTER
+// ═══════════════════════════════════════════════
+let searchType = 'all';
+let searchCat  = '';
+let searchPayer= '';
+
+function initSearchPage(){
+  // 建立分類篩選 chips
+  const catRow = document.getElementById('search-cat-row');
+  catRow.innerHTML = '<div class="filter-chip sel" onclick="setSearchCat(\'\',this)">全部分類</div>' +
+    EXP_CATS.map(c=>`<div class="filter-chip" onclick="setSearchCat('${c.n}',this)">${c.e}${c.n}</div>`).join('') +
+    INC_CATS.filter(c=>c.n!=='其他').map(c=>`<div class="filter-chip" onclick="setSearchCat('${c.n}',this)">${c.e}${c.n}</div>`).join('');
+
+  // 建立付款人篩選 chips
+  const payerRow = document.getElementById('search-payer-row');
+  payerRow.innerHTML = `<div class="filter-chip sel" onclick="setSearchPayer('',this)">全部</div>
+    <div class="filter-chip" onclick="setSearchPayer('${person1}',this)">${person1}</div>
+    <div class="filter-chip" onclick="setSearchPayer('${person2}',this)">${person2}</div>
+    <div class="filter-chip" onclick="setSearchPayer('共同',this)">共同</div>`;
+
+  runSearch();
+}
+
+function setSearchType(t, el){
+  searchType = t;
+  document.querySelectorAll('#search-type-row .filter-chip').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+  runSearch();
+}
+function setSearchCat(c, el){
+  searchCat = c;
+  document.querySelectorAll('#search-cat-row .filter-chip').forEach(x=>x.classList.remove('sel'));
+  el.classList.add('sel');
+  runSearch();
+}
+function setSearchPayer(p, el){
+  searchPayer = p;
+  document.querySelectorAll('#search-payer-row .filter-chip').forEach(x=>x.classList.remove('sel'));
+  el.classList.add('sel');
+  runSearch();
+}
+
+function clearSearch(){
+  document.getElementById('search-kw').value = '';
+  document.getElementById('search-date').value = '';
+  searchType = 'all'; searchCat = ''; searchPayer = '';
+  document.querySelectorAll('#search-type-row .filter-chip').forEach((c,i)=>c.classList.toggle('sel',i===0));
+  document.querySelectorAll('#search-cat-row .filter-chip').forEach((c,i)=>c.classList.toggle('sel',i===0));
+  document.querySelectorAll('#search-payer-row .filter-chip').forEach((c,i)=>c.classList.toggle('sel',i===0));
+  runSearch();
+}
+
+function runSearch(){
+  const kw   = (document.getElementById('search-kw')?.value||'').trim().toLowerCase();
+  const date = document.getElementById('search-date')?.value||'';
+
+  let results = [...records];
+
+  // 類型篩選
+  if(searchType==='exp') results = results.filter(r=>r.type==='exp');
+  else if(searchType==='inc') results = results.filter(r=>r.type==='inc');
+
+  // 分類篩選
+  if(searchCat) results = results.filter(r=>r.cat===searchCat);
+
+  // 付款人篩選
+  if(searchPayer) results = results.filter(r=>r.payer===searchPayer);
+
+  // 日期篩選
+  if(date) results = results.filter(r=>r.date===date);
+
+  // 關鍵字（備註、分類、金額、付款人）
+  if(kw){
+    results = results.filter(r=>
+      r.note.toLowerCase().includes(kw) ||
+      r.cat.toLowerCase().includes(kw)  ||
+      String(r.amount).includes(kw)      ||
+      (r.payer||'').toLowerCase().includes(kw) ||
+      (r.pay||'').toLowerCase().includes(kw)
+    );
+  }
+
+  // 結果統計
+  const totalAmt = results.reduce((s,r)=>(r.type==='exp'?s-r.amount:s+r.amount),0);
+  const info = document.getElementById('search-result-info');
+  info.textContent = `找到 ${results.length} 筆，淨額 NT$${totalAmt>=0?'+':''}${totalAmt.toLocaleString()}`;
+
+  // 渲染結果
+  const list = document.getElementById('search-list');
+  if(!results.length){
+    list.innerHTML = '<div class="no-result">😶 沒有找到符合的記錄</div>';
+    return;
+  }
+  // 依日期排序（新到舊）
+  results.sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  list.innerHTML = results.map(r=>recHTML(r)).join('');
+}
+
+// ═══════════════════════════════════════════════
+//  INVOICE SCAN
+// ═══════════════════════════════════════════════
+//  INVOICE SCAN — Gemini Flash（免費 · 無需代理）
+// ═══════════════════════════════════════════════
+let scanResult = null;
+
+// ── Gemini Key 管理 ──
+function getGeminiKey(){ return localStorage.getItem('sb_gemini_key') || ''; }
+function saveGeminiKey(){
+  const k = document.getElementById('gemini-key-inp').value.trim();
+  if(!k){ showToast('請輸入 API Key'); return; }
+  if(!k.startsWith('AIza')){ showToast('格式錯誤，Key 應以 AIza 開頭'); return; }
+  localStorage.setItem('sb_gemini_key', k);
+  showScanMainArea();
+  showToast('✅ API Key 已儲存，可以開始掃描！');
+}
+function clearGeminiKey(){
+  localStorage.removeItem('sb_gemini_key');
+  document.getElementById('gemini-key-section').style.display = 'block';
+  document.getElementById('scan-main-area').style.display = 'none';
+  document.getElementById('gemini-key-inp').value = '';
+}
+function showScanMainArea(){
+  document.getElementById('gemini-key-section').style.display = 'none';
+  document.getElementById('scan-main-area').style.display = 'block';
+}
+
+// ── 開啟 / 重設 ──
+function openScanModal(){
+  resetScan();
+  const key = getGeminiKey();
+  if(key){
+    showScanMainArea();
+  } else {
+    document.getElementById('gemini-key-section').style.display = 'block';
+    document.getElementById('scan-main-area').style.display = 'none';
+    document.getElementById('gemini-key-inp').value = '';
+  }
+  openM('scan-modal');
+}
+
+function resetScan(){
+  scanResult = null;
+  const preview = document.getElementById('scan-preview');
+  preview.style.display = 'none'; preview.src = '';
+  document.getElementById('scan-loading').style.display = 'none';
+  document.getElementById('scan-result-card').style.display = 'none';
+  document.getElementById('scan-manual-hint').style.display = 'none';
+  document.getElementById('scan-apply-btn').style.display = 'none';
+  const drop = document.getElementById('scan-drop-area');
+  if(drop) drop.style.display = 'block';
+  document.getElementById('scan-file-inp').value = '';
+}
+
+// ── 圖片壓縮（手機拍照很大，壓到 1024px 減少傳輸量）──
+function compressImage(dataUrl, maxPx){
+  return new Promise(function(resolve){
+    const img = new Image();
+    img.onload = function(){
+      let w = img.naturalWidth, h = img.naturalHeight;
+      if(w > maxPx || h > maxPx){
+        if(w >= h){ h = Math.round(h * maxPx / w); w = maxPx; }
+        else       { w = Math.round(w * maxPx / h); h = maxPx; }
+      }
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      c.getContext('2d').drawImage(img, 0, 0, w, h);
+      resolve(c.toDataURL('image/jpeg', 0.82));
+    };
+    img.onerror = function(){ resolve(dataUrl); };
+    img.src = dataUrl;
+  });
+}
+
+// ── 選擇圖片後觸發 ──
+function handleScanFile(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    const img = document.getElementById('scan-preview');
+    img.src = ev.target.result;
+    img.style.display = 'block';
+    const drop = document.getElementById('scan-drop-area');
+    if(drop) drop.style.display = 'none';
+    analyzeInvoice(ev.target.result);
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── Gemini Vision API 辨識（直接呼叫，支援 CORS）──
+async function analyzeInvoice(base64DataUrl){
+  document.getElementById('scan-loading').style.display = 'block';
+  document.getElementById('scan-result-card').style.display = 'none';
+  document.getElementById('scan-apply-btn').style.display = 'none';
+  document.getElementById('scan-manual-hint').style.display = 'none';
+
+  const key = getGeminiKey();
+  if(!key){
+    document.getElementById('scan-loading').style.display = 'none';
+    setHint('⚠️ 請先設定 Gemini API Key');
+    document.getElementById('scan-apply-btn').style.display = 'block';
+    scanResult = { amount:null, date: today(), note:'', cat:'其他' };
+    return;
+  }
+
+  try{
+    // 壓縮圖片
+    const compressed = await compressImage(base64DataUrl, 1024);
+    const base64 = compressed.split(',')[1];
+
+    // Gemini 1.5 Flash — 免費，支援圖片，直接 CORS 可用
+    const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + key;
+
+    const prompt = `你是一個發票辨識助手。請仔細辨識這張發票或收據圖片，回傳 JSON（只輸出 JSON，不要任何其他文字）：
+{"amount":數字或null,"date":"YYYY-MM-DD或null","note":"商家名稱最多15字","category":"餐飲|購物|交通|娛樂|居家|醫療|保險|美妝|保養|旅遊|教育|汽車|車輛保養|停車費|其他"}
+注意：台灣發票日期是民國年，請轉換為西元年（民國年+1911）。金額填應付/實付總計。`;
+
+    const resp = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents:[{
+          parts:[
+            { inline_data:{ mime_type:'image/jpeg', data: base64 } },
+            { text: prompt }
+          ]
+        }],
+        generationConfig:{ temperature:0.1, maxOutputTokens:256 }
+      })
+    });
+
+    if(!resp.ok){
+      const errData = await resp.json().catch(()=>({}));
+      const msg = errData?.error?.message || ('HTTP ' + resp.status);
+      throw new Error(msg);
+    }
+
+    const data = await resp.json();
+    // 取出回傳文字
+    const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    const cleaned = rawText.replace(/```json|```/g,'').trim();
+
+    let parsed;
+    try{ parsed = JSON.parse(cleaned); }
+    catch(e){ throw new Error('AI 回傳格式不正確，請重試'); }
+
+    scanResult = {
+      amount: (parsed.amount && !isNaN(parsed.amount)) ? Number(parsed.amount) : null,
+      date  : parsed.date && parsed.date !== 'null' ? parsed.date : today(),
+      note  : parsed.note || '',
+      cat   : parsed.category || '其他'
+    };
+
+    document.getElementById('sr-amount').textContent = scanResult.amount
+      ? 'NT$ ' + scanResult.amount.toLocaleString() : '（未辨識到）';
+    document.getElementById('sr-date').textContent   = scanResult.date;
+    document.getElementById('sr-note').textContent   = scanResult.note || '（未辨識到）';
+    document.getElementById('sr-cat').textContent    = scanResult.cat;
+
+    document.getElementById('scan-loading').style.display = 'none';
+    document.getElementById('scan-result-card').style.display = 'block';
+    document.getElementById('scan-apply-btn').style.display = 'block';
+    if(!scanResult.amount) setHint('💡 未辨識到金額，請套用後手動補填');
+
+  }catch(err){
+    console.error('analyzeInvoice:', err);
+    document.getElementById('scan-loading').style.display = 'none';
+    // API Key 錯誤給出明確提示
+    const msg = err.message || '';
+    let hint = '⚠️ 辨識失敗，請重試';
+    if(msg.includes('API_KEY_INVALID') || msg.includes('API key not valid')){
+      hint = '⚠️ API Key 無效，請重新設定';
+      clearGeminiKey();
+    } else if(msg.includes('QUOTA') || msg.includes('quota')){
+      hint = '⚠️ 今日免費額度已用完（每天 1500 次）';
+    } else if(msg.toLowerCase().includes('network') || msg.includes('Failed to fetch')){
+      hint = '⚠️ 網路連線失敗，請確認網路後重試';
+    } else {
+      hint = '⚠️ ' + msg.slice(0,60);
+    }
+    setHint(hint);
+    document.getElementById('scan-apply-btn').style.display = 'block';
+    scanResult = { amount:null, date: today(), note:'', cat:'其他' };
+  }
+}
+
+function setHint(msg){
+  const el = document.getElementById('scan-manual-hint');
+  el.textContent = msg; el.style.display = 'block';
+}
+function today(){ return new Date().toISOString().split('T')[0]; }
+
+// ── 套用辨識結果到表單 ──
+function applyScanResult(){
+  if(!scanResult) return;
+  // 確保切到支出模式
+  if(curType !== 'exp') switchType('exp');
+  if(scanResult.amount) document.getElementById('amount-inp').value = scanResult.amount;
+  if(scanResult.date)   document.getElementById('date-inp').value   = scanResult.date;
+  if(scanResult.note)   document.getElementById('note-inp').value   = scanResult.note;
+  if(scanResult.cat){
+    selCatMain['exp'] = scanResult.cat;
+    renderCatsGrid('cats-grid','exp',selCatMain);
+  }
+  closeM('scan-modal');
+  resetScan();
+  showToast('✅ 發票已填入！請確認後新增');
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 // ═══════════════════════════════════════════════
