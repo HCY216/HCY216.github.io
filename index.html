@@ -167,20 +167,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
 .theme-name{font-size:10px;color:var(--text-sub);}
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(40,40,40,0.92);color:white;border-radius:20px;padding:9px 20px;font-size:12px;font-weight:600;z-index:300;opacity:0;transition:all 0.3s;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-/* 語音記帳 */
-.voice-btn{width:100%;background:linear-gradient(135deg,#9B59B6,#B07FCC);color:white;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform 0.15s;}
-.voice-btn:active{transform:scale(0.98);}
-.voice-btn.recording{background:linear-gradient(135deg,#E91E63,#F06292);animation:pulse-btn 1s ease-in-out infinite;}
-@keyframes pulse-btn{0%,100%{box-shadow:0 0 0 0 rgba(233,30,99,0.4);}50%{box-shadow:0 0 0 10px rgba(233,30,99,0);}}
-.voice-modal-status{text-align:center;padding:20px 10px;}
-.voice-mic-wrap{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#9B59B6,#B07FCC);margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:36px;transition:all 0.3s;}
-.voice-mic-wrap.recording{background:linear-gradient(135deg,#E91E63,#F06292);animation:pulse-btn 1s ease-in-out infinite;}
-.voice-status-txt{font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px;}
-.voice-transcript{font-size:12px;color:var(--text-sub);min-height:20px;padding:8px 12px;background:var(--primary-pale);border-radius:10px;margin:8px 0;line-height:1.5;}
-.voice-result-card{background:var(--primary-pale);border-radius:12px;padding:12px;margin:10px 0;border:1px solid var(--border);}
-.voice-result-row{display:flex;justify-content:space-between;padding:4px 0;font-size:12px;}
-.voice-result-label{color:var(--text-sub);}
-.voice-result-val{font-weight:700;color:var(--text);}
 /* 查詢篩選 */
 .search-bar{display:flex;gap:6px;margin-bottom:10px;}
 .search-inp{flex:1;background:var(--primary-pale);border:1.5px solid var(--border);border-radius:12px;padding:9px 14px;font-size:13px;color:var(--text);outline:none;font-family:'Nunito',sans-serif;}
@@ -208,6 +194,32 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
 .date-inp:focus{border-color:var(--primary);}
 .modal-date-inp{width:100%;background:var(--primary-pale);border:1.5px solid var(--border);border-radius:12px;padding:10px 14px;font-size:13px;font-weight:600;color:var(--text);outline:none;font-family:'Nunito',sans-serif;margin-bottom:10px;display:block;-webkit-appearance:none;appearance:none;}
 .modal-date-inp:focus{border-color:var(--primary);}
+/* 附件照片 */
+.photo-attach-btn{width:100%;background:var(--primary-pale);color:var(--primary);border:1.5px dashed var(--primary-light);border-radius:12px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;margin-top:6px;transition:all 0.15s;}
+.photo-attach-btn:hover{background:var(--primary);color:white;border-style:solid;}
+.photo-thumb-wrap{position:relative;display:inline-block;margin-top:8px;width:100%;}
+.photo-thumb{width:100%;max-height:140px;object-fit:cover;border-radius:10px;border:1.5px solid var(--border);display:block;}
+.photo-remove-btn{position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.55);color:white;border:none;border-radius:50%;width:22px;height:22px;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;}
+.rec-photo{width:100%;max-height:120px;object-fit:cover;border-radius:8px;margin-top:6px;border:1px solid var(--border);}
+/* 語音按鈕 */
+.voice-open-btn{width:100%;background:linear-gradient(135deg,#8e44ad,#9b59b6);color:white;border:none;border-radius:12px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:6px;display:flex;align-items:center;justify-content:center;gap:7px;transition:transform 0.15s;}
+.voice-open-btn:active{transform:scale(0.98);}
+.voice-record-btn{width:100%;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.15s;background:linear-gradient(135deg,#8e44ad,#9b59b6);color:white;}
+.voice-record-btn.recording{background:linear-gradient(135deg,#c0392b,#e74c3c);animation:vpulse 1s infinite;}
+@keyframes vpulse{0%,100%{box-shadow:0 0 0 0 rgba(192,57,43,0.45);}60%{box-shadow:0 0 0 10px rgba(192,57,43,0);}}
+.voice-transcript-box{background:var(--primary-pale);border:1.5px solid var(--border);border-radius:12px;padding:10px 14px;font-size:13px;color:var(--text);min-height:44px;line-height:1.6;margin:8px 0;word-break:break-all;}
+.voice-result-card{background:#F5EEFF;border-radius:12px;padding:12px;margin:8px 0;border:1px solid #CDA9E0;}
+.voice-result-row{display:flex;justify-content:space-between;padding:3px 0;font-size:12px;}
+.voice-result-label{color:var(--text-sub);}
+.voice-result-val{font-weight:700;color:var(--text);}
+/* 信用卡名稱欄 */
+.card-name-row{display:flex;align-items:center;gap:6px;margin-top:8px;animation:fadeIn 0.15s ease;}
+.card-name-inp{flex:1;background:var(--primary-pale);border:1.5px solid var(--border);border-radius:10px;padding:8px 12px;font-size:12px;color:var(--text);outline:none;font-family:'Nunito',sans-serif;transition:border-color 0.2s;}
+.card-name-inp:focus{border-color:var(--primary);}
+.card-preset-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px;}
+.card-preset-chip{padding:4px 9px;border-radius:16px;font-size:10px;background:#FFF0E8;color:#E06A20;border:1px solid #FFD4B0;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s;white-space:nowrap;}
+.card-preset-chip:hover{background:#E06A20;color:white;}
+.voice-status{font-size:12px;color:var(--text-sub);text-align:center;margin:6px 0;}
 </style>
 </head>
 <body>
@@ -257,12 +269,25 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
         <div class="chip-row" id="payer-row" style="margin-bottom:10px;"></div>
         <div id="pay-section">
           <label class="form-label">支付方式</label>
-          <div class="chip-row" id="pay-row" style="margin-bottom:0;">
-            <div class="chip sel" onclick="selChip(this)">💳 信用卡</div>
-            <div class="chip" onclick="selChip(this)">LINE Pay</div>
-            <div class="chip" onclick="selChip(this)">Apple Pay</div>
-            <div class="chip" onclick="selChip(this)">街口</div>
-            <div class="chip" onclick="selChip(this)">現金</div>
+          <div class="chip-row" id="pay-row" style="margin-bottom:0;" onchange="onPayChange()">
+            <div class="chip sel" onclick="selChip(this);onPayChange()">💳 信用卡</div>
+            <div class="chip" onclick="selChip(this);onPayChange()">LINE Pay</div>
+            <div class="chip" onclick="selChip(this);onPayChange()">Apple Pay</div>
+            <div class="chip" onclick="selChip(this);onPayChange()">街口</div>
+            <div class="chip" onclick="selChip(this);onPayChange()">現金</div>
+          </div>
+          <!-- 信用卡名稱欄（選信用卡才顯示）-->
+          <div class="card-name-row" id="card-name-row" style="display:flex;">
+            <span style="font-size:13px;">💳</span>
+            <input class="card-name-inp" type="text" id="card-name-inp" placeholder="卡片名稱（選填），如：玉山 Pi 卡">
+          </div>
+          <div class="card-preset-row" id="card-preset-row">
+            <span class="card-preset-chip" onclick="pickCard('玉山 Pi 卡')">玉山 Pi</span>
+            <span class="card-preset-chip" onclick="pickCard('台新 @GoGo 卡')">台新@GoGo</span>
+            <span class="card-preset-chip" onclick="pickCard('永豐大戶卡')">永豐大戶</span>
+            <span class="card-preset-chip" onclick="pickCard('國泰世華 CUBE')">國泰CUBE</span>
+            <span class="card-preset-chip" onclick="pickCard('中信 LINE Pay 卡')">中信LINE Pay</span>
+            <span class="card-preset-chip" onclick="pickCard('富邦 J 卡')">富邦J卡</span>
           </div>
         </div>
         <div class="field-block">
@@ -276,9 +301,19 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
         <input class="note-inp" type="text" id="note-inp" placeholder="備註（選填）" style="margin-bottom:10px;">
         <label class="form-label">📅 日期</label>
         <input class="date-inp" type="date" id="date-inp" style="margin-bottom:6px;">
-        <button class="submit-btn" id="submit-btn" onclick="addRecord()">+ 新增支出</button>
+        <!-- 照片附件 -->
+        <label class="form-label" style="margin-top:10px;">📸 附加照片（選填）</label>
+        <button type="button" class="photo-attach-btn" onclick="document.getElementById('photo-inp').click()">
+          <span>📷</span><span>選擇或拍攝照片</span>
+        </button>
+        <input type="file" id="photo-inp" accept="image/*" capture="environment" style="display:none;" onchange="handlePhotoAttach(event)">
+        <div id="photo-thumb-wrap" class="photo-thumb-wrap" style="display:none;">
+          <img id="photo-thumb" class="photo-thumb" alt="附件">
+          <button class="photo-remove-btn" onclick="removePhoto()" title="移除照片">✕</button>
+        </div>
+        <button class="submit-btn" id="submit-btn" onclick="addRecord()" style="margin-top:10px;">+ 新增支出</button>
         <button class="submit-btn" id="scan-open-btn" onclick="openScanModal()" style="margin-top:8px;background:rgba(255,107,157,0.12);color:var(--primary);border:1.5px solid var(--border);">📷 掃描發票自動記帳</button>
-        <button class="voice-btn" id="voice-open-btn" onclick="openVoiceModal()">🎙️ 語音記帳</button>
+        <button class="voice-open-btn" onclick="openVoiceModal()">🎙️ 語音記帳</button>
       </div>
       <div class="section-hd">
         <div class="section-title">📋 最近記錄</div>
@@ -455,12 +490,16 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
     <div class="chip-row" id="edit-payer-row" style="margin-bottom:10px;"></div>
     <div id="edit-pay-section">
       <label class="modal-label">支付方式</label>
-      <div class="chip-row" id="edit-pay-row" style="margin-bottom:10px;">
-        <div class="chip sel" onclick="selChip(this)">💳 信用卡</div>
-        <div class="chip" onclick="selChip(this)">LINE Pay</div>
-        <div class="chip" onclick="selChip(this)">Apple Pay</div>
-        <div class="chip" onclick="selChip(this)">街口</div>
-        <div class="chip" onclick="selChip(this)">現金</div>
+      <div class="chip-row" id="edit-pay-row" style="margin-bottom:6px;">
+        <div class="chip sel" onclick="selChip(this);onEditPayChange()">💳 信用卡</div>
+        <div class="chip" onclick="selChip(this);onEditPayChange()">LINE Pay</div>
+        <div class="chip" onclick="selChip(this);onEditPayChange()">Apple Pay</div>
+        <div class="chip" onclick="selChip(this);onEditPayChange()">街口</div>
+        <div class="chip" onclick="selChip(this);onEditPayChange()">現金</div>
+      </div>
+      <div class="card-name-row" id="edit-card-name-row" style="display:none;margin-bottom:10px;">
+        <span style="font-size:13px;">💳</span>
+        <input class="card-name-inp" type="text" id="edit-card-name-inp" placeholder="卡片名稱（選填）">
       </div>
     </div>
     <label class="modal-label">金額</label>
@@ -508,39 +547,43 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
   </div>
 </div>
 
+<!-- 語音記帳 Modal -->
+<div class="modal-overlay" id="voice-modal" onclick="bgClose('voice-modal',event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🎙️ 語音記帳</div>
+    <div class="voice-status" id="voice-status">按下按鈕，說出消費內容</div>
+    <div class="voice-transcript-box" id="voice-transcript">例如：「午餐花了150元」「小明搭捷運50塊」「收到薪水5萬」</div>
+    <button class="voice-record-btn" id="voice-record-btn" onclick="toggleVoice()">
+      <span id="voice-btn-ic">🎙️</span><span id="voice-btn-txt">開始錄音</span>
+    </button>
+    <div class="voice-result-card" id="voice-result-card" style="display:none;">
+      <div style="font-size:12px;font-weight:700;color:#8e44ad;margin-bottom:6px;">✅ AI 解析結果</div>
+      <div class="voice-result-row"><span class="voice-result-label">金額</span><span class="voice-result-val" id="vr-amount">-</span></div>
+      <div class="voice-result-row"><span class="voice-result-label">類型</span><span class="voice-result-val" id="vr-type">-</span></div>
+      <div class="voice-result-row"><span class="voice-result-label">分類</span><span class="voice-result-val" id="vr-cat">-</span></div>
+      <div class="voice-result-row"><span class="voice-result-label">備註</span><span class="voice-result-val" id="vr-note">-</span></div>
+      <div class="voice-result-row"><span class="voice-result-label">付款人</span><span class="voice-result-val" id="vr-payer">-</span></div>
+    </div>
+    <div id="voice-hint" style="font-size:11px;color:var(--text-sub);text-align:center;padding:4px 0;display:none;"></div>
+    <button class="submit-btn" id="voice-apply-btn" onclick="applyVoice()" style="display:none;margin-top:8px;background:linear-gradient(135deg,#8e44ad,#9b59b6);">✅ 確認並立即記帳</button>
+    <button class="modal-close-btn" onclick="closeM('voice-modal');stopVoice();" style="margin-top:6px;">關閉</button>
+  </div>
+</div>
+
 <!-- 發票掃描 Modal -->
 <div class="modal-overlay" id="scan-modal" onclick="bgClose('scan-modal',event)">
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-title">📷 掃描發票</div>
 
-    <!-- Gemini API Key 設定區（未設定時顯示） -->
-    <div id="gemini-key-section" style="margin-bottom:14px;">
-      <div style="background:var(--primary-pale);border-radius:12px;padding:12px;margin-bottom:10px;">
-        <div style="font-size:12px;font-weight:700;color:var(--primary);margin-bottom:6px;">🔑 設定 Gemini API 金鑰（免費）</div>
-        <div style="font-size:11px;color:var(--text-sub);line-height:1.6;margin-bottom:8px;">
-          1. 前往 <span style="color:var(--primary);font-weight:700;">aistudio.google.com</span><br>
-          2. 點「Get API key」→「Create API key」<br>
-          3. 複製金鑰貼到下方（完全免費，每天1500次）
-        </div>
-        <input class="modal-input" type="password" id="gemini-key-inp"
-          placeholder="貼上 Gemini API Key（AIza...）"
-          style="margin-bottom:8px;font-size:12px;letter-spacing:0.5px;">
-        <button onclick="saveGeminiKey()" style="width:100%;background:var(--primary);color:white;border:none;border-radius:10px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">儲存並開始使用</button>
-      </div>
-    </div>
-
-    <!-- 拍照/上傳區（設定 key 後顯示） -->
-    <div id="scan-main-area" style="display:none;">
-      <!-- 已設定提示列 -->
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <div style="font-size:11px;color:var(--income-color);font-weight:700;">✅ Gemini AI 已就緒</div>
-        <button onclick="clearGeminiKey()" style="font-size:10px;color:var(--text-sub);background:none;border:none;cursor:pointer;text-decoration:underline;">重設 Key</button>
-      </div>
+    <!-- 掃描區 -->
+    <div id="scan-main-area">
+      <div style="font-size:11px;color:var(--income-color);font-weight:700;margin-bottom:10px;">✅ Gemini AI 已就緒（免費）</div>
       <div class="scan-area" id="scan-drop-area" onclick="document.getElementById('scan-file-inp').click()">
         <span class="scan-icon">📷</span>
         <div class="scan-txt">點擊拍照或選擇圖片</div>
-        <div class="scan-sub">支援 JPG、PNG，AI 自動辨識金額與日期</div>
+        <div class="scan-sub">AI 自動辨識金額、日期、商家</div>
       </div>
     </div>
 
@@ -567,39 +610,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
 
     <button class="submit-btn" id="scan-apply-btn" onclick="applyScanResult()" style="display:none;margin-top:8px;">✅ 確認並立即記帳</button>
     <button class="modal-close-btn" onclick="closeM('scan-modal');resetScan();" style="margin-top:6px;">關閉</button>
-  </div>
-</div>
-
-<!-- 語音記帳 Modal -->
-<div class="modal-overlay" id="voice-modal" onclick="bgClose('voice-modal',event)">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title">🎙️ 語音記帳</div>
-
-    <div class="voice-modal-status">
-      <div class="voice-mic-wrap" id="voice-mic-icon">🎙️</div>
-      <div class="voice-status-txt" id="voice-status-txt">點下方按鈕開始說話</div>
-      <div class="voice-transcript" id="voice-transcript">例如：「買午餐花了150元」、「交通費50塊」</div>
-    </div>
-
-    <!-- 辨識結果 -->
-    <div class="voice-result-card" id="voice-result-card" style="display:none;">
-      <div style="font-size:12px;font-weight:700;color:var(--primary);margin-bottom:6px;">✅ 辨識結果</div>
-      <div class="voice-result-row"><span class="voice-result-label">金額</span><span class="voice-result-val" id="vr-amount">-</span></div>
-      <div class="voice-result-row"><span class="voice-result-label">分類</span><span class="voice-result-val" id="vr-cat">-</span></div>
-      <div class="voice-result-row"><span class="voice-result-label">備註</span><span class="voice-result-val" id="vr-note">-</span></div>
-      <div class="voice-result-row"><span class="voice-result-label">付款人</span><span class="voice-result-val" id="vr-payer">-</span></div>
-    </div>
-
-    <div id="voice-hint" style="display:none;font-size:11px;color:var(--text-sub);text-align:center;padding:6px 0;"></div>
-
-    <!-- 操作按鈕 -->
-    <button class="voice-btn" id="voice-record-btn" onclick="toggleVoiceRecord()">
-      <span id="voice-btn-icon">🎙️</span>
-      <span id="voice-btn-txt">開始錄音</span>
-    </button>
-    <button class="submit-btn" id="voice-apply-btn" onclick="applyVoiceResult()" style="display:none;margin-top:8px;">✅ 確認並立即記帳</button>
-    <button class="modal-close-btn" onclick="closeM('voice-modal');stopVoiceRecord();" style="margin-top:6px;">關閉</button>
   </div>
 </div>
 
@@ -950,17 +960,23 @@ function addRecord(){
   if(!amt||amt<=0){ showToast('請輸入有效金額 💰'); return; }
   const note  = document.getElementById('note-inp').value.trim() || selCatMain[curType];
   const payer = getChip('payer-row');
-  const pay   = curType==='exp' ? getChip('pay-row') : '';
+  const payBase = curType==='exp' ? getChip('pay-row') : '';
+  const cardName = (payBase==='💳 信用卡' && document.getElementById('card-name-inp').value.trim())
+    ? document.getElementById('card-name-inp').value.trim() : '';
+  const pay = cardName ? '💳 '+cardName : payBase;
   const cat   = selCatMain[curType];
   const cats  = curType==='exp' ? EXP_CATS : INC_CATS;
   const emo   = (cats.find(c=>c.n===cat)||cats[0]).e;
   const dateVal = document.getElementById('date-inp').value || new Date().toISOString().split('T')[0];
   // ✅ id 用時間戳+隨機，確保兩人同時新增不會衝突
   const newId = Date.now() + '_' + Math.random().toString(36).slice(2,6);
-  records.unshift({ id:newId, type:curType, cat, emoji:emo, note, amount:amt, payer, pay, date:dateVal });
+  const photo = attachedPhoto || null;
+  records.unshift({ id:newId, type:curType, cat, emoji:emo, note, amount:amt, payer, pay, date:dateVal, photo });
   document.getElementById('amount-inp').value = '';
   document.getElementById('note-inp').value = '';
   document.getElementById('date-inp').value = new Date().toISOString().split('T')[0];
+  removePhoto(); // 清除附件
+  document.getElementById('card-name-inp').value = '';
   renderRecent(); updateHeader(); save();
   showToast(curType==='exp'?'支出已記錄 ✅':'收入已記錄 🎉');
 }
@@ -993,7 +1009,10 @@ function saveEdit(){
   if(!amt||amt<=0){ showToast('請輸入有效金額'); return; }
   const note    = document.getElementById('edit-note').value.trim() || selCatEdit[editType];
   const payer   = getChip('edit-payer-row');
-  const pay     = editType==='exp' ? getChip('edit-pay-row') : '';
+  const payBase2 = editType==='exp' ? getChip('edit-pay-row') : '';
+  const cardName2= (payBase2==='💳 信用卡' && document.getElementById('edit-card-name-inp').value.trim())
+    ? document.getElementById('edit-card-name-inp').value.trim() : '';
+  const pay     = cardName2 ? '💳 '+cardName2 : payBase2;
   const cat     = selCatEdit[editType];
   const cats    = editType==='exp' ? EXP_CATS : INC_CATS;
   const emo     = (cats.find(c=>c.n===cat)||cats[0]).e;
@@ -1324,14 +1343,8 @@ function showScanMainArea(){
 // ── 開啟 / 重設 ──
 function openScanModal(){
   resetScan();
-  const key = getGeminiKey();
-  if(key){
-    showScanMainArea();
-  } else {
-    document.getElementById('gemini-key-section').style.display = 'block';
-    document.getElementById('scan-main-area').style.display = 'none';
-    document.getElementById('gemini-key-inp').value = '';
-  }
+  // 內建 Key，永遠直接顯示掃描區
+  showScanMainArea();
   openM('scan-modal');
 }
 
@@ -1385,32 +1398,49 @@ function handleScanFile(e){
 }
 
 // ── Gemini Vision API 辨識（直接呼叫，支援 CORS）──
+// ── 安全解析數字（處理字串 "null"、空值等） ──
+function safeNum(v){
+  if(v===null||v===undefined||v===''||v==='null'||v==='undefined') return null;
+  const n = Number(String(v).replace(/[^0-9.]/g,''));
+  return isNaN(n)||n<=0 ? null : n;
+}
+// ── 安全解析日期 ──
+function safeDate(v){
+  if(!v||v==='null') return null;
+  const s = String(v).trim();
+  // 已是 YYYY-MM-DD
+  if(/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  // 民國年 113/05/20 或 113.05.20
+  const m = s.match(/^(\d{2,3})[\/\.\-](\d{1,2})[\/\.\-](\d{1,2})$/);
+  if(m){
+    const y = parseInt(m[1]); const yr = y<1900 ? y+1911 : y;
+    return `${yr}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`;
+  }
+  return null;
+}
+
 async function analyzeInvoice(base64DataUrl){
   document.getElementById('scan-loading').style.display = 'block';
   document.getElementById('scan-result-card').style.display = 'none';
   document.getElementById('scan-apply-btn').style.display = 'none';
   document.getElementById('scan-manual-hint').style.display = 'none';
 
-  const key = getGeminiKey();
-  if(!key){
-    document.getElementById('scan-loading').style.display = 'none';
-    setHint('⚠️ 請先設定 Gemini API Key');
-    document.getElementById('scan-apply-btn').style.display = 'block';
-    scanResult = { amount:null, date: today(), note:'', cat:'其他' };
-    return;
-  }
-
   try{
-    // 壓縮圖片
-    const compressed = await compressImage(base64DataUrl, 1024);
+    const key = getGeminiKey();
+    // 壓縮圖片到 1200px，保留足夠解析度讀取發票文字
+    const compressed = await compressImage(base64DataUrl, 1200);
     const base64 = compressed.split(',')[1];
-
-    // Gemini 1.5 Flash — 免費，支援圖片，直接 CORS 可用
     const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + key;
 
-    const prompt = `你是一個發票辨識助手。請仔細辨識這張發票或收據圖片，回傳 JSON（只輸出 JSON，不要任何其他文字）：
-{"amount":數字或null,"date":"YYYY-MM-DD或null","note":"商家名稱最多15字","category":"餐飲|購物|交通|娛樂|居家|醫療|保險|美妝|保養|旅遊|教育|汽車|車輛保養|停車費|其他"}
-注意：台灣發票日期是民國年，請轉換為西元年（民國年+1911）。金額填應付/實付總計。`;
+    // ✅ 關鍵修復：prompt 改用明確的英文欄位說明，避免中文混入 JSON 造成解析失敗
+    const prompt = `Look at this receipt/invoice image carefully.
+Extract the following information and respond with ONLY a valid JSON object, no other text:
+{
+  "amount": <total amount as a NUMBER only, e.g. 150 or 1200.5, use null if not found>,
+  "date": "<date in YYYY-MM-DD format. Taiwan receipts use Minguo year (Republic of China era), convert by adding 1911. e.g. 113/05/20 becomes 2024-05-20. Use null if not found>",
+  "note": "<store name or brief description in Traditional Chinese, max 15 characters>",
+  "category": "<pick exactly one from: 餐飲,購物,交通,娛樂,居家,醫療,保險,美妝,保養,旅遊,教育,汽車,車輛保養,停車費,其他>"
+}`;
 
     const resp = await fetch(url, {
       method: 'POST',
@@ -1422,62 +1452,64 @@ async function analyzeInvoice(base64DataUrl){
             { text: prompt }
           ]
         }],
-        generationConfig:{ temperature:0.1, maxOutputTokens:256 }
+        generationConfig:{ temperature:0, maxOutputTokens:300, responseMimeType:'application/json' }
       })
     });
 
     if(!resp.ok){
       const errData = await resp.json().catch(()=>({}));
-      const msg = errData?.error?.message || ('HTTP ' + resp.status);
-      throw new Error(msg);
+      throw new Error(errData?.error?.message || 'HTTP '+resp.status);
     }
 
     const data = await resp.json();
-    // 取出回傳文字
     const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    const cleaned = rawText.replace(/```json|```/g,'').trim();
+    // 清理 markdown 包裝
+    const cleaned = rawText.replace(/```json[\s\S]*?```|```[\s\S]*?```/g, m=>m.replace(/```json|```/g,'')).trim();
 
     let parsed;
     try{ parsed = JSON.parse(cleaned); }
-    catch(e){ throw new Error('AI 回傳格式不正確，請重試'); }
+    catch(e){
+      // 嘗試用正則抽取 JSON 物件
+      const m = rawText.match(/\{[\s\S]+\}/);
+      if(m) parsed = JSON.parse(m[0]);
+      else throw new Error('回傳格式無法解析');
+    }
+
+    // ✅ 用安全函式解析，不因字串 null 爆錯
+    const amt = safeNum(parsed.amount);
+    const dt  = safeDate(parsed.date) || today();
 
     scanResult = {
-      amount: (parsed.amount && !isNaN(parsed.amount)) ? Number(parsed.amount) : null,
-      date  : parsed.date && parsed.date !== 'null' ? parsed.date : today(),
-      note  : parsed.note || '',
+      amount: amt,
+      date  : dt,
+      note  : (parsed.note||'').slice(0,20) || '',
       cat   : parsed.category || '其他'
     };
 
-    document.getElementById('sr-amount').textContent = scanResult.amount
-      ? 'NT$ ' + scanResult.amount.toLocaleString() : '（未辨識到）';
-    document.getElementById('sr-date').textContent   = scanResult.date;
+    document.getElementById('sr-amount').textContent = amt ? 'NT$ '+amt.toLocaleString() : '（未辨識到，可手動填寫）';
+    document.getElementById('sr-date').textContent   = dt;
     document.getElementById('sr-note').textContent   = scanResult.note || '（未辨識到）';
     document.getElementById('sr-cat').textContent    = scanResult.cat;
-
     document.getElementById('scan-loading').style.display = 'none';
     document.getElementById('scan-result-card').style.display = 'block';
     document.getElementById('scan-apply-btn').style.display = 'block';
-    if(!scanResult.amount) setHint('💡 未辨識到金額，請套用後手動補填');
+    if(!amt) setHint('💡 金額未辨識，按下記帳後可手動輸入');
 
   }catch(err){
-    console.error('analyzeInvoice:', err);
+    console.error('analyzeInvoice error:', err);
     document.getElementById('scan-loading').style.display = 'none';
-    // API Key 錯誤給出明確提示
-    const msg = err.message || '';
-    let hint = '⚠️ 辨識失敗，請重試';
-    if(msg.includes('API_KEY_INVALID') || msg.includes('API key not valid')){
-      hint = '⚠️ API Key 無效，請重新設定';
-      clearGeminiKey();
-    } else if(msg.includes('QUOTA') || msg.includes('quota')){
-      hint = '⚠️ 今日免費額度已用完（每天 1500 次）';
-    } else if(msg.toLowerCase().includes('network') || msg.includes('Failed to fetch')){
-      hint = '⚠️ 網路連線失敗，請確認網路後重試';
-    } else {
-      hint = '⚠️ ' + msg.slice(0,60);
+    const msg = err.message||'';
+    let hint = '⚠️ 辨識失敗：'+msg.slice(0,50);
+    if(msg.includes('API_KEY_INVALID')||msg.includes('API key not valid')){
+      hint='⚠️ API Key 已過期，請更新';
+    } else if(msg.includes('QUOTA')||msg.includes('429')){
+      hint='⚠️ 今日免費額度已用完（每天1500次）';
+    } else if(msg.includes('Failed to fetch')||msg.includes('NetworkError')){
+      hint='⚠️ 網路錯誤，請確認連線後重試';
     }
     setHint(hint);
     document.getElementById('scan-apply-btn').style.display = 'block';
-    scanResult = { amount:null, date: today(), note:'', cat:'其他' };
+    scanResult = { amount:null, date:today(), note:'', cat:'其他' };
   }
 }
 
@@ -1487,279 +1519,39 @@ function setHint(msg){
 }
 function today(){ return new Date().toISOString().split('T')[0]; }
 
-// ── 套用辨識結果 → 直接完成記帳 ──
+// ── 套用辨識結果 → 直接記帳 ──
 function applyScanResult(){
   if(!scanResult) return;
 
-  // 確保是支出模式
-  if(curType !== 'exp'){
-    curType = 'exp';
-    document.getElementById('btn-exp').className = 'type-btn active-exp';
-    document.getElementById('btn-inc').className = 'type-btn';
-    document.getElementById('pay-section').style.display = '';
-    document.getElementById('submit-btn').className = 'submit-btn';
-    document.getElementById('submit-btn').textContent = '+ 新增支出';
-    renderCatsGrid('cats-grid','exp',selCatMain);
-  }
-
-  // 確認金額
+  // 若金額未辨識，改為填表單讓用戶手動補
   if(!scanResult.amount || scanResult.amount <= 0){
-    // 若金額未辨識到，改為填表單讓用戶手動補
-    if(scanResult.note)   document.getElementById('note-inp').value   = scanResult.note;
-    if(scanResult.date)   document.getElementById('date-inp').value   = scanResult.date;
+    curType = 'exp';
+    if(scanResult.note) document.getElementById('note-inp').value = scanResult.note;
+    if(scanResult.date) document.getElementById('date-inp').value = scanResult.date;
     if(scanResult.cat){ selCatMain['exp'] = scanResult.cat; renderCatsGrid('cats-grid','exp',selCatMain); }
-    closeM('scan-modal');
-    resetScan();
+    closeM('scan-modal'); resetScan();
     showToast('⚠️ 未辨識到金額，請手動填入後新增');
-    window.scrollTo({top:0,behavior:'smooth'});
     document.getElementById('amount-inp').focus();
     return;
   }
 
-  // 設定分類
-  if(scanResult.cat){ selCatMain['exp'] = scanResult.cat; }
-
-  // 取得付款人與支付方式（用目前表單選的）
+  // 直接建立記錄
+  const cat  = scanResult.cat || '其他';
+  const emo  = (EXP_CATS.find(c=>c.n===cat)||EXP_CATS[0]).e;
   const payer = getChip('payer-row') || person1;
-  const pay   = getChip('pay-row')   || '';
-  const cat   = scanResult.cat || '其他';
-  const cats  = EXP_CATS;
-  const emo   = (cats.find(c=>c.n===cat)||cats[0]).e;
-  const newId = Date.now() + '_' + Math.random().toString(36).slice(2,6);
-
-  // 直接新增記錄
+  const pay   = getChip('pay-row') || '';
+  const newId = Date.now()+'_'+Math.random().toString(36).slice(2,6);
   records.unshift({
-    id    : newId,
-    type  : 'exp',
-    cat   : cat,
-    emoji : emo,
-    note  : scanResult.note || cat,
+    id:newId, type:'exp', cat, emoji:emo,
+    note: scanResult.note || cat,
     amount: Number(scanResult.amount),
-    payer : payer,
-    pay   : pay,
-    date  : scanResult.date || today()
+    payer, pay,
+    date: scanResult.date || today(),
+    photo: null
   });
-
-  closeM('scan-modal');
-  resetScan();
-
-  // 重新渲染並同步
+  closeM('scan-modal'); resetScan();
   renderRecent(); updateHeader(); save();
-  renderCatsGrid('cats-grid','exp',selCatMain);
-
-  showToast('✅ 發票記帳完成！NT$' + Number(scanResult.amount).toLocaleString());
-  // 切回記帳頁顯示新記錄
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('page-record').classList.add('active');
-  document.querySelector('.nav-item').classList.add('active');
-}
-
-// ═══════════════════════════════════════════════
-//  VOICE RECORD — 語音記帳
-// ═══════════════════════════════════════════════
-let voiceRecognition = null;
-let voiceRecording   = false;
-let voiceResult      = null;
-let voiceTranscript  = '';
-
-function openVoiceModal(){
-  resetVoice();
-  openM('voice-modal');
-}
-
-function resetVoice(){
-  voiceResult     = null;
-  voiceTranscript = '';
-  voiceRecording  = false;
-  document.getElementById('voice-mic-icon').className   = 'voice-mic-wrap';
-  document.getElementById('voice-status-txt').textContent = '點下方按鈕開始說話';
-  document.getElementById('voice-transcript').textContent = '例如：「買午餐花了150元」、「交通費50塊」';
-  document.getElementById('voice-result-card').style.display = 'none';
-  document.getElementById('voice-apply-btn').style.display   = 'none';
-  document.getElementById('voice-hint').style.display        = 'none';
-  document.getElementById('voice-record-btn').className = 'voice-btn';
-  document.getElementById('voice-btn-icon').textContent = '🎙️';
-  document.getElementById('voice-btn-txt').textContent  = '開始錄音';
-}
-
-function stopVoiceRecord(){
-  if(voiceRecognition){ try{ voiceRecognition.stop(); }catch(e){} }
-  voiceRecording = false;
-}
-
-function toggleVoiceRecord(){
-  if(voiceRecording){ stopVoiceRecord(); return; }
-
-  // 檢查瀏覽器支援
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if(!SpeechRecognition){
-    showVoiceHint('⚠️ 此瀏覽器不支援語音辨識，請改用 Chrome 或 Safari');
-    return;
-  }
-
-  voiceRecognition = new SpeechRecognition();
-  voiceRecognition.lang = 'zh-TW';          // 繁體中文
-  voiceRecognition.continuous = false;
-  voiceRecognition.interimResults = true;   // 即時顯示辨識文字
-  voiceRecognition.maxAlternatives = 1;
-
-  voiceRecording = true;
-  document.getElementById('voice-mic-icon').className   = 'voice-mic-wrap recording';
-  document.getElementById('voice-status-txt').textContent = '聆聽中…請說出消費內容';
-  document.getElementById('voice-transcript').textContent = '…';
-  document.getElementById('voice-record-btn').className = 'voice-btn recording';
-  document.getElementById('voice-btn-icon').textContent = '⏹️';
-  document.getElementById('voice-btn-txt').textContent  = '停止錄音';
-  document.getElementById('voice-result-card').style.display = 'none';
-  document.getElementById('voice-apply-btn').style.display   = 'none';
-  document.getElementById('voice-hint').style.display        = 'none';
-
-  voiceRecognition.onresult = function(e){
-    let interim = '', final = '';
-    for(let i = e.resultIndex; i < e.results.length; i++){
-      if(e.results[i].isFinal) final += e.results[i][0].transcript;
-      else interim += e.results[i][0].transcript;
-    }
-    voiceTranscript = final || interim;
-    document.getElementById('voice-transcript').textContent = voiceTranscript || '…';
-  };
-
-  voiceRecognition.onerror = function(e){
-    voiceRecording = false;
-    document.getElementById('voice-mic-icon').className = 'voice-mic-wrap';
-    document.getElementById('voice-record-btn').className = 'voice-btn';
-    document.getElementById('voice-btn-icon').textContent = '🎙️';
-    document.getElementById('voice-btn-txt').textContent  = '重新錄音';
-    const errMap = {
-      'no-speech'      : '⚠️ 沒有偵測到聲音，請再試一次',
-      'audio-capture'  : '⚠️ 無法存取麥克風，請確認權限',
-      'not-allowed'    : '⚠️ 麥克風被拒絕，請在瀏覽器設定中允許麥克風',
-      'network'        : '⚠️ 網路錯誤，語音辨識需要網路連線',
-    };
-    showVoiceHint(errMap[e.error] || '⚠️ 語音辨識失敗：' + e.error);
-  };
-
-  voiceRecognition.onend = function(){
-    voiceRecording = false;
-    document.getElementById('voice-mic-icon').className = 'voice-mic-wrap';
-    document.getElementById('voice-record-btn').className = 'voice-btn';
-    document.getElementById('voice-btn-icon').textContent = '🎙️';
-    document.getElementById('voice-btn-txt').textContent  = '重新錄音';
-
-    if(voiceTranscript){
-      document.getElementById('voice-status-txt').textContent = '辨識完成，AI 解析中…';
-      parseVoiceText(voiceTranscript);
-    } else {
-      document.getElementById('voice-status-txt').textContent = '未偵測到語音，請重試';
-    }
-  };
-
-  voiceRecognition.start();
-}
-
-// ── 用 Gemini 解析語音文字 ──
-async function parseVoiceText(text){
-  const key = getGeminiKey();
-  const url  = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + key;
-
-  const prompt = `請從以下語音記帳文字中提取記帳資訊，回傳 JSON（只輸出 JSON，不要其他文字）：
-語音內容：「${text}」
-
-回傳格式：
-{"amount":數字或null,"category":"餐飲|購物|交通|娛樂|居家|醫療|保險|美妝|保養|旅遊|教育|汽車|車輛保養|停車費|薪資|獎金|其他","note":"簡短描述最多15字","type":"exp或inc","payer":"${person1}|${person2}|共同"}
-
-規則：
-- 如果說「收入」「薪水」「賺」則 type=inc，其他預設 exp
-- 如果說「小美」「${person1}」則 payer=${person1}，說「小明」「${person2}」則 payer=${person2}，說「我們」「共同」則 payer=共同，否則預設 ${person1}
-- category 從清單中選最接近的
-- amount 只填數字`;
-
-  try{
-    const resp = await fetch(url, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        contents:[{parts:[{text: prompt}]}],
-        generationConfig:{temperature:0.1, maxOutputTokens:150}
-      })
-    });
-
-    if(!resp.ok) throw new Error('HTTP ' + resp.status);
-    const data = await resp.json();
-    const raw  = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    const cleaned = raw.replace(/```json|```/g,'').trim();
-    const parsed  = JSON.parse(cleaned);
-
-    voiceResult = {
-      amount : parsed.amount && !isNaN(parsed.amount) ? Number(parsed.amount) : null,
-      cat    : parsed.category || '其他',
-      note   : parsed.note     || text.slice(0,20),
-      type   : parsed.type === 'inc' ? 'inc' : 'exp',
-      payer  : parsed.payer   || person1
-    };
-
-    // 顯示結果
-    document.getElementById('vr-amount').textContent = voiceResult.amount
-      ? 'NT$ ' + voiceResult.amount.toLocaleString() : '（未辨識）';
-    document.getElementById('vr-cat').textContent    = voiceResult.cat;
-    document.getElementById('vr-note').textContent   = voiceResult.note;
-    document.getElementById('vr-payer').textContent  = voiceResult.payer;
-    document.getElementById('voice-result-card').style.display = 'block';
-    document.getElementById('voice-apply-btn').style.display   = 'block';
-    document.getElementById('voice-status-txt').textContent    = '解析完成！請確認後記帳';
-
-    if(!voiceResult.amount) showVoiceHint('💡 未辨識到金額，請記帳後手動修改');
-
-  }catch(err){
-    console.error('parseVoiceText:', err);
-    document.getElementById('voice-status-txt').textContent = '解析失敗，請重試';
-    showVoiceHint('⚠️ AI 解析失敗：' + (err.message||'').slice(0,50));
-    // 即使解析失敗，也允許用原始文字記帳
-    voiceResult = { amount:null, cat:'其他', note:text.slice(0,20), type:'exp', payer:person1 };
-    document.getElementById('voice-apply-btn').style.display = 'block';
-  }
-}
-
-// ── 確認語音記帳 → 直接新增記錄 ──
-function applyVoiceResult(){
-  if(!voiceResult) return;
-
-  if(!voiceResult.amount || voiceResult.amount <= 0){
-    // 金額未辨識，填表單讓用戶補
-    if(voiceResult.type !== curType) switchType(voiceResult.type);
-    document.getElementById('note-inp').value = voiceResult.note;
-    selCatMain[voiceResult.type] = voiceResult.cat;
-    renderCatsGrid('cats-grid', voiceResult.type, selCatMain);
-    closeM('voice-modal'); stopVoiceRecord();
-    showToast('⚠️ 未辨識到金額，請手動填入');
-    document.getElementById('amount-inp').focus();
-    return;
-  }
-
-  const cats = voiceResult.type === 'exp' ? EXP_CATS : INC_CATS;
-  const emo  = (cats.find(c=>c.n===voiceResult.cat)||cats[0]).e;
-  const pay  = voiceResult.type === 'exp' ? (getChip('pay-row')||'') : '';
-  const newId = Date.now() + '_' + Math.random().toString(36).slice(2,6);
-
-  records.unshift({
-    id    : newId,
-    type  : voiceResult.type,
-    cat   : voiceResult.cat,
-    emoji : emo,
-    note  : voiceResult.note,
-    amount: voiceResult.amount,
-    payer : voiceResult.payer,
-    pay   : pay,
-    date  : today()
-  });
-
-  closeM('voice-modal'); stopVoiceRecord(); resetVoice();
-  renderRecent(); updateHeader(); save();
-
-  const typeLabel = voiceResult.type === 'inc' ? '收入' : '支出';
-  showToast('✅ 語音' + typeLabel + '記帳完成！NT$' + voiceResult.amount.toLocaleString());
-
+  showToast('✅ 發票記帳完成！NT$'+Number(scanResult.amount).toLocaleString());
   // 切回記帳頁
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
@@ -1767,15 +1559,299 @@ function applyVoiceResult(){
   document.querySelector('.nav-item').classList.add('active');
 }
 
-function showVoiceHint(msg){
-  const el = document.getElementById('voice-hint');
-  el.textContent = msg; el.style.display = 'block';
+// ═══════════════════════════════════════════════
+//  PHOTO ATTACHMENT — 照片附件
+// ═══════════════════════════════════════════════
+let attachedPhoto = null; // base64 string
+
+function handlePhotoAttach(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  // 壓縮到 800px，控制 Firebase 大小
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    compressImage(ev.target.result, 800).then(function(compressed){
+      attachedPhoto = compressed;
+      const thumb = document.getElementById('photo-thumb');
+      thumb.src = compressed;
+      document.getElementById('photo-thumb-wrap').style.display = 'block';
+    });
+  };
+  reader.readAsDataURL(file);
+}
+
+function removePhoto(){
+  attachedPhoto = null;
+  document.getElementById('photo-thumb').src = '';
+  document.getElementById('photo-thumb-wrap').style.display = 'none';
+  document.getElementById('photo-inp').value = '';
+}
+
+// recHTML 中顯示照片
+function recHTML(r){
+  const photoHtml = r.photo
+    ? `<img class="rec-photo" src="${r.photo}" alt="附件" onclick="viewPhoto('${r.id}')">`
+    : '';
+  return `<div class="record-item" style="flex-direction:column;align-items:stretch;padding:11px 14px;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="rec-emoji ${r.type==='inc'?'income':''}">${r.emoji}</div>
+      <div class="rec-info">
+        <div class="rec-name">${r.note}</div>
+        <div class="rec-meta">${r.payer}${r.pay?' · '+r.pay:''} · ${r.date?r.date.slice(5).replace('-','/'):'--'}</div>
+      </div>
+      <div class="rec-right">
+        <div class="rec-amount ${r.type==='inc'?'inc':''}">${r.type==='inc'?'+':'-'}NT$${r.amount.toLocaleString()}</div>
+        <div class="rec-actions">
+          <button class="action-btn edit-btn" onclick="openEdit('${r.id}')">編輯</button>
+          <button class="action-btn del-btn" onclick="delRecord('${r.id}')">刪除</button>
+        </div>
+      </div>
+    </div>
+    ${photoHtml}
+  </div>`;
+}
+
+// 點擊照片全螢幕預覽
+function viewPhoto(id){
+  const r = records.find(x=>x.id==id);
+  if(!r||!r.photo) return;
+  const overlay = document.createElement('div');
+  overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:500;display:flex;align-items:center;justify-content:center;cursor:pointer;';
+  overlay.innerHTML=`<img src="${r.photo}" style="max-width:96vw;max-height:96vh;border-radius:8px;object-fit:contain;">`;
+  overlay.onclick=()=>document.body.removeChild(overlay);
+  document.body.appendChild(overlay);
+}
+
+// ═══════════════════════════════════════════════
+//  VOICE RECORD — 語音記帳（Web Speech API）
+// ═══════════════════════════════════════════════
+let voiceRec = null, voiceRunning = false, voiceResult = null, voiceText = '';
+
+function openVoiceModal(){
+  voiceResult = null; voiceText = '';
+  document.getElementById('voice-status').textContent = '按下按鈕，說出消費內容';
+  document.getElementById('voice-transcript').textContent = '例如：「午餐花了150元」「小明搭捷運50塊」「收到薪水5萬」';
+  document.getElementById('voice-result-card').style.display = 'none';
+  document.getElementById('voice-apply-btn').style.display   = 'none';
+  document.getElementById('voice-hint').style.display        = 'none';
+  setVoiceBtnState(false);
+  openM('voice-modal');
+}
+
+function setVoiceBtnState(recording){
+  const btn = document.getElementById('voice-record-btn');
+  btn.className = 'voice-record-btn' + (recording?' recording':'');
+  document.getElementById('voice-btn-ic').textContent  = recording ? '⏹️' : '🎙️';
+  document.getElementById('voice-btn-txt').textContent = recording ? '停止錄音' : '開始錄音';
+}
+
+function stopVoice(){
+  if(voiceRec){ try{ voiceRec.stop(); }catch(e){} voiceRec=null; }
+  voiceRunning = false;
+  setVoiceBtnState(false);
+}
+
+function toggleVoice(){
+  if(voiceRunning){ stopVoice(); return; }
+
+  const SR = window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){
+    document.getElementById('voice-hint').textContent='⚠️ 此裝置不支援語音辨識，請改用 Chrome 或 Safari';
+    document.getElementById('voice-hint').style.display='block';
+    return;
+  }
+
+  voiceRec = new SR();
+  voiceRec.lang = 'zh-TW';
+  voiceRec.continuous = false;
+  voiceRec.interimResults = true;
+
+  voiceRunning = true;
+  voiceText = '';
+  setVoiceBtnState(true);
+  document.getElementById('voice-status').textContent = '🔴 聆聽中，請說話…';
+  document.getElementById('voice-transcript').textContent = '…';
+  document.getElementById('voice-result-card').style.display = 'none';
+  document.getElementById('voice-apply-btn').style.display   = 'none';
+  document.getElementById('voice-hint').style.display        = 'none';
+
+  voiceRec.onresult = function(e){
+    let interim='', final='';
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      if(e.results[i].isFinal) final+=e.results[i][0].transcript;
+      else interim+=e.results[i][0].transcript;
+    }
+    voiceText = final||interim;
+    document.getElementById('voice-transcript').textContent = voiceText||'…';
+  };
+
+  voiceRec.onerror = function(e){
+    voiceRunning=false; setVoiceBtnState(false);
+    const m={'no-speech':'沒有偵測到聲音，請再試','not-allowed':'麥克風被拒絕，請允許麥克風存取','network':'網路錯誤'};
+    const txt = '⚠️ '+(m[e.error]||'語音失敗：'+e.error);
+    document.getElementById('voice-status').textContent = txt;
+    document.getElementById('voice-hint').textContent = txt;
+    document.getElementById('voice-hint').style.display = 'block';
+  };
+
+  voiceRec.onend = function(){
+    voiceRunning=false; setVoiceBtnState(false);
+    if(voiceText){
+      document.getElementById('voice-status').textContent = 'AI 解析中…';
+      parseVoice(voiceText);
+    } else {
+      document.getElementById('voice-status').textContent = '未偵測到語音，請重試';
+    }
+  };
+
+  try{ voiceRec.start(); }
+  catch(e){
+    voiceRunning=false; setVoiceBtnState(false);
+    document.getElementById('voice-status').textContent='⚠️ 無法啟動麥克風：'+e.message;
+  }
+}
+
+async function parseVoice(text){
+  const key = getGeminiKey();
+  const url='https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key='+key;
+
+  // ✅ 完全改用英文 prompt，避免 Gemini 把中文說明混入 JSON 值
+  const prompt=`You are a bookkeeping assistant. Extract expense/income info from this voice input (in Traditional Chinese) and return ONLY a valid JSON object with no other text:
+Voice input: "${text}"
+JSON format:
+{"amount":<NUMBER only, e.g. 150, or null>,"type":"<exp or inc>","category":"<one of: 餐飲,購物,交通,娛樂,居家,醫療,保險,美妝,保養,旅遊,教育,汽車,車輛保養,停車費,薪資,獎金,其他>","note":"<brief description in Traditional Chinese max 12 chars>","payer":"<${person1} or ${person2} or 共同>"}
+Rules:
+- type=inc if text mentions income/salary/received money, else exp
+- payer=${person2} if text mentions "${person2}", payer=共同 if "我們"/"共同", else default ${person1}
+- amount must be a plain number, NOT a string`;
+
+  try{
+    const resp=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        contents:[{parts:[{text:prompt}]}],
+        generationConfig:{temperature:0, maxOutputTokens:200, responseMimeType:'application/json'}
+      })});
+    if(!resp.ok) throw new Error('HTTP '+resp.status);
+    const data=await resp.json();
+    const raw=(data?.candidates?.[0]?.content?.parts?.[0]?.text||'').trim();
+    // 清理 markdown
+    const cleaned = raw.replace(/```json[\s\S]*?```|```[\s\S]*?```/g, m=>m.replace(/```json|```/g,'')).trim();
+
+    let p;
+    try{ p = JSON.parse(cleaned); }
+    catch(e){
+      const m = raw.match(/\{[\s\S]+\}/);
+      if(m) p = JSON.parse(m[0]);
+      else throw new Error('格式錯誤');
+    }
+
+    const amt = safeNum(p.amount);
+    voiceResult={
+      amount : amt,
+      type   : p.type==='inc'?'inc':'exp',
+      cat    : p.category||'其他',
+      note   : (p.note||text).slice(0,20),
+      payer  : p.payer||person1
+    };
+
+    document.getElementById('vr-amount').textContent = amt?'NT$'+amt.toLocaleString():'（未辨識，記帳後手動補）';
+    document.getElementById('vr-type').textContent   = voiceResult.type==='inc'?'💰 收入':'💸 支出';
+    document.getElementById('vr-cat').textContent    = voiceResult.cat;
+    document.getElementById('vr-note').textContent   = voiceResult.note;
+    document.getElementById('vr-payer').textContent  = voiceResult.payer;
+    document.getElementById('voice-result-card').style.display='block';
+    document.getElementById('voice-apply-btn').style.display='block';
+    document.getElementById('voice-status').textContent='✅ 解析完成，確認後記帳';
+    if(!amt){
+      document.getElementById('voice-hint').textContent='💡 金額未辨識，按記帳後可手動輸入';
+      document.getElementById('voice-hint').style.display='block';
+    }
+  }catch(err){
+    console.error('parseVoice error:',err);
+    // ✅ 即使解析失敗，用原始語音文字填入，讓用戶手動補金額
+    voiceResult={amount:null,type:'exp',cat:'其他',note:text.slice(0,20),payer:person1};
+    document.getElementById('voice-status').textContent='AI解析失敗，已用原始文字填入';
+    document.getElementById('vr-amount').textContent='（請手動填寫）';
+    document.getElementById('vr-type').textContent='💸 支出';
+    document.getElementById('vr-cat').textContent='其他';
+    document.getElementById('vr-note').textContent=text.slice(0,20);
+    document.getElementById('vr-payer').textContent=person1;
+    document.getElementById('voice-result-card').style.display='block';
+    document.getElementById('voice-apply-btn').style.display='block';
+    document.getElementById('voice-hint').textContent='⚠️ AI解析失敗，請手動補填金額後記帳';
+    document.getElementById('voice-hint').style.display='block';
+  }
+}
+
+function applyVoice(){
+  if(!voiceResult) return;
+  // 若金額未辨識，填表單讓用戶補
+  if(!voiceResult.amount||voiceResult.amount<=0){
+    if(voiceResult.type!==curType) switchType(voiceResult.type);
+    document.getElementById('note-inp').value=voiceResult.note;
+    selCatMain[voiceResult.type]=voiceResult.cat;
+    renderCatsGrid('cats-grid',voiceResult.type,selCatMain);
+    closeM('voice-modal'); stopVoice();
+    showToast('⚠️ 未辨識到金額，請手動填入後新增');
+    document.getElementById('amount-inp').focus();
+    return;
+  }
+  const cats=voiceResult.type==='exp'?EXP_CATS:INC_CATS;
+  const emo=(cats.find(c=>c.n===voiceResult.cat)||cats[0]).e;
+  const pay=voiceResult.type==='exp'?(getChip('pay-row')||''):'';
+  const newId=Date.now()+'_'+Math.random().toString(36).slice(2,6);
+  records.unshift({id:newId,type:voiceResult.type,cat:voiceResult.cat,emoji:emo,
+    note:voiceResult.note,amount:voiceResult.amount,payer:voiceResult.payer,pay,date:today(),photo:null});
+  closeM('voice-modal'); stopVoice();
+  renderRecent(); updateHeader(); save();
+  showToast('✅ 語音記帳完成！NT$'+voiceResult.amount.toLocaleString());
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-record').classList.add('active');
+  document.querySelector('.nav-item').classList.add('active');
+}
+
+// ═══════════════════════════════════════════════
+//  CREDIT CARD NAME HELPERS
+// ═══════════════════════════════════════════════
+function onPayChange(){
+  const sel = getChip('pay-row');
+  const show = sel === '💳 信用卡';
+  document.getElementById('card-name-row').style.display = show ? 'flex' : 'none';
+  document.getElementById('card-preset-row').style.display = show ? 'flex' : 'none';
+}
+function onEditPayChange(){
+  const sel = getChip('edit-pay-row');
+  document.getElementById('edit-card-name-row').style.display =
+    sel==='💳 信用卡' ? 'flex' : 'none';
+}
+function pickCard(name){
+  document.getElementById('card-name-inp').value = name;
+  document.getElementById('card-name-inp').focus();
+}
+
+// ─ openEdit 需要回填卡名 ─
+// 覆蓋 openEdit，在原本邏輯後加上卡名回填
+const _origOpenEdit = openEdit;
+function openEdit(id){
+  _origOpenEdit(id);
+  // 回填卡名
+  const r = records.find(x=>x.id==id);
+  if(r && r.pay && r.pay.startsWith('💳 ') && r.pay!=='💳 信用卡'){
+    document.getElementById('edit-card-name-inp').value = r.pay.replace('💳 ','');
+    document.getElementById('edit-card-name-row').style.display = 'flex';
+  } else {
+    document.getElementById('edit-card-name-inp').value = '';
+    // 根據目前選擇決定是否顯示
+    onEditPayChange();
+  }
 }
 
 // ═══════════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════════
 function init(){
+  attachedPhoto = null;
   // ✅ 先 load（裡面會讀取已儲存的 ROOM_ID）
   load();
   applyTheme(curTheme);
