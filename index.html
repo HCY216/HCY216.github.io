@@ -212,6 +212,24 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
 .voice-result-row{display:flex;justify-content:space-between;padding:3px 0;font-size:12px;}
 .voice-result-label{color:var(--text-sub);}
 .voice-result-val{font-weight:700;color:var(--text);}
+/* 歷程記錄 */
+.history-entry{background:var(--card);border-radius:14px;border:1px solid var(--border);padding:11px 14px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;}
+.history-op{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-top:1px;}
+.history-op.add{background:#E8F5EE;}
+.history-op.edit{background:#EEF5FF;}
+.history-op.del{background:#FFEEF0;}
+.history-info{flex:1;min-width:0;}
+.history-op-label{font-size:11px;font-weight:700;margin-bottom:2px;}
+.history-op-label.add{color:var(--income-color);}
+.history-op-label.edit{color:#4A90E2;}
+.history-op-label.del{color:#FF4081;}
+.history-desc{font-size:12px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.history-time{font-size:10px;color:var(--text-sub);margin-top:2px;}
+.history-restore-btn{background:var(--primary-pale);color:var(--primary);border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;flex-shrink:0;}
+/* 統計切換 */
+.chart-toggle{display:flex;gap:6px;margin-bottom:8px;}
+.chart-toggle-btn{padding:5px 12px;border-radius:16px;font-size:11px;font-weight:700;border:1.5px solid var(--border);background:var(--card);color:var(--text-sub);cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s;}
+.chart-toggle-btn.sel{background:var(--primary);color:white;border-color:var(--primary-dark);}
 /* 信用卡名稱欄 */
 .card-name-row{display:flex;align-items:center;gap:6px;margin-top:8px;animation:fadeIn 0.15s ease;}
 .card-name-inp{flex:1;background:var(--primary-pale);border:1.5px solid var(--border);border-radius:10px;padding:8px 12px;font-size:12px;color:var(--text);outline:none;font-family:'Nunito',sans-serif;transition:border-color 0.2s;}
@@ -350,43 +368,32 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
         </div>
         <div class="diff-row" id="cmp-diff"><span style="color:var(--text-sub)">尚無比較資料</span></div>
       </div>
-      <div class="section-title" style="margin-bottom:8px;">🍰 支出分類占比</div>
+      <div class="section-hd" style="margin-bottom:8px;">
+        <div class="section-title">🍰 支出分類占比</div>
+        <div class="chart-toggle">
+          <button class="chart-toggle-btn sel" id="cat-pct-btn" onclick="setCatMode('pct',this)">%</button>
+          <button class="chart-toggle-btn" id="cat-amt-btn" onclick="setCatMode('amt',this)">金額</button>
+        </div>
+      </div>
       <div class="card" id="cat-chart"></div>
       <div class="section-title" style="margin-bottom:8px;margin-top:6px;">💰 收入分類占比</div>
       <div class="card" id="inc-chart"></div>
     </div>
   </div>
 
-  <div class="page" id="page-settle">
+  <!-- PAGE：歷程 -->
+  <div class="page" id="page-history">
     <div class="section">
-      <div class="settle-hero">
-        <div style="font-size:12px;color:rgba(255,255,255,0.75);margin-bottom:6px;">本月結算</div>
-        <div class="settle-persons">
-          <div class="settle-person">
-            <div class="settle-av a1" id="settle-av1">小美</div>
-            <div class="settle-pname" id="settle-pname1">小美付出</div>
-            <div class="settle-paid" id="settle-av1-amt">NT$0</div>
-          </div>
-          <div class="arrow-mid">
-            <div class="arrow-amt" id="settle-arrow-amt">NT$0</div>
-            <div class="arrow-ic">→</div>
-          </div>
-          <div class="settle-person">
-            <div class="settle-av a2" id="settle-av2">小明</div>
-            <div class="settle-pname" id="settle-pname2">小明付出</div>
-            <div class="settle-paid" id="settle-av2-amt">NT$0</div>
-          </div>
-        </div>
-        <div class="settle-desc" id="settle-desc">計算中...</div>
+      <div class="section-hd" style="margin-bottom:10px;">
+        <div class="section-title">📜 記帳歷程</div>
+        <span class="section-more" onclick="clearHistory()" style="color:#FF4081;">清空歷程</span>
       </div>
-      <div class="section-title" style="margin-bottom:8px;">💸 還款方式</div>
-      <div class="pay-method-item" onclick="markSettled('LINE Pay')"><div class="pay-ic">💚</div><div class="pay-info"><div class="pay-name">LINE Pay</div><div class="pay-desc">傳送 LINE Pay 請款連結</div></div></div>
-      <div class="pay-method-item" onclick="markSettled('Apple Pay')"><div class="pay-ic">🍎</div><div class="pay-info"><div class="pay-name">Apple Pay</div><div class="pay-desc">透過 iMessage 傳送請款</div></div></div>
-      <div class="pay-method-item" onclick="markSettled('街口支付')"><div class="pay-ic">🧧</div><div class="pay-info"><div class="pay-name">街口支付</div><div class="pay-desc">掃碼或傳送請款</div></div></div>
-      <div class="pay-method-item" onclick="markSettled('銀行轉帳')"><div class="pay-ic">🏦</div><div class="pay-info"><div class="pay-name">銀行轉帳</div><div class="pay-desc">記錄轉帳已完成</div></div></div>
-      <div class="pay-method-item" onclick="markSettled('現金')"><div class="pay-ic">💵</div><div class="pay-info"><div class="pay-name">現金</div><div class="pay-desc">標記現金已給付</div></div></div>
-      <div class="section-title" style="margin-bottom:8px;">📜 結算記錄</div>
-      <div class="card" id="settle-history"></div>
+      <div style="background:#FFF3CD;border-radius:12px;padding:10px 14px;font-size:11px;color:#856404;margin-bottom:12px;line-height:1.6;">
+        ℹ️ 保留最近 <strong>100 筆</strong>操作紀錄（新增、編輯、刪除），可點「復原」還原誤刪的帳款。
+      </div>
+      <div id="history-list">
+        <div style="text-align:center;color:var(--text-sub);padding:30px;font-size:13px;">尚無歷程記錄</div>
+      </div>
     </div>
   </div>
 
@@ -441,7 +448,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
   <button class="nav-item active" onclick="showPage('record',this)"><span class="nav-icon">✏️</span>記帳</button>
   <button class="nav-item" onclick="showPage('search',this)"><span class="nav-icon">🔍</span>查詢</button>
   <button class="nav-item" onclick="showPage('stats',this)"><span class="nav-icon">📊</span>統計</button>
-  <button class="nav-item" onclick="showPage('settle',this)"><span class="nav-icon">⚖️</span>結算</button>
+  <button class="nav-item" onclick="showPage('history',this)"><span class="nav-icon">📜</span>歷程</button>
   <button class="nav-item" onclick="showPage('fixed',this)"><span class="nav-icon">📌</span>固定</button>
 </nav>
 
@@ -739,6 +746,7 @@ function attachListener(){
     // ✅ 完全採用雲端資料覆蓋本地
     if(Array.isArray(d.records))    records    = d.records;
     if(Array.isArray(d.fixedItems)) fixedItems = d.fixedItems;
+    if(Array.isArray(d.history))    actionHistory = d.history;
     if(typeof d.curTheme==='number'){ curTheme=d.curTheme; applyTheme(curTheme); }
     if(d.nid && d.nid > nid)   nid    = d.nid;
     if(d.person1)  person1  = d.person1;
@@ -767,6 +775,7 @@ function pushToCloud(){
   fbDb.ref(path).set({
     records    : records,
     fixedItems : fixedItems,
+    history    : actionHistory,
     curTheme   : curTheme,
     nid        : nid,
     person1    : person1,
@@ -914,7 +923,19 @@ function renderCatsGrid(gridId,type,catSel){
       <span class="ce">${c.e}</span>${c.n}</div>`).join('');
 }
 function mainPickCat(n){ selCatMain[curType]=n; renderCatsGrid('cats-grid',curType,selCatMain); }
-function editPickCat(n){ selCatEdit[editType]=n; renderCatsGrid('edit-cats-grid',editType,selCatEdit); }
+function editPickCat(n){ selCatEdit[editType]=n; renderCatsGrid('edit-cats-grid',editType,selCatEdit);
+  try{
+    var _ci=document.getElementById('edit-card-name-inp');
+    var _cr=document.getElementById('edit-card-name-row');
+    if(_ci&&_cr){
+      var _p=r.pay||'';
+      var _isCC=_p.trim()==='💳 信用卡'||_p.trim()==='信用卡';
+      var _hasName=_p.startsWith('💳 ')&&!_isCC;
+      _ci.value=_hasName?_p.slice(3):'';
+      _cr.style.display=(_isCC||_hasName)?'flex':'none';
+    }
+  }catch(e){}
+}
 
 // ═══════════════════════════════════════════════
 //  TYPE SWITCH
@@ -977,6 +998,7 @@ function addRecord(){
   document.getElementById('date-inp').value = new Date().toISOString().split('T')[0];
   removePhoto(); // 清除附件
   document.getElementById('card-name-inp').value = '';
+  if(typeof logHistory==='function')logHistory('add',records[0]);
   renderRecent(); updateHeader(); save();
   showToast(curType==='exp'?'支出已記錄 ✅':'收入已記錄 🎉');
 }
@@ -1017,14 +1039,18 @@ function saveEdit(){
   const cats    = editType==='exp' ? EXP_CATS : INC_CATS;
   const emo     = (cats.find(c=>c.n===cat)||cats[0]).e;
   const dateVal = document.getElementById('edit-date').value || new Date().toISOString().split('T')[0];
+  var _pr=records.find(function(r){return r.id==id;})?JSON.parse(JSON.stringify(records.find(function(r){return r.id==id;}))):null;
   const i = records.findIndex(r=>r.id==id);
   if(i>=0) records[i] = {...records[i], type:editType, cat, emoji:emo, note, amount:amt, payer, pay, date:dateVal};
+  if(typeof logHistory==='function'&&_pr)logHistory('edit',records[records.findIndex(function(r){return r.id==id;})],_pr);
   closeM('record-modal'); renderRecent(); updateHeader(); save();
   showToast('記錄已更新 ✏️');
 }
 function delRecord(id){
   if(!confirm('確定要刪除這筆記錄嗎?')) return;
-  records = records.filter(r=>r.id!=id);
+  var _dr=records.find(function(r){return r.id==id;});
+  records=records.filter(r=>r.id!=id);
+  if(typeof logHistory==='function'&&_dr)logHistory('del',_dr);
   renderRecent(); updateHeader(); save();
   if(document.getElementById('all-modal').classList.contains('open')) renderAll();
   showToast('記錄已刪除 🗑️');
@@ -1033,22 +1059,6 @@ function delRecord(id){
 // ═══════════════════════════════════════════════
 //  RENDER RECORDS
 // ═══════════════════════════════════════════════
-function recHTML(r){
-  return `<div class="record-item">
-    <div class="rec-emoji ${r.type==='inc'?'income':''}">${r.emoji}</div>
-    <div class="rec-info">
-      <div class="rec-name">${r.note}</div>
-      <div class="rec-meta">${r.payer}${r.pay?' · '+r.pay:''} · ${r.date?r.date.slice(5).replace('-','/'):'--'}</div>
-    </div>
-    <div class="rec-right">
-      <div class="rec-amount ${r.type==='inc'?'inc':''}">${r.type==='inc'?'+':'-'}NT$${r.amount.toLocaleString()}</div>
-      <div class="rec-actions">
-        <button class="action-btn edit-btn" onclick="openEdit('${r.id}')">編輯</button>
-        <button class="action-btn del-btn"  onclick="delRecord('${r.id}')">刪除</button>
-      </div>
-    </div>
-  </div>`;
-}
 function renderRecent(){
   const l=document.getElementById('recent-list');
   const r=records.slice(0,8);
@@ -1141,12 +1151,22 @@ function renderStats(period){
   renderCatChart(); renderIncChart();
 }
 function renderCatChart(){
-  const el=document.getElementById('cat-chart');
-  const t={};records.filter(r=>r.type==='exp').forEach(r=>{t[r.cat]=(t[r.cat]||0)+r.amount;});
-  const tot=Object.values(t).reduce((s,v)=>s+v,0)||1;
-  const sorted=Object.entries(t).sort((a,b)=>b[1]-a[1]).slice(0,6);
-  const c=['#FF6B9D','#FF8FB1','#4A90E2','#9B59B6','#2ECC8E','#FF8C42'];
-  el.innerHTML=sorted.map(([n,a],i)=>{const p=Math.round(a/tot*100);const ce=(EXP_CATS.find(x=>x.n===n)||{e:'📦'}).e;return`<div class="cat-bar-row"><span style="font-size:14px;width:20px;">${ce}</span><div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${c[i%c.length]};"></div></div><span style="font-size:11px;color:var(--text-sub);width:72px;text-align:right;">${n} ${p}%</span></div>`;}).join('')||'<div style="text-align:center;color:var(--text-sub);padding:10px;font-size:12px;">尚無支出記錄</div>';
+  var el=document.getElementById('cat-chart');
+  var t={};
+  records.filter(function(r){return r.type==='exp';}).forEach(function(r){t[r.cat]=(t[r.cat]||0)+r.amount;});
+  var tot=Object.values(t).reduce(function(s,v){return s+v;},0)||1;
+  var sorted=Object.entries(t).sort(function(a,b){return b[1]-a[1];}).slice(0,6);
+  var colors=['#FF6B9D','#FF8FB1','#4A90E2','#9B59B6','#2ECC8E','#FF8C42'];
+  var mode=(typeof catChartMode!=='undefined')?catChartMode:'pct';
+  if(!sorted.length){el.innerHTML='<div style="text-align:center;color:var(--text-sub);padding:10px;font-size:12px;">尚無支出記錄</div>';return;}
+  el.innerHTML=sorted.map(function(entry,i){
+    var n=entry[0],a=entry[1];
+    var p=Math.round(a/tot*100);
+    var catObj=EXP_CATS.find(function(x){return x.n===n;});
+    var ce=catObj?catObj.e:'';
+    var label=(mode==='amt')?('NT$'+a.toLocaleString()):(n+' '+p+'%');
+    return '<div class="cat-bar-row"><span style="font-size:14px;width:20px;">'+ce+'</span><div class="bar-track"><div class="bar-fill" style="width:'+p+'%;background:'+colors[i%colors.length]+';"></div></div><span style="font-size:11px;color:var(--text-sub);width:82px;text-align:right;">'+label+'</span></div>';
+  }).join('');
 }
 function renderIncChart(){
   const el=document.getElementById('inc-chart');
@@ -1204,6 +1224,7 @@ function showPage(name,el){
   el.classList.add('active');
   if(name==='stats') renderStats(curPeriod);
   if(name==='search') initSearchPage();
+  if(name==='history') renderHistoryPage();
 }
 function openM(id){ document.getElementById(id).classList.add('open'); }
 function closeM(id){ document.getElementById(id).classList.remove('open'); }
@@ -1830,26 +1851,71 @@ function pickCard(name){
   document.getElementById('card-name-inp').focus();
 }
 
-// ─ openEdit 需要回填卡名 ─
-// 覆蓋 openEdit，在原本邏輯後加上卡名回填
-const _origOpenEdit = openEdit;
-function openEdit(id){
-  _origOpenEdit(id);
-  // 回填卡名
-  const r = records.find(x=>x.id==id);
-  if(r && r.pay && r.pay.startsWith('💳 ') && r.pay!=='💳 信用卡'){
-    document.getElementById('edit-card-name-inp').value = r.pay.replace('💳 ','');
-    document.getElementById('edit-card-name-row').style.display = 'flex';
-  } else {
-    document.getElementById('edit-card-name-inp').value = '';
-    // 根據目前選擇決定是否顯示
-    onEditPayChange();
-  }
-}
-
 // ═══════════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════════
+
+// 歷程 + 圖表模式
+var actionHistory = [];
+var catChartMode = 'pct';
+
+function logHistory(op, rec, prev){
+  if(!rec) return;
+  actionHistory.unshift({op:op, rec:JSON.parse(JSON.stringify(rec)), prev:prev?JSON.parse(JSON.stringify(prev)):null, ts:Date.now()});
+  if(actionHistory.length>100) actionHistory=actionHistory.slice(0,100);
+  renderHistoryPage();
+}
+
+function renderHistoryPage(){
+  var el=document.getElementById('history-list');
+  if(!el) return;
+  if(!actionHistory.length){
+    el.innerHTML='<div style="text-align:center;color:var(--text-sub);padding:30px;font-size:13px;">尚無歷程記錄</div>';
+    return;
+  }
+  el.innerHTML=actionHistory.map(function(h,i){
+    var r=h.rec;
+    var amt=r.type==='inc'?'+NT$'+r.amount.toLocaleString():'-NT$'+r.amount.toLocaleString();
+    var dt=new Date(h.ts);
+    var ts=(dt.getMonth()+1)+'/'+(dt.getDate())+' '+String(dt.getHours()).padStart(2,'0')+':'+String(dt.getMinutes()).padStart(2,'0');
+    var iconMap={add:'➕',edit:'✏️',del:'🗑️'};
+    var labelMap={add:'新增',edit:'編輯',del:'刪除'};
+    var cls=h.op||'add';
+    var btn=(h.op==='del'||h.op==='edit')?'<button class="history-restore-btn" onclick="restoreRecord('+i+')">&#x5FA9;&#x539F;</button>':'';
+    return '<div class="history-entry"><div class="history-op '+cls+'">'+(iconMap[h.op]||'?')+'</div><div class="history-info"><div class="history-op-label '+cls+'">'+(labelMap[h.op]||'?')+'</div><div class="history-desc">'+r.emoji+' '+r.note+' '+amt+'</div><div class="history-time">'+ts+' · '+r.payer+(r.pay?' · '+r.pay:'')+'</div></div>'+btn+'</div>';
+  }).join('');
+}
+
+function restoreRecord(idx){
+  var h=actionHistory[idx];
+  if(!h) return;
+  if(h.op==='del'){
+    records.unshift(h.rec);
+    showToast('✅ 已復原：'+h.rec.note);
+  } else if(h.op==='edit'){
+    var i2=records.findIndex(function(r){return r.id==h.rec.id;});
+    if(i2>=0){ records[i2]=h.prev; showToast('✅ 已還原：'+h.prev.note); }
+    else { records.unshift(h.prev); showToast('✅ 已復原：'+h.prev.note); }
+  }
+  actionHistory.splice(idx,1);
+  renderRecent(); updateHeader(); save();
+  renderHistoryPage();
+}
+
+function clearHistory(){
+  if(!confirm('確定清空所有歷程記錄？')) return;
+  actionHistory=[];
+  renderHistoryPage();
+  showToast('歷程已清空');
+}
+
+function setCatMode(mode, el){
+  catChartMode=mode;
+  document.querySelectorAll('.chart-toggle-btn').forEach(function(b){b.classList.remove('sel');});
+  el.classList.add('sel');
+  renderCatChart();
+}
+
 function init(){
   attachedPhoto = null;
   // ✅ 先 load（裡面會讀取已儲存的 ROOM_ID）
