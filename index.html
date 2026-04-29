@@ -167,59 +167,43 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
 .theme-name{font-size:10px;color:var(--text-sub);}
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(40,40,40,0.92);color:white;border-radius:20px;padding:9px 20px;font-size:12px;font-weight:600;z-index:300;opacity:0;transition:all 0.3s;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-/* 查詢篩選 */
-.search-bar{display:flex;gap:6px;margin-bottom:10px;}
-.search-inp{flex:1;background:var(--primary-pale);border:1.5px solid var(--border);border-radius:12px;padding:9px 14px;font-size:13px;color:var(--text);outline:none;font-family:'Nunito',sans-serif;}
-.search-inp:focus{border-color:var(--primary);}
-.search-btn{background:var(--primary);color:white;border:none;border-radius:12px;padding:9px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;}
-.filter-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
-.filter-chip{padding:5px 12px;border-radius:20px;font-size:11px;background:var(--primary-pale);color:var(--primary);border:1.5px solid var(--border);cursor:pointer;font-family:'Nunito',sans-serif;font-weight:600;transition:all 0.15s;}
-.filter-chip.sel{background:var(--primary);color:white;border-color:var(--primary-dark);}
-.search-result-info{font-size:11px;color:var(--text-sub);margin-bottom:8px;padding:0 2px;}
-.no-result{text-align:center;color:var(--text-sub);padding:30px 20px;font-size:13px;}
-/* 發票掃描 */
-.scan-area{border:2px dashed var(--primary-light);border-radius:16px;padding:20px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--primary-pale);margin-bottom:12px;}
-.scan-area:hover{border-color:var(--primary);background:#FFE8F2;}
-.scan-area .scan-icon{font-size:36px;display:block;margin-bottom:8px;}
-.scan-area .scan-txt{font-size:13px;font-weight:600;color:var(--primary);}
-.scan-area .scan-sub{font-size:11px;color:var(--text-sub);margin-top:4px;}
-.scan-preview{width:100%;border-radius:12px;margin-bottom:10px;display:none;}
-.scan-result-card{background:var(--primary-pale);border-radius:12px;padding:12px;margin-bottom:10px;border:1px solid var(--border);}
-.scan-result-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;}
-.scan-result-label{color:var(--text-sub);}
-.scan-result-val{font-weight:700;color:var(--text);}
-.scan-loading{display:none;text-align:center;padding:16px;font-size:13px;color:var(--primary);}@keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
 /* 日期選擇器 */
 .date-inp{width:100%;background:var(--primary-pale);border:1.5px solid var(--border);border-radius:12px;padding:10px 14px;font-size:13px;font-weight:600;color:var(--text);outline:none;font-family:'Nunito',sans-serif;transition:border-color 0.2s;-webkit-appearance:none;appearance:none;}
 .date-inp:focus{border-color:var(--primary);}
 .modal-date-inp{width:100%;background:var(--primary-pale);border:1.5px solid var(--border);border-radius:12px;padding:10px 14px;font-size:13px;font-weight:600;color:var(--text);outline:none;font-family:'Nunito',sans-serif;margin-bottom:10px;display:block;-webkit-appearance:none;appearance:none;}
 .modal-date-inp:focus{border-color:var(--primary);}
-/* 附件照片 */
-.photo-attach-btn{width:100%;background:var(--primary-pale);color:var(--primary);border:1.5px dashed var(--primary-light);border-radius:12px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;margin-top:6px;transition:all 0.15s;}
-.photo-attach-btn:hover{background:var(--primary);color:white;border-style:solid;}
-.photo-thumb-wrap{position:relative;display:inline-block;margin-top:8px;width:100%;}
-.photo-thumb{width:100%;max-height:140px;object-fit:cover;border-radius:10px;border:1.5px solid var(--border);display:block;}
-.photo-remove-btn{position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.55);color:white;border:none;border-radius:50%;width:22px;height:22px;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;}
-.rec-photo{width:100%;max-height:120px;object-fit:cover;border-radius:8px;margin-top:6px;border:1px solid var(--border);}
-/* 語音按鈕 */
-.voice-open-btn{width:100%;background:linear-gradient(135deg,#8e44ad,#9b59b6);color:white;border:none;border-radius:12px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:6px;display:flex;align-items:center;justify-content:center;gap:7px;transition:transform 0.15s;}
-.voice-open-btn:active{transform:scale(0.98);}
-.voice-record-btn{width:100%;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.15s;background:linear-gradient(135deg,#8e44ad,#9b59b6);color:white;}
-.voice-record-btn.recording{background:linear-gradient(135deg,#c0392b,#e74c3c);animation:vpulse 1s infinite;}
-@keyframes vpulse{0%,100%{box-shadow:0 0 0 0 rgba(192,57,43,0.45);}60%{box-shadow:0 0 0 10px rgba(192,57,43,0);}}
-.voice-transcript-box{background:var(--primary-pale);border:1.5px solid var(--border);border-radius:12px;padding:10px 14px;font-size:13px;color:var(--text);min-height:44px;line-height:1.6;margin:8px 0;word-break:break-all;}
-.voice-result-card{background:#F5EEFF;border-radius:12px;padding:12px;margin:8px 0;border:1px solid #CDA9E0;}
-.voice-result-row{display:flex;justify-content:space-between;padding:3px 0;font-size:12px;}
-.voice-result-label{color:var(--text-sub);}
-.voice-result-val{font-weight:700;color:var(--text);}
-/* 信用卡名稱欄 */
-.card-name-row{display:flex;align-items:center;gap:6px;margin-top:8px;animation:fadeIn 0.15s ease;}
-.card-name-inp{flex:1;background:var(--primary-pale);border:1.5px solid var(--border);border-radius:10px;padding:8px 12px;font-size:12px;color:var(--text);outline:none;font-family:'Nunito',sans-serif;transition:border-color 0.2s;}
-.card-name-inp:focus{border-color:var(--primary);}
-.card-preset-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px;}
-.card-preset-chip{padding:4px 9px;border-radius:16px;font-size:10px;background:#FFF0E8;color:#E06A20;border:1px solid #FFD4B0;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s;white-space:nowrap;}
-.card-preset-chip:hover{background:#E06A20;color:white;}
-.voice-status{font-size:12px;color:var(--text-sub);text-align:center;margin:6px 0;}
+/* ── 查詢篩選 ── */
+.search-box{display:flex;gap:6px;margin-bottom:8px;}
+.search-inp{flex:1;background:var(--primary-pale);border:1.5px solid var(--border);border-radius:12px;padding:9px 13px;font-size:13px;color:var(--text);outline:none;font-family:'Nunito',sans-serif;}
+.search-inp:focus{border-color:var(--primary);}
+.search-clear{background:var(--primary);color:white;border:none;border-radius:12px;padding:9px 13px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;}
+.f-row{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px;}
+.f-chip{padding:5px 11px;border-radius:20px;font-size:11px;background:var(--primary-pale);color:var(--primary);border:1px solid var(--border);cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;}
+.f-chip.sel{background:var(--primary);color:white;border-color:var(--primary-dark);}
+.search-info{font-size:11px;color:var(--text-sub);margin-bottom:8px;padding:0 2px;}
+/* ── 信用卡名稱欄 ── */
+.cc-block{display:none;margin-top:8px;background:var(--primary-pale);border-radius:10px;padding:10px 12px;}
+.cc-inp{width:100%;background:white;border:1.5px solid var(--border);border-radius:8px;padding:8px 11px;font-size:12px;color:var(--text);outline:none;font-family:'Nunito',sans-serif;margin-bottom:6px;}
+.cc-inp:focus{border-color:var(--primary);}
+.cc-presets{display:flex;gap:5px;flex-wrap:wrap;}
+.cc-pre{padding:4px 9px;border-radius:14px;font-size:10px;background:#FFF0E8;color:#E06A20;border:1px solid #FFD4B0;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .12s;}
+.cc-pre:hover{background:#E06A20;color:white;}
+/* ── 歷程 ── */
+.log-entry{background:var(--card);border-radius:14px;border:1px solid var(--border);padding:11px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px;}
+.log-ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.log-ic.add{background:#E8F5EE;} .log-ic.edit{background:#EEF5FF;} .log-ic.del{background:#FFEEF0;}
+.log-body{flex:1;min-width:0;}
+.log-op{font-size:10px;font-weight:700;margin-bottom:2px;}
+.log-op.add{color:var(--income-color);} .log-op.edit{color:#4A90E2;} .log-op.del{color:#FF4081;}
+.log-desc{font-size:12px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.log-meta{font-size:10px;color:var(--text-sub);margin-top:2px;}
+.log-restore{background:var(--primary-pale);color:var(--primary);border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;flex-shrink:0;}
+/* ── 圖表切換 ── */
+.chart-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.chart-toggle{display:flex;gap:4px;}
+.ct-btn{padding:4px 11px;border-radius:14px;font-size:11px;font-weight:700;border:1.5px solid var(--border);background:var(--card);color:var(--text-sub);cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s;}
+.ct-btn.sel{background:var(--primary);color:white;border-color:var(--primary-dark);}
+
 </style>
 </head>
 <body>
@@ -269,25 +253,24 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
         <div class="chip-row" id="payer-row" style="margin-bottom:10px;"></div>
         <div id="pay-section">
           <label class="form-label">支付方式</label>
-          <div class="chip-row" id="pay-row" style="margin-bottom:0;" onchange="onPayChange()">
+          <div class="chip-row" id="pay-row" style="margin-bottom:0;">
             <div class="chip sel" onclick="selChip(this);onPayChange()">💳 信用卡</div>
             <div class="chip" onclick="selChip(this);onPayChange()">LINE Pay</div>
             <div class="chip" onclick="selChip(this);onPayChange()">Apple Pay</div>
             <div class="chip" onclick="selChip(this);onPayChange()">街口</div>
             <div class="chip" onclick="selChip(this);onPayChange()">現金</div>
           </div>
-          <!-- 信用卡名稱欄（選信用卡才顯示）-->
-          <div class="card-name-row" id="card-name-row" style="display:flex;">
-            <span style="font-size:13px;">💳</span>
-            <input class="card-name-inp" type="text" id="card-name-inp" placeholder="卡片名稱（選填），如：玉山 Pi 卡">
-          </div>
-          <div class="card-preset-row" id="card-preset-row">
-            <span class="card-preset-chip" onclick="pickCard('玉山 Pi 卡')">玉山 Pi</span>
-            <span class="card-preset-chip" onclick="pickCard('台新 @GoGo 卡')">台新@GoGo</span>
-            <span class="card-preset-chip" onclick="pickCard('永豐大戶卡')">永豐大戶</span>
-            <span class="card-preset-chip" onclick="pickCard('國泰世華 CUBE')">國泰CUBE</span>
-            <span class="card-preset-chip" onclick="pickCard('中信 LINE Pay 卡')">中信LINE Pay</span>
-            <span class="card-preset-chip" onclick="pickCard('富邦 J 卡')">富邦J卡</span>
+          <div class="cc-block" id="cc-block">
+            <label class="form-label" style="margin:0 0 6px;">💳 哪張信用卡？（選填）</label>
+            <input class="cc-inp" type="text" id="cc-inp" placeholder="例：玉山Pi、台新GoGo…">
+            <div class="cc-presets">
+              <span class="cc-pre" onclick="pickCC('玉山 Pi 卡')">玉山Pi</span>
+              <span class="cc-pre" onclick="pickCC('台新 @GoGo')">台新GoGo</span>
+              <span class="cc-pre" onclick="pickCC('國泰 CUBE')">國泰CUBE</span>
+              <span class="cc-pre" onclick="pickCC('中信 LINE Pay')">中信LINE</span>
+              <span class="cc-pre" onclick="pickCC('富邦 J 卡')">富邦J</span>
+              <span class="cc-pre" onclick="pickCC('永豐大戶卡')">永豐大戶</span>
+            </div>
           </div>
         </div>
         <div class="field-block">
@@ -301,19 +284,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
         <input class="note-inp" type="text" id="note-inp" placeholder="備註（選填）" style="margin-bottom:10px;">
         <label class="form-label">📅 日期</label>
         <input class="date-inp" type="date" id="date-inp" style="margin-bottom:6px;">
-        <!-- 照片附件 -->
-        <label class="form-label" style="margin-top:10px;">📸 附加照片（選填）</label>
-        <button type="button" class="photo-attach-btn" onclick="document.getElementById('photo-inp').click()">
-          <span>📷</span><span>選擇或拍攝照片</span>
-        </button>
-        <input type="file" id="photo-inp" accept="image/*" capture="environment" style="display:none;" onchange="handlePhotoAttach(event)">
-        <div id="photo-thumb-wrap" class="photo-thumb-wrap" style="display:none;">
-          <img id="photo-thumb" class="photo-thumb" alt="附件">
-          <button class="photo-remove-btn" onclick="removePhoto()" title="移除照片">✕</button>
-        </div>
-        <button class="submit-btn" id="submit-btn" onclick="addRecord()" style="margin-top:10px;">+ 新增支出</button>
-        <button class="submit-btn" id="scan-open-btn" onclick="openScanModal()" style="margin-top:8px;background:rgba(255,107,157,0.12);color:var(--primary);border:1.5px solid var(--border);">📷 掃描發票自動記帳</button>
-        <button class="voice-open-btn" onclick="openVoiceModal()">🎙️ 語音記帳</button>
+        <button class="submit-btn" id="submit-btn" onclick="addRecord()">+ 新增支出</button>
       </div>
       <div class="section-hd">
         <div class="section-title">📋 最近記錄</div>
@@ -350,43 +321,55 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
         </div>
         <div class="diff-row" id="cmp-diff"><span style="color:var(--text-sub)">尚無比較資料</span></div>
       </div>
-      <div class="section-title" style="margin-bottom:8px;">🍰 支出分類占比</div>
+      <div class="chart-hd"><div class="section-title">🍰 支出分類占比</div><div class="chart-toggle"><button class="ct-btn sel" onclick="setCatMode('pct',this)">%</button><button class="ct-btn" onclick="setCatMode('amt',this)">金額</button></div></div>
       <div class="card" id="cat-chart"></div>
       <div class="section-title" style="margin-bottom:8px;margin-top:6px;">💰 收入分類占比</div>
       <div class="card" id="inc-chart"></div>
     </div>
   </div>
 
-  <div class="page" id="page-settle">
+  <!-- 查詢篩選頁 -->
+  <div class="page" id="page-search">
     <div class="section">
-      <div class="settle-hero">
-        <div style="font-size:12px;color:rgba(255,255,255,0.75);margin-bottom:6px;">本月結算</div>
-        <div class="settle-persons">
-          <div class="settle-person">
-            <div class="settle-av a1" id="settle-av1">小美</div>
-            <div class="settle-pname" id="settle-pname1">小美付出</div>
-            <div class="settle-paid" id="settle-av1-amt">NT$0</div>
-          </div>
-          <div class="arrow-mid">
-            <div class="arrow-amt" id="settle-arrow-amt">NT$0</div>
-            <div class="arrow-ic">→</div>
-          </div>
-          <div class="settle-person">
-            <div class="settle-av a2" id="settle-av2">小明</div>
-            <div class="settle-pname" id="settle-pname2">小明付出</div>
-            <div class="settle-paid" id="settle-av2-amt">NT$0</div>
-          </div>
+      <div class="section-title" style="margin-bottom:10px;">🔍 查詢與篩選</div>
+      <div class="card">
+        <label class="form-label">關鍵字搜尋</label>
+        <div class="search-box">
+          <input class="search-inp" type="text" id="srch-kw" placeholder="備註、分類、金額…" oninput="runSearch()">
+          <button class="search-clear" onclick="clearSearch()">清除</button>
         </div>
-        <div class="settle-desc" id="settle-desc">計算中...</div>
+        <label class="form-label">指定日期</label>
+        <input class="date-inp" type="date" id="srch-date" onchange="runSearch()" style="margin-bottom:10px;">
+        <label class="form-label">類型</label>
+        <div class="f-row" id="ft-type">
+          <span class="f-chip sel" onclick="setFT('type','all',this)">全部</span>
+          <span class="f-chip" onclick="setFT('type','exp',this)">支出</span>
+          <span class="f-chip" onclick="setFT('type','inc',this)">收入</span>
+        </div>
+        <label class="form-label">付款人</label>
+        <div class="f-row" id="ft-payer">
+          <span class="f-chip sel" onclick="setFT('payer','',this)">全部</span>
+          <span class="f-chip" id="ftp1" onclick="setFT('payer',person1,this)"></span>
+          <span class="f-chip" id="ftp2" onclick="setFT('payer',person2,this)"></span>
+          <span class="f-chip" onclick="setFT('payer','共同',this)">共同</span>
+        </div>
       </div>
-      <div class="section-title" style="margin-bottom:8px;">💸 還款方式</div>
-      <div class="pay-method-item" onclick="markSettled('LINE Pay')"><div class="pay-ic">💚</div><div class="pay-info"><div class="pay-name">LINE Pay</div><div class="pay-desc">傳送 LINE Pay 請款連結</div></div></div>
-      <div class="pay-method-item" onclick="markSettled('Apple Pay')"><div class="pay-ic">🍎</div><div class="pay-info"><div class="pay-name">Apple Pay</div><div class="pay-desc">透過 iMessage 傳送請款</div></div></div>
-      <div class="pay-method-item" onclick="markSettled('街口支付')"><div class="pay-ic">🧧</div><div class="pay-info"><div class="pay-name">街口支付</div><div class="pay-desc">掃碼或傳送請款</div></div></div>
-      <div class="pay-method-item" onclick="markSettled('銀行轉帳')"><div class="pay-ic">🏦</div><div class="pay-info"><div class="pay-name">銀行轉帳</div><div class="pay-desc">記錄轉帳已完成</div></div></div>
-      <div class="pay-method-item" onclick="markSettled('現金')"><div class="pay-ic">💵</div><div class="pay-info"><div class="pay-name">現金</div><div class="pay-desc">標記現金已給付</div></div></div>
-      <div class="section-title" style="margin-bottom:8px;">📜 結算記錄</div>
-      <div class="card" id="settle-history"></div>
+      <div class="search-info" id="srch-info"></div>
+      <div id="srch-list"></div>
+    </div>
+  </div>
+
+  <!-- 歷程記錄頁 -->
+  <div class="page" id="page-log">
+    <div class="section">
+      <div class="section-hd" style="margin-bottom:10px;">
+        <div class="section-title">📜 記帳歷程</div>
+        <span class="section-more" style="color:#FF4081;cursor:pointer;" onclick="clearLog()">清空</span>
+      </div>
+      <div style="background:#FFF3CD;border:1px solid #FFE083;border-radius:12px;padding:10px 14px;font-size:11px;color:#856404;margin-bottom:12px;line-height:1.7;">
+        ℹ️ 保留最近 <b>100 筆</b>新增／編輯／刪除操作，點「復原」可還原誤刪帳款。
+      </div>
+      <div id="log-list"><div style="text-align:center;color:var(--text-sub);padding:30px;font-size:13px;">尚無歷程記錄</div></div>
     </div>
   </div>
 
@@ -404,44 +387,13 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
       <button class="add-fixed-btn inc-btn" onclick="openAddFixed('inc')">+ 新增固定收入</button>
     </div>
   </div>
-
-  <!-- 查詢篩選頁 -->
-  <div class="page" id="page-search">
-    <div class="section">
-      <div class="section-title" style="margin-bottom:10px;">🔍 查詢與篩選</div>
-
-      <!-- 關鍵字 + 日期查詢 -->
-      <div class="card" style="margin-bottom:10px;">
-        <label class="form-label">關鍵字搜尋</label>
-        <div class="search-bar">
-          <input class="search-inp" type="text" id="search-kw" placeholder="輸入備註、分類、金額…" oninput="runSearch()">
-          <button class="search-btn" onclick="clearSearch()">清除</button>
-        </div>
-        <label class="form-label">指定日期</label>
-        <input class="date-inp" type="date" id="search-date" onchange="runSearch()" style="margin-bottom:10px;">
-        <label class="form-label">篩選類型</label>
-        <div class="filter-row" id="search-type-row">
-          <div class="filter-chip sel" onclick="setSearchType('all',this)">全部</div>
-          <div class="filter-chip" onclick="setSearchType('exp',this)">支出</div>
-          <div class="filter-chip" onclick="setSearchType('inc',this)">收入</div>
-        </div>
-        <label class="form-label">篩選分類</label>
-        <div class="filter-row" id="search-cat-row"></div>
-        <label class="form-label">篩選付款人</label>
-        <div class="filter-row" id="search-payer-row"></div>
-      </div>
-
-      <div id="search-result-info" class="search-result-info"></div>
-      <div id="search-list"></div>
-    </div>
-  </div>
 </div>
 
 <nav class="bottom-nav">
   <button class="nav-item active" onclick="showPage('record',this)"><span class="nav-icon">✏️</span>記帳</button>
   <button class="nav-item" onclick="showPage('search',this)"><span class="nav-icon">🔍</span>查詢</button>
   <button class="nav-item" onclick="showPage('stats',this)"><span class="nav-icon">📊</span>統計</button>
-  <button class="nav-item" onclick="showPage('settle',this)"><span class="nav-icon">⚖️</span>結算</button>
+  <button class="nav-item" onclick="showPage('log',this)"><span class="nav-icon">📜</span>歷程</button>
   <button class="nav-item" onclick="showPage('fixed',this)"><span class="nav-icon">📌</span>固定</button>
 </nav>
 
@@ -497,9 +449,9 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
         <div class="chip" onclick="selChip(this);onEditPayChange()">街口</div>
         <div class="chip" onclick="selChip(this);onEditPayChange()">現金</div>
       </div>
-      <div class="card-name-row" id="edit-card-name-row" style="display:none;margin-bottom:10px;">
-        <span style="font-size:13px;">💳</span>
-        <input class="card-name-inp" type="text" id="edit-card-name-inp" placeholder="卡片名稱（選填）">
+      <div class="cc-block" id="edit-cc-block" style="margin-bottom:10px;">
+        <label class="modal-label" style="margin:0 0 6px;">💳 哪張信用卡？（選填）</label>
+        <input class="cc-inp" type="text" id="edit-cc-inp" placeholder="例：玉山Pi、台新GoGo…">
       </div>
     </div>
     <label class="modal-label">金額</label>
@@ -544,72 +496,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
     <div class="modal-title">所有記錄</div>
     <div id="all-list"></div>
     <button class="modal-close-btn" onclick="closeM('all-modal')" style="margin-top:8px;">關閉</button>
-  </div>
-</div>
-
-<!-- 語音記帳 Modal -->
-<div class="modal-overlay" id="voice-modal" onclick="bgClose('voice-modal',event)">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title">🎙️ 語音記帳</div>
-    <div class="voice-status" id="voice-status">按下按鈕，說出消費內容</div>
-    <div class="voice-transcript-box" id="voice-transcript">例如：「午餐花了150元」「小明搭捷運50塊」「收到薪水5萬」</div>
-    <button class="voice-record-btn" id="voice-record-btn" onclick="toggleVoice()">
-      <span id="voice-btn-ic">🎙️</span><span id="voice-btn-txt">開始錄音</span>
-    </button>
-    <div class="voice-result-card" id="voice-result-card" style="display:none;">
-      <div style="font-size:12px;font-weight:700;color:#8e44ad;margin-bottom:6px;">✅ AI 解析結果</div>
-      <div class="voice-result-row"><span class="voice-result-label">金額</span><span class="voice-result-val" id="vr-amount">-</span></div>
-      <div class="voice-result-row"><span class="voice-result-label">類型</span><span class="voice-result-val" id="vr-type">-</span></div>
-      <div class="voice-result-row"><span class="voice-result-label">分類</span><span class="voice-result-val" id="vr-cat">-</span></div>
-      <div class="voice-result-row"><span class="voice-result-label">備註</span><span class="voice-result-val" id="vr-note">-</span></div>
-      <div class="voice-result-row"><span class="voice-result-label">付款人</span><span class="voice-result-val" id="vr-payer">-</span></div>
-    </div>
-    <div id="voice-hint" style="font-size:11px;color:var(--text-sub);text-align:center;padding:4px 0;display:none;"></div>
-    <button class="submit-btn" id="voice-apply-btn" onclick="applyVoice()" style="display:none;margin-top:8px;background:linear-gradient(135deg,#8e44ad,#9b59b6);">✅ 確認並立即記帳</button>
-    <button class="modal-close-btn" onclick="closeM('voice-modal');stopVoice();" style="margin-top:6px;">關閉</button>
-  </div>
-</div>
-
-<!-- 發票掃描 Modal -->
-<div class="modal-overlay" id="scan-modal" onclick="bgClose('scan-modal',event)">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title">📷 掃描發票</div>
-
-    <!-- 掃描區 -->
-    <div id="scan-main-area">
-      <div style="font-size:11px;color:var(--income-color);font-weight:700;margin-bottom:10px;">✅ Gemini AI 已就緒（免費）</div>
-      <div class="scan-area" id="scan-drop-area" onclick="document.getElementById('scan-file-inp').click()">
-        <span class="scan-icon">📷</span>
-        <div class="scan-txt">點擊拍照或選擇圖片</div>
-        <div class="scan-sub">AI 自動辨識金額、日期、商家</div>
-      </div>
-    </div>
-
-    <input type="file" id="scan-file-inp" accept="image/*" capture="environment" style="display:none;" onchange="handleScanFile(event)">
-    <img id="scan-preview" class="scan-preview" alt="發票預覽">
-
-    <!-- 辨識中 -->
-    <div class="scan-loading" id="scan-loading">
-      <div style="font-size:28px;margin-bottom:8px;animation:spin 1.2s linear infinite;display:inline-block;">⏳</div>
-      <div>Gemini AI 辨識中，請稍候…</div>
-    </div>
-
-    <!-- 辨識結果 -->
-    <div id="scan-result-card" class="scan-result-card" style="display:none;">
-      <div style="font-size:12px;font-weight:700;color:var(--primary);margin-bottom:8px;">✅ 辨識結果（可套用後手動修改）</div>
-      <div class="scan-result-row"><span class="scan-result-label">金額</span><span class="scan-result-val" id="sr-amount">-</span></div>
-      <div class="scan-result-row"><span class="scan-result-label">日期</span><span class="scan-result-val" id="sr-date">-</span></div>
-      <div class="scan-result-row"><span class="scan-result-label">商家/備註</span><span class="scan-result-val" id="sr-note">-</span></div>
-      <div class="scan-result-row"><span class="scan-result-label">分類推測</span><span class="scan-result-val" id="sr-cat">-</span></div>
-    </div>
-
-    <!-- 辨識失敗提示 -->
-    <div id="scan-manual-hint" style="display:none;font-size:11px;color:var(--text-sub);text-align:center;padding:8px 0;"></div>
-
-    <button class="submit-btn" id="scan-apply-btn" onclick="applyScanResult()" style="display:none;margin-top:8px;">✅ 確認並立即記帳</button>
-    <button class="modal-close-btn" onclick="closeM('scan-modal');resetScan();" style="margin-top:6px;">關閉</button>
   </div>
 </div>
 
@@ -671,7 +557,7 @@ let isSyncing=false; // 防止 listener 觸發時又寫回 Firebase（無限循�
 function saveLocal(){
   try{
     localStorage.setItem(SK, JSON.stringify({
-      records, fixedItems, curTheme, nid,
+      records, fixedItems, actionLog, curTheme, nid,
       person1, person2, appName, ROOM_ID
     }));
   }catch(e){ console.warn('saveLocal error:', e); }
@@ -684,6 +570,7 @@ function load(){
     const d = JSON.parse(raw);
     if(d.records)    records    = d.records;
     if(d.fixedItems) fixedItems = d.fixedItems;
+    if(Array.isArray(d.actionLog)) actionLog = d.actionLog;
     if(typeof d.curTheme==='number') curTheme = d.curTheme;
     if(d.nid && d.nid > nid)  nid = d.nid;
     if(d.person1)  person1  = d.person1;
@@ -739,6 +626,7 @@ function attachListener(){
     // ✅ 完全採用雲端資料覆蓋本地
     if(Array.isArray(d.records))    records    = d.records;
     if(Array.isArray(d.fixedItems)) fixedItems = d.fixedItems;
+    if(Array.isArray(d.actionLog))  actionLog  = d.actionLog;
     if(typeof d.curTheme==='number'){ curTheme=d.curTheme; applyTheme(curTheme); }
     if(d.nid && d.nid > nid)   nid    = d.nid;
     if(d.person1)  person1  = d.person1;
@@ -767,6 +655,7 @@ function pushToCloud(){
   fbDb.ref(path).set({
     records    : records,
     fixedItems : fixedItems,
+    actionLog  : actionLog,
     curTheme   : curTheme,
     nid        : nid,
     person1    : person1,
@@ -799,7 +688,6 @@ function refreshUI(){
   updateHeader();
   renderStats(curPeriod);
   if(document.getElementById('all-modal').classList.contains('open')) renderAll();
-  // 若查詢頁正在顯示，同步更新結果
   if(document.getElementById('page-search').classList.contains('active')) runSearch();
 }
 
@@ -887,12 +775,19 @@ function updateAllNames(){
   document.title = appName;
   document.getElementById('av1-name').textContent = person1;
   document.getElementById('av2-name').textContent = person2;
-  document.getElementById('settle-av1').textContent = person1;
-  document.getElementById('settle-av2').textContent = person2;
-  document.getElementById('settle-pname1').textContent = person1+'付出';
-  document.getElementById('settle-pname2').textContent = person2+'付出';
   const rd = document.getElementById('room-display');
   if(rd) rd.textContent = ROOM_ID;
+  // 更新查詢頁付款人篩選
+  const fp1=document.getElementById('ftp1');
+  const fp2=document.getElementById('ftp2');
+  if(fp1){
+    fp1.textContent=person1;
+    fp1.onclick=function(){ setFT('payer',person1,this); };
+  }
+  if(fp2){
+    fp2.textContent=person2;
+    fp2.onclick=function(){ setFT('payer',person2,this); };
+  }
   renderPayerChips();
   updateHeader();
 }
@@ -960,23 +855,23 @@ function addRecord(){
   if(!amt||amt<=0){ showToast('請輸入有效金額 💰'); return; }
   const note  = document.getElementById('note-inp').value.trim() || selCatMain[curType];
   const payer = getChip('payer-row');
-  const payBase = curType==='exp' ? getChip('pay-row') : '';
-  const cardName = (payBase==='💳 信用卡' && document.getElementById('card-name-inp').value.trim())
-    ? document.getElementById('card-name-inp').value.trim() : '';
-  const pay = cardName ? '💳 '+cardName : payBase;
+  // 信用卡名稱處理
+  let payBase = curType==='exp' ? getChip('pay-row') : '';
+  let ccName  = (document.getElementById('cc-inp').value||'').trim();
+  let pay     = (payBase==='💳 信用卡' && ccName) ? '💳 '+ccName : payBase;
   const cat   = selCatMain[curType];
   const cats  = curType==='exp' ? EXP_CATS : INC_CATS;
   const emo   = (cats.find(c=>c.n===cat)||cats[0]).e;
   const dateVal = document.getElementById('date-inp').value || new Date().toISOString().split('T')[0];
-  // ✅ id 用時間戳+隨機，確保兩人同時新增不會衝突
   const newId = Date.now() + '_' + Math.random().toString(36).slice(2,6);
-  const photo = attachedPhoto || null;
-  records.unshift({ id:newId, type:curType, cat, emoji:emo, note, amount:amt, payer, pay, date:dateVal, photo });
+  const newRec = { id:newId, type:curType, cat, emoji:emo, note, amount:amt, payer, pay, date:dateVal };
+  records.unshift(newRec);
+  logAction('add', newRec, null);
   document.getElementById('amount-inp').value = '';
   document.getElementById('note-inp').value = '';
+  document.getElementById('cc-inp').value = '';
+  document.getElementById('cc-block').style.display = 'none';
   document.getElementById('date-inp').value = new Date().toISOString().split('T')[0];
-  removePhoto(); // 清除附件
-  document.getElementById('card-name-inp').value = '';
   renderRecent(); updateHeader(); save();
   showToast(curType==='exp'?'支出已記錄 ✅':'收入已記錄 🎉');
 }
@@ -998,8 +893,27 @@ function openEdit(id){
   });
   document.querySelectorAll('#edit-pay-row .chip').forEach(c=>{
     c.classList.remove('sel');
-    if(c.textContent.trim()===r.pay || (r.pay&&c.textContent.includes(r.pay.replace('💳 ','')))) c.classList.add('sel');
+    const rp = r.pay||'';
+    const isCC = rp.startsWith('💳');
+    if(isCC && c.textContent.trim()==='💳 信用卡') c.classList.add('sel');
+    else if(!isCC && c.textContent.trim()===rp) c.classList.add('sel');
   });
+  // 回填信用卡名稱
+  const ecb = document.getElementById('edit-cc-block');
+  const eci = document.getElementById('edit-cc-inp');
+  if(ecb && eci){
+    const rp = r.pay||'';
+    if(rp.startsWith('💳 ') && rp!=='💳 信用卡'){
+      eci.value = rp.slice(3);
+      ecb.style.display = 'block';
+    } else if(rp==='💳 信用卡'){
+      eci.value = '';
+      ecb.style.display = 'block';
+    } else {
+      eci.value = '';
+      ecb.style.display = 'none';
+    }
+  }
   renderCatsGrid('edit-cats-grid', r.type, selCatEdit);
   openM('record-modal');
 }
@@ -1009,25 +923,30 @@ function saveEdit(){
   if(!amt||amt<=0){ showToast('請輸入有效金額'); return; }
   const note    = document.getElementById('edit-note').value.trim() || selCatEdit[editType];
   const payer   = getChip('edit-payer-row');
-  const payBase2 = editType==='exp' ? getChip('edit-pay-row') : '';
-  const cardName2= (payBase2==='💳 信用卡' && document.getElementById('edit-card-name-inp').value.trim())
-    ? document.getElementById('edit-card-name-inp').value.trim() : '';
-  const pay     = cardName2 ? '💳 '+cardName2 : payBase2;
+  let editPayBase = editType==='exp' ? getChip('edit-pay-row') : '';
+  let editCCName  = (document.getElementById('edit-cc-inp').value||'').trim();
+  let pay = (editPayBase==='💳 信用卡' && editCCName) ? '💳 '+editCCName : editPayBase;
   const cat     = selCatEdit[editType];
   const cats    = editType==='exp' ? EXP_CATS : INC_CATS;
   const emo     = (cats.find(c=>c.n===cat)||cats[0]).e;
   const dateVal = document.getElementById('edit-date').value || new Date().toISOString().split('T')[0];
   const i = records.findIndex(r=>r.id==id);
-  if(i>=0) records[i] = {...records[i], type:editType, cat, emoji:emo, note, amount:amt, payer, pay, date:dateVal};
+  if(i>=0){
+    const prev = JSON.parse(JSON.stringify(records[i]));
+    records[i] = {...records[i], type:editType, cat, emoji:emo, note, amount:amt, payer, pay, date:dateVal};
+    logAction('edit', records[i], prev);
+  }
   closeM('record-modal'); renderRecent(); updateHeader(); save();
   showToast('記錄已更新 ✏️');
 }
 function delRecord(id){
   if(!confirm('確定要刪除這筆記錄嗎?')) return;
+  const delRec = records.find(r=>r.id==id);
   records = records.filter(r=>r.id!=id);
+  if(delRec) logAction('del', delRec, null);
   renderRecent(); updateHeader(); save();
   if(document.getElementById('all-modal').classList.contains('open')) renderAll();
-  showToast('記錄已刪除 🗑️');
+  showToast('記錄已刪除，可至歷程頁復原');
 }
 
 // ═══════════════════════════════════════════════
@@ -1074,30 +993,9 @@ function updateHeader(){
   document.getElementById('hd-inc').textContent   = 'NT$'+ti.toLocaleString();
   document.getElementById('hd-count').textContent = mr.length+'筆';
   document.getElementById('hd-net').textContent   = 'NT$'+(net>=0?'+':'')+net.toLocaleString();
-  const er=mr.filter(r=>r.type==='exp');
-  const a1=er.filter(r=>r.payer===person1).reduce((s,r)=>s+r.amount,0)+er.filter(r=>r.payer==='共同').reduce((s,r)=>s+r.amount/2,0);
-  const a2=er.filter(r=>r.payer===person2).reduce((s,r)=>s+r.amount,0)+er.filter(r=>r.payer==='共同').reduce((s,r)=>s+r.amount/2,0);
-  document.getElementById('settle-av1-amt').textContent = 'NT$'+Math.round(a1).toLocaleString();
-  document.getElementById('settle-av2-amt').textContent = 'NT$'+Math.round(a2).toLocaleString();
-  const diff = Math.abs(Math.round(a1-a2));
-  document.getElementById('settle-arrow-amt').textContent = 'NT$'+diff.toLocaleString();
-  document.getElementById('settle-desc').textContent =
-    a1>a2 ? `${person2}需還給${person1} NT$${diff.toLocaleString()}` :
-    a2>a1 ? `${person1}需還給${person2} NT$${diff.toLocaleString()}` :
-             '兩人費用已平衡 🎉';
 }
 
-function markSettled(method){
-  const now=new Date();
-  const label=`${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')} 結算`;
-  const diff=document.getElementById('settle-arrow-amt').textContent;
-  const h=document.getElementById('settle-history');
-  const d=document.createElement('div'); d.className='history-item';
-  d.innerHTML=`<span>${label}</span><span class="done-badge">✓ ${method} ${diff}</span>`;
-  h.insertBefore(d,h.firstChild);
-  save();
-  showToast(`✅ 已透過 ${method} 完成結算!`);
-}
+
 
 // ═══════════════════════════════════════════════
 //  STATS
@@ -1140,13 +1038,26 @@ function renderStats(period){
   else de.innerHTML=`<span style="color:var(--text-sub)">與上月持平</span>`;
   renderCatChart(); renderIncChart();
 }
+let catMode='pct';
+function setCatMode(mode,el){
+  catMode=mode;
+  document.querySelectorAll('.ct-btn').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  renderCatChart();
+}
 function renderCatChart(){
   const el=document.getElementById('cat-chart');
   const t={};records.filter(r=>r.type==='exp').forEach(r=>{t[r.cat]=(t[r.cat]||0)+r.amount;});
   const tot=Object.values(t).reduce((s,v)=>s+v,0)||1;
-  const sorted=Object.entries(t).sort((a,b)=>b[1]-a[1]).slice(0,6);
-  const c=['#FF6B9D','#FF8FB1','#4A90E2','#9B59B6','#2ECC8E','#FF8C42'];
-  el.innerHTML=sorted.map(([n,a],i)=>{const p=Math.round(a/tot*100);const ce=(EXP_CATS.find(x=>x.n===n)||{e:'📦'}).e;return`<div class="cat-bar-row"><span style="font-size:14px;width:20px;">${ce}</span><div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${c[i%c.length]};"></div></div><span style="font-size:11px;color:var(--text-sub);width:72px;text-align:right;">${n} ${p}%</span></div>`;}).join('')||'<div style="text-align:center;color:var(--text-sub);padding:10px;font-size:12px;">尚無支出記錄</div>';
+  const sorted=Object.entries(t).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  const c=['#FF6B9D','#FF8FB1','#4A90E2','#9B59B6','#2ECC8E','#FF8C42','#34495E','#E91E63'];
+  if(!sorted.length){el.innerHTML='<div style="text-align:center;color:var(--text-sub);padding:10px;font-size:12px;">尚無支出記錄</div>';return;}
+  el.innerHTML=sorted.map(([n,a],i)=>{
+    const p=Math.round(a/tot*100);
+    const ce=(EXP_CATS.find(x=>x.n===n)||{e:''}).e;
+    const label=catMode==='amt'?('NT$'+a.toLocaleString()):(n+' '+p+'%');
+    return`<div class="cat-bar-row"><span style="font-size:14px;width:20px;">${ce}</span><div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${c[i%c.length]};"></div></div><span style="font-size:11px;color:var(--text-sub);width:82px;text-align:right;">${label}</span></div>`;
+  }).join('');
 }
 function renderIncChart(){
   const el=document.getElementById('inc-chart');
@@ -1194,6 +1105,156 @@ function saveFixed(){
   closeM('fixed-modal'); renderFixed(); save(); showToast('固定項目已儲存 📌');
 }
 
+
+// ═══════════════════════════════════════════════
+//  信用卡名稱欄控制
+// ═══════════════════════════════════════════════
+function onPayChange(){
+  const sel = getChip('pay-row');
+  const show = sel === '💳 信用卡';
+  document.getElementById('cc-block').style.display = show ? 'block' : 'none';
+  if(!show) document.getElementById('cc-inp').value = '';
+}
+function onEditPayChange(){
+  const sel = getChip('edit-pay-row');
+  const show = sel === '💳 信用卡';
+  document.getElementById('edit-cc-block').style.display = show ? 'block' : 'none';
+}
+function pickCC(name){
+  document.getElementById('cc-inp').value = name;
+}
+
+// ═══════════════════════════════════════════════
+//  查詢篩選
+// ═══════════════════════════════════════════════
+let srchFilters = { type:'all', payer:'' };
+
+function initSearch(){
+  const fp1 = document.getElementById('ftp1');
+  const fp2 = document.getElementById('ftp2');
+  if(fp1) fp1.textContent = person1;
+  if(fp2) fp2.textContent = person2;
+}
+
+function setFT(key, val, el){
+  srchFilters[key] = val;
+  const row = el.closest('.f-row');
+  row.querySelectorAll('.f-chip').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  runSearch();
+}
+
+function runSearch(){
+  const kw   = (document.getElementById('srch-kw').value || '').trim().toLowerCase();
+  const dt   = document.getElementById('srch-date').value || '';
+  let   res  = [...records];
+  if(srchFilters.type !== 'all') res = res.filter(r => r.type === srchFilters.type);
+  if(srchFilters.payer)          res = res.filter(r => r.payer === srchFilters.payer);
+  if(dt)  res = res.filter(r => r.date === dt);
+  if(kw)  res = res.filter(r =>
+    (r.note||'').toLowerCase().includes(kw) ||
+    (r.cat||'').toLowerCase().includes(kw)  ||
+    String(r.amount).includes(kw) ||
+    (r.pay||'').toLowerCase().includes(kw)
+  );
+  res.sort((a,b) => (b.date||'').localeCompare(a.date||''));
+  const totE = res.filter(r=>r.type==='exp').reduce((s,r)=>s+r.amount,0);
+  const totI = res.filter(r=>r.type==='inc').reduce((s,r)=>s+r.amount,0);
+  document.getElementById('srch-info').textContent =
+    res.length ? `找到 ${res.length} 筆｜支出 NT$${totE.toLocaleString()}｜收入 NT$${totI.toLocaleString()}` : '';
+  document.getElementById('srch-list').innerHTML =
+    res.length ? res.map(recHTML).join('') :
+    '<div style="text-align:center;color:var(--text-sub);padding:30px;font-size:13px;">沒有符合的記錄</div>';
+}
+
+function clearSearch(){
+  document.getElementById('srch-kw').value = '';
+  document.getElementById('srch-date').value = '';
+  srchFilters = { type:'all', payer:'' };
+  document.querySelectorAll('#ft-type .f-chip, #ft-payer .f-chip')
+    .forEach((c,i,arr) => {
+      const row = c.closest('.f-row');
+      const firstInRow = row.querySelector('.f-chip');
+      c.classList.toggle('sel', c === firstInRow);
+    });
+  runSearch();
+}
+
+// ═══════════════════════════════════════════════
+//  記帳歷程
+// ═══════════════════════════════════════════════
+let actionLog = [];
+
+function logAction(op, rec, prev){
+  if(!rec) return;
+  actionLog.unshift({
+    op, ts: Date.now(),
+    rec:  JSON.parse(JSON.stringify(rec)),
+    prev: prev ? JSON.parse(JSON.stringify(prev)) : null
+  });
+  if(actionLog.length > 100) actionLog = actionLog.slice(0, 100);
+  // 若歷程頁正開著就即時更新
+  if(document.getElementById('page-log').classList.contains('active')) renderLog();
+}
+
+function renderLog(){
+  const el = document.getElementById('log-list');
+  if(!el) return;
+  if(!actionLog.length){
+    el.innerHTML = '<div style="text-align:center;color:var(--text-sub);padding:30px;font-size:13px;">尚無歷程記錄</div>';
+    return;
+  }
+  const opLabel = { add:'新增', edit:'編輯', del:'刪除' };
+  const opCls   = { add:'add', edit:'edit', del:'del' };
+  const opIcon  = { add:'+', edit:'✎', del:'✕' };
+  el.innerHTML = actionLog.map((entry, idx) => {
+    const r   = entry.rec;
+    const amt = r.type==='inc' ? '+NT$'+r.amount.toLocaleString() : '-NT$'+r.amount.toLocaleString();
+    const dt  = new Date(entry.ts);
+    const ts  = (dt.getMonth()+1)+'/'+(dt.getDate())+' '
+              + String(dt.getHours()).padStart(2,'0')+':'+String(dt.getMinutes()).padStart(2,'0');
+    const cls = opCls[entry.op]  || 'add';
+    const lbl = opLabel[entry.op]|| '?';
+    const ico = opIcon[entry.op] || '?';
+    const canRestore = entry.op==='del' || entry.op==='edit';
+    const btn = canRestore
+      ? `<button class="log-restore" onclick="restoreLog(${idx})">復原</button>`
+      : '';
+    return `<div class="log-entry">
+      <div class="log-ic ${cls}">${ico}</div>
+      <div class="log-body">
+        <div class="log-op ${cls}">${lbl}</div>
+        <div class="log-desc">${r.emoji} ${r.note} ${amt}</div>
+        <div class="log-meta">${ts} · ${r.payer}${r.pay?' · '+r.pay:''}</div>
+      </div>
+      ${btn}
+    </div>`;
+  }).join('');
+}
+
+function restoreLog(idx){
+  const entry = actionLog[idx];
+  if(!entry) return;
+  if(entry.op === 'del'){
+    records.unshift(entry.rec);
+    showToast('✅ 已復原：' + entry.rec.note);
+  } else if(entry.op === 'edit'){
+    const i = records.findIndex(r => r.id == entry.rec.id);
+    if(i >= 0){ records[i] = entry.prev; showToast('✅ 已還原至編輯前：' + entry.prev.note); }
+    else       { records.unshift(entry.prev); showToast('✅ 已復原：' + entry.prev.note); }
+  }
+  actionLog.splice(idx, 1);
+  renderRecent(); updateHeader(); save();
+  renderLog();
+}
+
+function clearLog(){
+  if(!confirm('確定清空所有歷程記錄？')) return;
+  actionLog = [];
+  renderLog();
+  showToast('歷程已清空');
+}
+
 // ═══════════════════════════════════════════════
 //  NAVIGATION & UTILS
 // ═══════════════════════════════════════════════
@@ -1203,7 +1264,8 @@ function showPage(name,el){
   document.getElementById('page-'+name).classList.add('active');
   el.classList.add('active');
   if(name==='stats') renderStats(curPeriod);
-  if(name==='search') initSearchPage();
+  if(name==='search'){ initSearch(); runSearch(); }
+  if(name==='log') renderLog();
 }
 function openM(id){ document.getElementById(id).classList.add('open'); }
 function closeM(id){ document.getElementById(id).classList.remove('open'); }
@@ -1214,644 +1276,9 @@ function showToast(msg){
 }
 
 // ═══════════════════════════════════════════════
-//  SEARCH & FILTER
-// ═══════════════════════════════════════════════
-let searchType = 'all';
-let searchCat  = '';
-let searchPayer= '';
-
-function initSearchPage(){
-  // 建立分類篩選 chips
-  const catRow = document.getElementById('search-cat-row');
-  catRow.innerHTML = '<div class="filter-chip sel" onclick="setSearchCat(\'\',this)">全部分類</div>' +
-    EXP_CATS.map(c=>`<div class="filter-chip" onclick="setSearchCat('${c.n}',this)">${c.e}${c.n}</div>`).join('') +
-    INC_CATS.filter(c=>c.n!=='其他').map(c=>`<div class="filter-chip" onclick="setSearchCat('${c.n}',this)">${c.e}${c.n}</div>`).join('');
-
-  // 建立付款人篩選 chips
-  const payerRow = document.getElementById('search-payer-row');
-  payerRow.innerHTML = `<div class="filter-chip sel" onclick="setSearchPayer('',this)">全部</div>
-    <div class="filter-chip" onclick="setSearchPayer('${person1}',this)">${person1}</div>
-    <div class="filter-chip" onclick="setSearchPayer('${person2}',this)">${person2}</div>
-    <div class="filter-chip" onclick="setSearchPayer('共同',this)">共同</div>`;
-
-  runSearch();
-}
-
-function setSearchType(t, el){
-  searchType = t;
-  document.querySelectorAll('#search-type-row .filter-chip').forEach(c=>c.classList.remove('sel'));
-  el.classList.add('sel');
-  runSearch();
-}
-function setSearchCat(c, el){
-  searchCat = c;
-  document.querySelectorAll('#search-cat-row .filter-chip').forEach(x=>x.classList.remove('sel'));
-  el.classList.add('sel');
-  runSearch();
-}
-function setSearchPayer(p, el){
-  searchPayer = p;
-  document.querySelectorAll('#search-payer-row .filter-chip').forEach(x=>x.classList.remove('sel'));
-  el.classList.add('sel');
-  runSearch();
-}
-
-function clearSearch(){
-  document.getElementById('search-kw').value = '';
-  document.getElementById('search-date').value = '';
-  searchType = 'all'; searchCat = ''; searchPayer = '';
-  document.querySelectorAll('#search-type-row .filter-chip').forEach((c,i)=>c.classList.toggle('sel',i===0));
-  document.querySelectorAll('#search-cat-row .filter-chip').forEach((c,i)=>c.classList.toggle('sel',i===0));
-  document.querySelectorAll('#search-payer-row .filter-chip').forEach((c,i)=>c.classList.toggle('sel',i===0));
-  runSearch();
-}
-
-function runSearch(){
-  const kw   = (document.getElementById('search-kw')?.value||'').trim().toLowerCase();
-  const date = document.getElementById('search-date')?.value||'';
-
-  let results = [...records];
-
-  // 類型篩選
-  if(searchType==='exp') results = results.filter(r=>r.type==='exp');
-  else if(searchType==='inc') results = results.filter(r=>r.type==='inc');
-
-  // 分類篩選
-  if(searchCat) results = results.filter(r=>r.cat===searchCat);
-
-  // 付款人篩選
-  if(searchPayer) results = results.filter(r=>r.payer===searchPayer);
-
-  // 日期篩選
-  if(date) results = results.filter(r=>r.date===date);
-
-  // 關鍵字（備註、分類、金額、付款人）
-  if(kw){
-    results = results.filter(r=>
-      r.note.toLowerCase().includes(kw) ||
-      r.cat.toLowerCase().includes(kw)  ||
-      String(r.amount).includes(kw)      ||
-      (r.payer||'').toLowerCase().includes(kw) ||
-      (r.pay||'').toLowerCase().includes(kw)
-    );
-  }
-
-  // 結果統計
-  const totalAmt = results.reduce((s,r)=>(r.type==='exp'?s-r.amount:s+r.amount),0);
-  const info = document.getElementById('search-result-info');
-  info.textContent = `找到 ${results.length} 筆，淨額 NT$${totalAmt>=0?'+':''}${totalAmt.toLocaleString()}`;
-
-  // 渲染結果
-  const list = document.getElementById('search-list');
-  if(!results.length){
-    list.innerHTML = '<div class="no-result">😶 沒有找到符合的記錄</div>';
-    return;
-  }
-  // 依日期排序（新到舊）
-  results.sort((a,b)=>(b.date||'').localeCompare(a.date||''));
-  list.innerHTML = results.map(r=>recHTML(r)).join('');
-}
-
-// ═══════════════════════════════════════════════
-//  INVOICE SCAN
-// ═══════════════════════════════════════════════
-//  INVOICE SCAN — Gemini Flash（免費 · 無需代理）
-// ═══════════════════════════════════════════════
-let scanResult = null;
-
-// ── Gemini Key 管理 ──
-function getGeminiKey(){ return localStorage.getItem('sb_gemini_key') || 'AIzaSyBhCUfQr66iZIXlWB5UrTHPe-g3TkpTTlQ'; }
-function saveGeminiKey(){
-  const k = document.getElementById('gemini-key-inp').value.trim();
-  if(!k){ showToast('請輸入 API Key'); return; }
-  if(!k.startsWith('AIza')){ showToast('格式錯誤，Key 應以 AIza 開頭'); return; }
-  localStorage.setItem('sb_gemini_key', k);
-  showScanMainArea();
-  showToast('✅ API Key 已儲存，可以開始掃描！');
-}
-function clearGeminiKey(){
-  localStorage.removeItem('sb_gemini_key');
-  document.getElementById('gemini-key-section').style.display = 'block';
-  document.getElementById('scan-main-area').style.display = 'none';
-  document.getElementById('gemini-key-inp').value = '';
-}
-function showScanMainArea(){
-  document.getElementById('gemini-key-section').style.display = 'none';
-  document.getElementById('scan-main-area').style.display = 'block';
-}
-
-// ── 開啟 / 重設 ──
-function openScanModal(){
-  resetScan();
-  // 內建 Key，永遠直接顯示掃描區
-  showScanMainArea();
-  openM('scan-modal');
-}
-
-function resetScan(){
-  scanResult = null;
-  const preview = document.getElementById('scan-preview');
-  preview.style.display = 'none'; preview.src = '';
-  document.getElementById('scan-loading').style.display = 'none';
-  document.getElementById('scan-result-card').style.display = 'none';
-  document.getElementById('scan-manual-hint').style.display = 'none';
-  document.getElementById('scan-apply-btn').style.display = 'none';
-  const drop = document.getElementById('scan-drop-area');
-  if(drop) drop.style.display = 'block';
-  document.getElementById('scan-file-inp').value = '';
-}
-
-// ── 圖片壓縮（手機拍照很大，壓到 1024px 減少傳輸量）──
-function compressImage(dataUrl, maxPx){
-  return new Promise(function(resolve){
-    const img = new Image();
-    img.onload = function(){
-      let w = img.naturalWidth, h = img.naturalHeight;
-      if(w > maxPx || h > maxPx){
-        if(w >= h){ h = Math.round(h * maxPx / w); w = maxPx; }
-        else       { w = Math.round(w * maxPx / h); h = maxPx; }
-      }
-      const c = document.createElement('canvas');
-      c.width = w; c.height = h;
-      c.getContext('2d').drawImage(img, 0, 0, w, h);
-      resolve(c.toDataURL('image/jpeg', 0.82));
-    };
-    img.onerror = function(){ resolve(dataUrl); };
-    img.src = dataUrl;
-  });
-}
-
-// ── 選擇圖片後觸發 ──
-function handleScanFile(e){
-  const file = e.target.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = function(ev){
-    const img = document.getElementById('scan-preview');
-    img.src = ev.target.result;
-    img.style.display = 'block';
-    const drop = document.getElementById('scan-drop-area');
-    if(drop) drop.style.display = 'none';
-    analyzeInvoice(ev.target.result);
-  };
-  reader.readAsDataURL(file);
-}
-
-// ── Gemini Vision API 辨識（直接呼叫，支援 CORS）──
-// ── 安全解析數字（處理字串 "null"、空值等） ──
-function safeNum(v){
-  if(v===null||v===undefined||v===''||v==='null'||v==='undefined') return null;
-  const n = Number(String(v).replace(/[^0-9.]/g,''));
-  return isNaN(n)||n<=0 ? null : n;
-}
-// ── 安全解析日期 ──
-function safeDate(v){
-  if(!v||v==='null') return null;
-  const s = String(v).trim();
-  // 已是 YYYY-MM-DD
-  if(/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
-  // 民國年 113/05/20 或 113.05.20
-  const m = s.match(/^(\d{2,3})[\/\.\-](\d{1,2})[\/\.\-](\d{1,2})$/);
-  if(m){
-    const y = parseInt(m[1]); const yr = y<1900 ? y+1911 : y;
-    return `${yr}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`;
-  }
-  return null;
-}
-
-async function analyzeInvoice(base64DataUrl){
-  document.getElementById('scan-loading').style.display = 'block';
-  document.getElementById('scan-result-card').style.display = 'none';
-  document.getElementById('scan-apply-btn').style.display = 'none';
-  document.getElementById('scan-manual-hint').style.display = 'none';
-
-  try{
-    const key = getGeminiKey();
-    // 壓縮圖片到 1200px，保留足夠解析度讀取發票文字
-    const compressed = await compressImage(base64DataUrl, 1200);
-    const base64 = compressed.split(',')[1];
-    const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + key;
-
-    // ✅ 關鍵修復：prompt 改用明確的英文欄位說明，避免中文混入 JSON 造成解析失敗
-    const prompt = `Look at this receipt/invoice image carefully.
-Extract the following information and respond with ONLY a valid JSON object, no other text:
-{
-  "amount": <total amount as a NUMBER only, e.g. 150 or 1200.5, use null if not found>,
-  "date": "<date in YYYY-MM-DD format. Taiwan receipts use Minguo year (Republic of China era), convert by adding 1911. e.g. 113/05/20 becomes 2024-05-20. Use null if not found>",
-  "note": "<store name or brief description in Traditional Chinese, max 15 characters>",
-  "category": "<pick exactly one from: 餐飲,購物,交通,娛樂,居家,醫療,保險,美妝,保養,旅遊,教育,汽車,車輛保養,停車費,其他>"
-}`;
-
-    const resp = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents:[{
-          parts:[
-            { inline_data:{ mime_type:'image/jpeg', data: base64 } },
-            { text: prompt }
-          ]
-        }],
-        generationConfig:{ temperature:0, maxOutputTokens:300, responseMimeType:'application/json' }
-      })
-    });
-
-    if(!resp.ok){
-      const errData = await resp.json().catch(()=>({}));
-      throw new Error(errData?.error?.message || 'HTTP '+resp.status);
-    }
-
-    const data = await resp.json();
-    const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    // 清理 markdown 包裝
-    const cleaned = rawText.replace(/```json[\s\S]*?```|```[\s\S]*?```/g, m=>m.replace(/```json|```/g,'')).trim();
-
-    let parsed;
-    try{ parsed = JSON.parse(cleaned); }
-    catch(e){
-      // 嘗試用正則抽取 JSON 物件
-      const m = rawText.match(/\{[\s\S]+\}/);
-      if(m) parsed = JSON.parse(m[0]);
-      else throw new Error('回傳格式無法解析');
-    }
-
-    // ✅ 用安全函式解析，不因字串 null 爆錯
-    const amt = safeNum(parsed.amount);
-    const dt  = safeDate(parsed.date) || today();
-
-    scanResult = {
-      amount: amt,
-      date  : dt,
-      note  : (parsed.note||'').slice(0,20) || '',
-      cat   : parsed.category || '其他'
-    };
-
-    document.getElementById('sr-amount').textContent = amt ? 'NT$ '+amt.toLocaleString() : '（未辨識到，可手動填寫）';
-    document.getElementById('sr-date').textContent   = dt;
-    document.getElementById('sr-note').textContent   = scanResult.note || '（未辨識到）';
-    document.getElementById('sr-cat').textContent    = scanResult.cat;
-    document.getElementById('scan-loading').style.display = 'none';
-    document.getElementById('scan-result-card').style.display = 'block';
-    document.getElementById('scan-apply-btn').style.display = 'block';
-    if(!amt) setHint('💡 金額未辨識，按下記帳後可手動輸入');
-
-  }catch(err){
-    console.error('analyzeInvoice error:', err);
-    document.getElementById('scan-loading').style.display = 'none';
-    const msg = err.message||'';
-    let hint = '⚠️ 辨識失敗：'+msg.slice(0,50);
-    if(msg.includes('API_KEY_INVALID')||msg.includes('API key not valid')){
-      hint='⚠️ API Key 已過期，請更新';
-    } else if(msg.includes('QUOTA')||msg.includes('429')){
-      hint='⚠️ 今日免費額度已用完（每天1500次）';
-    } else if(msg.includes('Failed to fetch')||msg.includes('NetworkError')){
-      hint='⚠️ 網路錯誤，請確認連線後重試';
-    }
-    setHint(hint);
-    document.getElementById('scan-apply-btn').style.display = 'block';
-    scanResult = { amount:null, date:today(), note:'', cat:'其他' };
-  }
-}
-
-function setHint(msg){
-  const el = document.getElementById('scan-manual-hint');
-  el.textContent = msg; el.style.display = 'block';
-}
-function today(){ return new Date().toISOString().split('T')[0]; }
-
-// ── 套用辨識結果 → 直接記帳 ──
-function applyScanResult(){
-  if(!scanResult) return;
-
-  // 若金額未辨識，改為填表單讓用戶手動補
-  if(!scanResult.amount || scanResult.amount <= 0){
-    curType = 'exp';
-    if(scanResult.note) document.getElementById('note-inp').value = scanResult.note;
-    if(scanResult.date) document.getElementById('date-inp').value = scanResult.date;
-    if(scanResult.cat){ selCatMain['exp'] = scanResult.cat; renderCatsGrid('cats-grid','exp',selCatMain); }
-    closeM('scan-modal'); resetScan();
-    showToast('⚠️ 未辨識到金額，請手動填入後新增');
-    document.getElementById('amount-inp').focus();
-    return;
-  }
-
-  // 直接建立記錄
-  const cat  = scanResult.cat || '其他';
-  const emo  = (EXP_CATS.find(c=>c.n===cat)||EXP_CATS[0]).e;
-  const payer = getChip('payer-row') || person1;
-  const pay   = getChip('pay-row') || '';
-  const newId = Date.now()+'_'+Math.random().toString(36).slice(2,6);
-  records.unshift({
-    id:newId, type:'exp', cat, emoji:emo,
-    note: scanResult.note || cat,
-    amount: Number(scanResult.amount),
-    payer, pay,
-    date: scanResult.date || today(),
-    photo: null
-  });
-  closeM('scan-modal'); resetScan();
-  renderRecent(); updateHeader(); save();
-  showToast('✅ 發票記帳完成！NT$'+Number(scanResult.amount).toLocaleString());
-  // 切回記帳頁
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('page-record').classList.add('active');
-  document.querySelector('.nav-item').classList.add('active');
-}
-
-// ═══════════════════════════════════════════════
-//  PHOTO ATTACHMENT — 照片附件
-// ═══════════════════════════════════════════════
-let attachedPhoto = null; // base64 string
-
-function handlePhotoAttach(e){
-  const file = e.target.files[0];
-  if(!file) return;
-  // 壓縮到 800px，控制 Firebase 大小
-  const reader = new FileReader();
-  reader.onload = function(ev){
-    compressImage(ev.target.result, 800).then(function(compressed){
-      attachedPhoto = compressed;
-      const thumb = document.getElementById('photo-thumb');
-      thumb.src = compressed;
-      document.getElementById('photo-thumb-wrap').style.display = 'block';
-    });
-  };
-  reader.readAsDataURL(file);
-}
-
-function removePhoto(){
-  attachedPhoto = null;
-  document.getElementById('photo-thumb').src = '';
-  document.getElementById('photo-thumb-wrap').style.display = 'none';
-  document.getElementById('photo-inp').value = '';
-}
-
-// recHTML 中顯示照片
-function recHTML(r){
-  const photoHtml = r.photo
-    ? `<img class="rec-photo" src="${r.photo}" alt="附件" onclick="viewPhoto('${r.id}')">`
-    : '';
-  return `<div class="record-item" style="flex-direction:column;align-items:stretch;padding:11px 14px;">
-    <div style="display:flex;align-items:center;gap:10px;">
-      <div class="rec-emoji ${r.type==='inc'?'income':''}">${r.emoji}</div>
-      <div class="rec-info">
-        <div class="rec-name">${r.note}</div>
-        <div class="rec-meta">${r.payer}${r.pay?' · '+r.pay:''} · ${r.date?r.date.slice(5).replace('-','/'):'--'}</div>
-      </div>
-      <div class="rec-right">
-        <div class="rec-amount ${r.type==='inc'?'inc':''}">${r.type==='inc'?'+':'-'}NT$${r.amount.toLocaleString()}</div>
-        <div class="rec-actions">
-          <button class="action-btn edit-btn" onclick="openEdit('${r.id}')">編輯</button>
-          <button class="action-btn del-btn" onclick="delRecord('${r.id}')">刪除</button>
-        </div>
-      </div>
-    </div>
-    ${photoHtml}
-  </div>`;
-}
-
-// 點擊照片全螢幕預覽
-function viewPhoto(id){
-  const r = records.find(x=>x.id==id);
-  if(!r||!r.photo) return;
-  const overlay = document.createElement('div');
-  overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:500;display:flex;align-items:center;justify-content:center;cursor:pointer;';
-  overlay.innerHTML=`<img src="${r.photo}" style="max-width:96vw;max-height:96vh;border-radius:8px;object-fit:contain;">`;
-  overlay.onclick=()=>document.body.removeChild(overlay);
-  document.body.appendChild(overlay);
-}
-
-// ═══════════════════════════════════════════════
-//  VOICE RECORD — 語音記帳（Web Speech API）
-// ═══════════════════════════════════════════════
-let voiceRec = null, voiceRunning = false, voiceResult = null, voiceText = '';
-
-function openVoiceModal(){
-  voiceResult = null; voiceText = '';
-  document.getElementById('voice-status').textContent = '按下按鈕，說出消費內容';
-  document.getElementById('voice-transcript').textContent = '例如：「午餐花了150元」「小明搭捷運50塊」「收到薪水5萬」';
-  document.getElementById('voice-result-card').style.display = 'none';
-  document.getElementById('voice-apply-btn').style.display   = 'none';
-  document.getElementById('voice-hint').style.display        = 'none';
-  setVoiceBtnState(false);
-  openM('voice-modal');
-}
-
-function setVoiceBtnState(recording){
-  const btn = document.getElementById('voice-record-btn');
-  btn.className = 'voice-record-btn' + (recording?' recording':'');
-  document.getElementById('voice-btn-ic').textContent  = recording ? '⏹️' : '🎙️';
-  document.getElementById('voice-btn-txt').textContent = recording ? '停止錄音' : '開始錄音';
-}
-
-function stopVoice(){
-  if(voiceRec){ try{ voiceRec.stop(); }catch(e){} voiceRec=null; }
-  voiceRunning = false;
-  setVoiceBtnState(false);
-}
-
-function toggleVoice(){
-  if(voiceRunning){ stopVoice(); return; }
-
-  const SR = window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){
-    document.getElementById('voice-hint').textContent='⚠️ 此裝置不支援語音辨識，請改用 Chrome 或 Safari';
-    document.getElementById('voice-hint').style.display='block';
-    return;
-  }
-
-  voiceRec = new SR();
-  voiceRec.lang = 'zh-TW';
-  voiceRec.continuous = false;
-  voiceRec.interimResults = true;
-
-  voiceRunning = true;
-  voiceText = '';
-  setVoiceBtnState(true);
-  document.getElementById('voice-status').textContent = '🔴 聆聽中，請說話…';
-  document.getElementById('voice-transcript').textContent = '…';
-  document.getElementById('voice-result-card').style.display = 'none';
-  document.getElementById('voice-apply-btn').style.display   = 'none';
-  document.getElementById('voice-hint').style.display        = 'none';
-
-  voiceRec.onresult = function(e){
-    let interim='', final='';
-    for(let i=e.resultIndex;i<e.results.length;i++){
-      if(e.results[i].isFinal) final+=e.results[i][0].transcript;
-      else interim+=e.results[i][0].transcript;
-    }
-    voiceText = final||interim;
-    document.getElementById('voice-transcript').textContent = voiceText||'…';
-  };
-
-  voiceRec.onerror = function(e){
-    voiceRunning=false; setVoiceBtnState(false);
-    const m={'no-speech':'沒有偵測到聲音，請再試','not-allowed':'麥克風被拒絕，請允許麥克風存取','network':'網路錯誤'};
-    const txt = '⚠️ '+(m[e.error]||'語音失敗：'+e.error);
-    document.getElementById('voice-status').textContent = txt;
-    document.getElementById('voice-hint').textContent = txt;
-    document.getElementById('voice-hint').style.display = 'block';
-  };
-
-  voiceRec.onend = function(){
-    voiceRunning=false; setVoiceBtnState(false);
-    if(voiceText){
-      document.getElementById('voice-status').textContent = 'AI 解析中…';
-      parseVoice(voiceText);
-    } else {
-      document.getElementById('voice-status').textContent = '未偵測到語音，請重試';
-    }
-  };
-
-  try{ voiceRec.start(); }
-  catch(e){
-    voiceRunning=false; setVoiceBtnState(false);
-    document.getElementById('voice-status').textContent='⚠️ 無法啟動麥克風：'+e.message;
-  }
-}
-
-async function parseVoice(text){
-  const key = getGeminiKey();
-  const url='https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key='+key;
-
-  // ✅ 完全改用英文 prompt，避免 Gemini 把中文說明混入 JSON 值
-  const prompt=`You are a bookkeeping assistant. Extract expense/income info from this voice input (in Traditional Chinese) and return ONLY a valid JSON object with no other text:
-Voice input: "${text}"
-JSON format:
-{"amount":<NUMBER only, e.g. 150, or null>,"type":"<exp or inc>","category":"<one of: 餐飲,購物,交通,娛樂,居家,醫療,保險,美妝,保養,旅遊,教育,汽車,車輛保養,停車費,薪資,獎金,其他>","note":"<brief description in Traditional Chinese max 12 chars>","payer":"<${person1} or ${person2} or 共同>"}
-Rules:
-- type=inc if text mentions income/salary/received money, else exp
-- payer=${person2} if text mentions "${person2}", payer=共同 if "我們"/"共同", else default ${person1}
-- amount must be a plain number, NOT a string`;
-
-  try{
-    const resp=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        contents:[{parts:[{text:prompt}]}],
-        generationConfig:{temperature:0, maxOutputTokens:200, responseMimeType:'application/json'}
-      })});
-    if(!resp.ok) throw new Error('HTTP '+resp.status);
-    const data=await resp.json();
-    const raw=(data?.candidates?.[0]?.content?.parts?.[0]?.text||'').trim();
-    // 清理 markdown
-    const cleaned = raw.replace(/```json[\s\S]*?```|```[\s\S]*?```/g, m=>m.replace(/```json|```/g,'')).trim();
-
-    let p;
-    try{ p = JSON.parse(cleaned); }
-    catch(e){
-      const m = raw.match(/\{[\s\S]+\}/);
-      if(m) p = JSON.parse(m[0]);
-      else throw new Error('格式錯誤');
-    }
-
-    const amt = safeNum(p.amount);
-    voiceResult={
-      amount : amt,
-      type   : p.type==='inc'?'inc':'exp',
-      cat    : p.category||'其他',
-      note   : (p.note||text).slice(0,20),
-      payer  : p.payer||person1
-    };
-
-    document.getElementById('vr-amount').textContent = amt?'NT$'+amt.toLocaleString():'（未辨識，記帳後手動補）';
-    document.getElementById('vr-type').textContent   = voiceResult.type==='inc'?'💰 收入':'💸 支出';
-    document.getElementById('vr-cat').textContent    = voiceResult.cat;
-    document.getElementById('vr-note').textContent   = voiceResult.note;
-    document.getElementById('vr-payer').textContent  = voiceResult.payer;
-    document.getElementById('voice-result-card').style.display='block';
-    document.getElementById('voice-apply-btn').style.display='block';
-    document.getElementById('voice-status').textContent='✅ 解析完成，確認後記帳';
-    if(!amt){
-      document.getElementById('voice-hint').textContent='💡 金額未辨識，按記帳後可手動輸入';
-      document.getElementById('voice-hint').style.display='block';
-    }
-  }catch(err){
-    console.error('parseVoice error:',err);
-    // ✅ 即使解析失敗，用原始語音文字填入，讓用戶手動補金額
-    voiceResult={amount:null,type:'exp',cat:'其他',note:text.slice(0,20),payer:person1};
-    document.getElementById('voice-status').textContent='AI解析失敗，已用原始文字填入';
-    document.getElementById('vr-amount').textContent='（請手動填寫）';
-    document.getElementById('vr-type').textContent='💸 支出';
-    document.getElementById('vr-cat').textContent='其他';
-    document.getElementById('vr-note').textContent=text.slice(0,20);
-    document.getElementById('vr-payer').textContent=person1;
-    document.getElementById('voice-result-card').style.display='block';
-    document.getElementById('voice-apply-btn').style.display='block';
-    document.getElementById('voice-hint').textContent='⚠️ AI解析失敗，請手動補填金額後記帳';
-    document.getElementById('voice-hint').style.display='block';
-  }
-}
-
-function applyVoice(){
-  if(!voiceResult) return;
-  // 若金額未辨識，填表單讓用戶補
-  if(!voiceResult.amount||voiceResult.amount<=0){
-    if(voiceResult.type!==curType) switchType(voiceResult.type);
-    document.getElementById('note-inp').value=voiceResult.note;
-    selCatMain[voiceResult.type]=voiceResult.cat;
-    renderCatsGrid('cats-grid',voiceResult.type,selCatMain);
-    closeM('voice-modal'); stopVoice();
-    showToast('⚠️ 未辨識到金額，請手動填入後新增');
-    document.getElementById('amount-inp').focus();
-    return;
-  }
-  const cats=voiceResult.type==='exp'?EXP_CATS:INC_CATS;
-  const emo=(cats.find(c=>c.n===voiceResult.cat)||cats[0]).e;
-  const pay=voiceResult.type==='exp'?(getChip('pay-row')||''):'';
-  const newId=Date.now()+'_'+Math.random().toString(36).slice(2,6);
-  records.unshift({id:newId,type:voiceResult.type,cat:voiceResult.cat,emoji:emo,
-    note:voiceResult.note,amount:voiceResult.amount,payer:voiceResult.payer,pay,date:today(),photo:null});
-  closeM('voice-modal'); stopVoice();
-  renderRecent(); updateHeader(); save();
-  showToast('✅ 語音記帳完成！NT$'+voiceResult.amount.toLocaleString());
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('page-record').classList.add('active');
-  document.querySelector('.nav-item').classList.add('active');
-}
-
-// ═══════════════════════════════════════════════
-//  CREDIT CARD NAME HELPERS
-// ═══════════════════════════════════════════════
-function onPayChange(){
-  const sel = getChip('pay-row');
-  const show = sel === '💳 信用卡';
-  document.getElementById('card-name-row').style.display = show ? 'flex' : 'none';
-  document.getElementById('card-preset-row').style.display = show ? 'flex' : 'none';
-}
-function onEditPayChange(){
-  const sel = getChip('edit-pay-row');
-  document.getElementById('edit-card-name-row').style.display =
-    sel==='💳 信用卡' ? 'flex' : 'none';
-}
-function pickCard(name){
-  document.getElementById('card-name-inp').value = name;
-  document.getElementById('card-name-inp').focus();
-}
-
-// ─ openEdit 需要回填卡名 ─
-// 覆蓋 openEdit，在原本邏輯後加上卡名回填
-const _origOpenEdit = openEdit;
-function openEdit(id){
-  _origOpenEdit(id);
-  // 回填卡名
-  const r = records.find(x=>x.id==id);
-  if(r && r.pay && r.pay.startsWith('💳 ') && r.pay!=='💳 信用卡'){
-    document.getElementById('edit-card-name-inp').value = r.pay.replace('💳 ','');
-    document.getElementById('edit-card-name-row').style.display = 'flex';
-  } else {
-    document.getElementById('edit-card-name-inp').value = '';
-    // 根據目前選擇決定是否顯示
-    onEditPayChange();
-  }
-}
-
-// ═══════════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════════
 function init(){
-  attachedPhoto = null;
   // ✅ 先 load（裡面會讀取已儲存的 ROOM_ID）
   load();
   applyTheme(curTheme);
