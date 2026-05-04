@@ -286,10 +286,17 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
         <input class="date-inp" type="date" id="date-inp" style="margin-bottom:6px;">
         <button class="submit-btn" id="submit-btn" onclick="addRecord()">+ 新增支出</button>
       </div>
-      <div class="section-hd">
-        <div class="section-title">📋 最近記錄</div>
+      <div class="section-hd" style="margin-bottom:8px;">
+        <div class="section-title">📋 每日記錄</div>
         <span class="section-more" onclick="showAllRecords()">查看全部 →</span>
       </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <button onclick="shiftDay(-1)" style="background:var(--primary-pale);border:1.5px solid var(--border);border-radius:10px;padding:6px 12px;font-size:16px;cursor:pointer;color:var(--primary);font-weight:700;">‹</button>
+        <input type="date" id="recent-date" onchange="renderRecent()"
+          style="flex:1;background:var(--primary-pale);border:1.5px solid var(--border);border-radius:10px;padding:8px 12px;font-size:13px;font-weight:700;color:var(--text);outline:none;text-align:center;font-family:'Nunito',sans-serif;">
+        <button onclick="shiftDay(1)" style="background:var(--primary-pale);border:1.5px solid var(--border);border-radius:10px;padding:6px 12px;font-size:16px;cursor:pointer;color:var(--primary);font-weight:700;">›</button>
+      </div>
+      <div id="recent-date-summary" style="display:flex;gap:8px;margin-bottom:8px;"></div>
       <div id="recent-list"></div>
     </div>
   </div>
@@ -969,9 +976,70 @@ function recHTML(r){
   </div>`;
 }
 function renderRecent(){
-  const l=document.getElementById('recent-list');
-  const r=records.slice(0,8);
-  l.innerHTML = r.length ? r.map(recHTML).join('') : '<div style="text-align:center;color:var(--text-sub);padding:20px;font-size:13px;">還沒有記錄，快來新增第一筆！</div>';
+  const l   = document.getElementById('recent-list');
+  const inp = document.getElementById('recent-date');
+  if(!inp) return;
+  const sel = inp.value || new Date().toISOString().split('T')[0];
+  if(!inp.value) inp.value = sel;
+
+  // 當日的一般記帳
+  const dayRecs = records.filter(r => r.date === sel);
+
+  // 固定項目：標示為「每月固定」，列在當日下方
+  const fixedRecs = fixedItems.map(f=>({
+    ...f,
+    id    : 'fixed_'+f.id,
+    note  : f.name,
+    date  : sel,
+    pay   : '',
+    _isFixed: true
+  }));
+  const allRecs = [...dayRecs, ...fixedRecs];
+
+  // 日期摘要小卡
+  const sumEl = document.getElementById('recent-date-summary');
+  const dayExp = dayRecs.filter(r=>r.type==='exp').reduce((s,r)=>s+r.amount,0)
+               + fixedItems.filter(f=>f.type==='exp').reduce((s,f)=>s+f.amount,0);
+  const dayInc = dayRecs.filter(r=>r.type==='inc').reduce((s,r)=>s+r.amount,0)
+               + fixedItems.filter(f=>f.type==='inc').reduce((s,f)=>s+f.amount,0);
+  sumEl.innerHTML = `
+    <div style="flex:1;background:#FFE8F0;border-radius:10px;padding:7px 12px;text-align:center;">
+      <div style="font-size:10px;color:var(--primary);margin-bottom:2px;">當日支出</div>
+      <div style="font-size:14px;font-weight:800;color:#FF4081;">NT$${dayExp.toLocaleString()}</div>
+    </div>
+    <div style="flex:1;background:#E8F5EE;border-radius:10px;padding:7px 12px;text-align:center;">
+      <div style="font-size:10px;color:var(--income-color);margin-bottom:2px;">當日收入</div>
+      <div style="font-size:14px;font-weight:800;color:var(--income-color);">NT$${dayInc.toLocaleString()}</div>
+    </div>`;
+
+  if(!allRecs.length){
+    l.innerHTML='<div style="text-align:center;color:var(--text-sub);padding:20px;font-size:13px;">這天還沒有記錄 ✨</div>';
+    return;
+  }
+  l.innerHTML = allRecs.map(r => r._isFixed ? recHTMLFixed(r) : recHTML(r)).join('');
+}
+
+// 固定項目的顯示樣式（不可編輯刪除）
+function recHTMLFixed(r){
+  return `<div class="record-item" style="opacity:0.75;">
+    <div class="rec-emoji ${r.type==='inc'?'income':''}">${r.emoji}</div>
+    <div class="rec-info">
+      <div class="rec-name">${r.note} <span class="fixed-tag">固定</span></div>
+      <div class="rec-meta">每月${r.day}日 · ${r.payer}</div>
+    </div>
+    <div class="rec-right">
+      <div class="rec-amount ${r.type==='inc'?'inc':''}">${r.type==='inc'?'+':'-'}NT$${r.amount.toLocaleString()}</div>
+    </div>
+  </div>`;
+}
+
+// 日期前後切換
+function shiftDay(delta){
+  const inp = document.getElementById('recent-date');
+  const d = new Date(inp.value || new Date().toISOString().split('T')[0]);
+  d.setDate(d.getDate() + delta);
+  inp.value = d.toISOString().split('T')[0];
+  renderRecent();
 }
 function showAllRecords(){ renderAll(); openM('all-modal'); }
 function renderAll(){
@@ -986,8 +1054,14 @@ function updateHeader(){
   document.getElementById('hd-month').textContent = `${y}年${m}月`;
   const ms = `${y}-${String(m).padStart(2,'0')}`;
   const mr = records.filter(r=>r.date&&r.date.startsWith(ms));
-  const te = mr.filter(r=>r.type==='exp').reduce((s,r)=>s+r.amount,0);
-  const ti = mr.filter(r=>r.type==='inc').reduce((s,r)=>s+r.amount,0);
+  // 一般記帳金額
+  let te = mr.filter(r=>r.type==='exp').reduce((s,r)=>s+r.amount,0);
+  let ti = mr.filter(r=>r.type==='inc').reduce((s,r)=>s+r.amount,0);
+  // ✅ 固定支出／收入也計入當月統計
+  fixedItems.forEach(f=>{
+    if(f.type==='exp') te += f.amount;
+    else               ti += f.amount;
+  });
   const net= ti-te;
   document.getElementById('hd-exp').textContent   = 'NT$'+te.toLocaleString();
   document.getElementById('hd-inc').textContent   = 'NT$'+ti.toLocaleString();
@@ -1079,6 +1153,8 @@ function renderFixed(){
   document.getElementById('fixed-inc-list').innerHTML=ii.length?ii.map(mk).join(''):'<div style="text-align:center;color:var(--text-sub);padding:10px;font-size:12px;">尚無固定收入</div>';
   document.getElementById('fixed-exp-total').textContent='NT$'+ei.reduce((s,f)=>s+f.amount,0).toLocaleString();
   document.getElementById('fixed-inc-total').textContent='NT$'+ii.reduce((s,f)=>s+f.amount,0).toLocaleString();
+  // 固定項目變動後重新計算 header 總額
+  updateHeader();
 }
 function delFixed(id){
   if(!confirm('確定刪除此固定項目?')) return;
@@ -1287,7 +1363,11 @@ function init(){
   renderCatsGrid('cats-grid', curType, selCatMain);
   renderRecent(); renderFixed(); updateHeader(); renderStats('week');
   // 初始化日期欄位為今天
-  document.getElementById('date-inp').value = new Date().toISOString().split('T')[0];
+  const todayStr = new Date().toISOString().split('T')[0];
+  document.getElementById('date-inp').value = todayStr;
+  // 初始化最近記錄日期為今天
+  const rdInp = document.getElementById('recent-date');
+  if(rdInp) rdInp.value = todayStr;
   // ✅ 最後才啟動 LIFF+Firebase（此時 ROOM_ID 已正確載入）
   initLiff();
 }
