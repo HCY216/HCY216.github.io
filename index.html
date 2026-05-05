@@ -982,26 +982,33 @@ function renderRecent(){
   const sel = inp.value || new Date().toISOString().split('T')[0];
   if(!inp.value) inp.value = sel;
 
+  // 選取日期的「日」數字，用來比對固定項目的付款日
+  const selDay = parseInt(sel.split('-')[2], 10);
+
   // 當日的一般記帳
   const dayRecs = records.filter(r => r.date === sel);
 
-  // 固定項目：標示為「每月固定」，列在當日下方
-  const fixedRecs = fixedItems.map(f=>({
-    ...f,
-    id    : 'fixed_'+f.id,
-    note  : f.name,
-    date  : sel,
-    pay   : '',
-    _isFixed: true
-  }));
+  // ✅ 固定項目：只在付款日（f.day === selDay）才出現
+  const fixedRecs = fixedItems
+    .filter(f => f.day === selDay)
+    .map(f => ({
+      ...f,
+      id      : 'fixed_' + f.id,
+      note    : f.name,
+      date    : sel,
+      pay     : '',
+      _isFixed: true
+    }));
+
   const allRecs = [...dayRecs, ...fixedRecs];
 
   // 日期摘要小卡
+  // 一般記帳 + 當日付款的固定項目才計入
   const sumEl = document.getElementById('recent-date-summary');
   const dayExp = dayRecs.filter(r=>r.type==='exp').reduce((s,r)=>s+r.amount,0)
-               + fixedItems.filter(f=>f.type==='exp').reduce((s,f)=>s+f.amount,0);
+               + fixedRecs.filter(f=>f.type==='exp').reduce((s,f)=>s+f.amount,0);
   const dayInc = dayRecs.filter(r=>r.type==='inc').reduce((s,r)=>s+r.amount,0)
-               + fixedItems.filter(f=>f.type==='inc').reduce((s,f)=>s+f.amount,0);
+               + fixedRecs.filter(f=>f.type==='inc').reduce((s,f)=>s+f.amount,0);
   sumEl.innerHTML = `
     <div style="flex:1;background:#FFE8F0;border-radius:10px;padding:7px 12px;text-align:center;">
       <div style="font-size:10px;color:var(--primary);margin-bottom:2px;">當日支出</div>
